@@ -151,6 +151,20 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .ly-p .ab-b.me{background:var(--chip)}
 .ly-p .ab-b em{color:var(--brass);font-weight:500;font-size:11px}
 .ly-p .plus{font-style:normal;color:var(--ink-soft);padding:0 2px 26px;font-size:18px}
+
+.gb{position:absolute;top:0;left:1px;z-index:2;pointer-events:none;font-style:normal;font-size:9px;line-height:1;letter-spacing:.04em;font-weight:500;text-transform:uppercase;color:#fff;padding:3px 6px;border-radius:99px;box-shadow:0 1px 3px rgba(0,0,0,.35)}
+.gb-w{background:#b8456f}.gb-m{background:#3f6fa3}.gb-u{background:#75599c}
+.brand .gb{position:static;display:inline-block;vertical-align:1px;margin-left:6px;font-size:10px;padding:3px 8px;box-shadow:none}
+.wl-empty{padding:44px 20px;text-align:center;color:var(--ink-soft);background:var(--card);border:1px dashed var(--line);border-radius:14px;line-height:1.5}
+.wl-empty b{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:6px}
+.mv{margin:14px 0 4px;padding:12px;background:var(--chip);border:1px solid var(--line);border-radius:12px}
+.mv>p{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
+.mv .mvrow{display:flex;flex-wrap:wrap;gap:8px}
+.mv button{font:inherit;font-size:14px;border-radius:99px;padding:8px 18px;cursor:pointer;border:1px solid var(--brass);background:none;color:var(--ink)}
+.mv button.pri{background:var(--brass);color:#2a1b16}
+.mv button.ghost{border-color:var(--line);color:var(--ink-soft)}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;max-width:calc(100vw - 32px);display:flex;gap:14px;align-items:center;background:var(--wood-deep);color:#f3e8df;border:1px solid var(--brass);padding:11px 16px;border-radius:99px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.toast button{background:none;border:0;color:var(--brass-soft);font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:0}
 </style>
 </head>
 <body>
@@ -159,10 +173,10 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
   <header>
     <div class="eyebrow"><span id="cname"></span> · <span id="count"></span></div>
     <h1>Perfume Wardrobe</h1>
-    <div class="tools"><div class="switch" role="group" aria-label="Choose wardrobe"><button type="button" data-c="mannu" aria-pressed="true">Mannu's</button><button type="button" data-c="nix" aria-pressed="false">Nix's</button></div><button class="valbtn" id="valbtn" type="button">See wardrobe value</button><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
+    <div class="tools"><div class="switch" role="group" aria-label="Choose wardrobe"><button type="button" data-c="mannu" aria-pressed="true">Mannu's</button><button type="button" data-c="nix" aria-pressed="false">Nix's</button><button type="button" data-c="wishlist" aria-pressed="false">Wishlist</button></div><button class="valbtn" id="valbtn" type="button">See wardrobe value</button><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
   </header>
   <div class="cabinet" id="cabinet" aria-label="Perfume wardrobe"></div>
-  <p class="hint">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).<span id="resetw"></span></p>
+  <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span></p>
 </div>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetIn"></div></div>
@@ -388,7 +402,7 @@ function openValue(){
   const rows=list().map(p=>({p,x:PRICES[p.id]})).sort((a,b)=>(b.x?b.x.p:-1)-(a.x?a.x.p:-1));
   const priced=rows.filter(r=>r.x),total=priced.reduce((s,r)=>s+r.x.p,0),missing=rows.length-priced.length;
   $("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">\u2715</button>'+
-   '<div><h3 id="sheetTitle">'+COLLECTIONS[active].who+' wardrobe value</h3><div class="total">'+inr(total)+'</div><div class="brand">'+priced.length+' of '+rows.length+' bottles priced'+(missing?'; '+missing+' not found, so left out':'')+'</div></div>'+
+   '<div><h3 id="sheetTitle">'+(active==="wishlist"?'Wishlist value':COLLECTIONS[active].who+' wardrobe value')+'</h3><div class="total">'+inr(total)+'</div><div class="brand">'+priced.length+' of '+rows.length+' bottles priced'+(missing?'; '+missing+' not found, so left out':'')+'</div></div>'+
    '<div class="vrows">'+rows.map(r=>'<div class="vrow"><img src="'+r.p.img+'" alt=""><div class="n">'+esc(r.p.name)+'<small>'+(r.x?(r.x.url?esc(r.x.size)+' \u00b7 '+esc(r.x.shop):'Price you shared'):'No Indian listing found')+'</small></div><div class="p'+(r.x?'':' na')+'">'+(r.x?inr(r.x.p):'\u2014')+'</div></div>').join("")+'</div>'+
    '<div class="src">Current Indian retail prices for the size shown, found online in October 2026. Your own bottle sizes and what you paid may differ. Prices marked as shared are the ones you gave.</div>';
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
@@ -396,12 +410,21 @@ function openValue(){
 }
 const COLLECTIONS={
  mannu:{name:"Mannu's Collection",who:"Mannu's",ids:["musamam-white-intense", "angham", "beautiful-magnolia", "chanel-no-5-edp", "i-want-choo-le-parfum", "good-girl-blush-elixir", "si-edp-intense", "goddess", "libre-labsolu-platine", "la-vie-est-belle-domaine-de-la-rose", "linterdit-edp-rouge", "libre-intense", "idole", "coco-mademoiselle-intense", "bright-crystal-absolu", "killer-queen", "chloe-edp", "pleasures", "prada-paradoxe", "i-want-choo", "la-belle-le-parfum", "eternity-eau-fresh", "alien", "bright-crystal", "million-gold-for-her", "lady-million", "scandal"]},
- nix:{name:"Nix's Collection",who:"Nix's",ids:["musamam-white-intense", "clinique-happy-for-men", "icon-elite", "ralphs-club-parfum", "sauvage", "cool-water", "myslf-edp", "myslf-le-parfum", "ck-one", "acqua-di-gio-profondo", "chrome", "bsc-tokyo-edp", "bsc-cairo-edp"]}
+ nix:{name:"Nix's Collection",who:"Nix's",ids:["musamam-white-intense", "clinique-happy-for-men", "icon-elite", "ralphs-club-parfum", "sauvage", "cool-water", "myslf-edp", "myslf-le-parfum", "ck-one", "acqua-di-gio-profondo", "chrome", "bsc-tokyo-edp", "bsc-cairo-edp"]},
+ wishlist:{name:"Wishlist",who:"Wishlist",ids:[]}
 };
+let MOVES={};try{MOVES=JSON.parse(localStorage.getItem("wardrobe-moves")||"{}")||{}}catch(e){MOVES={}}
+function saveMoves(){try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES))}catch(e){}}
+const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
+ if(c==="wishlist")return W.filter(id=>!MOVES[id]);
+ const a=COLLECTIONS[c].ids.slice();Object.keys(MOVES).forEach(id=>{if(MOVES[id]===c&&W.includes(id)&&!a.includes(id))a.push(id)});return a};
+const gk=p=>p.gender==="for women"?"w":p.gender==="for men"?"m":"u";
+const gLabel={w:"Women",m:"Men",u:"Unisex"};
+const gbHtml=p=>'<i class="gb gb-'+gk(p)+'">'+gLabel[gk(p)]+'</i>';
 let active="mannu";
 try{const s=localStorage.getItem("wardrobe");if(s&&COLLECTIONS[s])active=s}catch(e){}
 let ORDER={};try{ORDER=JSON.parse(localStorage.getItem("wardrobe-order")||"{}")||{}}catch(e){ORDER={}}
-const ids=()=>{const base=COLLECTIONS[active].ids,sv=ORDER[active];if(!sv)return base.slice();const a=sv.filter(i=>base.includes(i));base.forEach(i=>{if(!a.includes(i))a.push(i)});return a};
+const ids=()=>{const base=baseIds(active),sv=ORDER[active];if(!sv)return base.slice();const a=sv.filter(i=>base.includes(i));base.forEach(i=>{if(!a.includes(i))a.push(i)});return a};
 const list=()=>ids().map(id=>PERFUMES.find(p=>p.id===id));
 function saveOrder(a){ORDER[active]=a;try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}}
 const PER_SHELF=4, MIN_SHELVES=1;
@@ -420,13 +443,15 @@ function build(){
     for(let i=0;i<PER_SHELF;i++){
       const p=L[s*PER_SHELF+i];
       if(p){
-        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><img src="'+p.img+'" alt=""></button>';
+        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt="">'+(active==="wishlist"?gbHtml(p):'')+'</button>';
         plates+='<button class="plate" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><b>'+esc(p.short[0])+'</b><small>'+esc(p.short[1])+'</small></button>';
       }else{row+='<div class="empty" data-idx="'+(s*PER_SHELF+i)+'"></div>';plates+='<div class="plate ghost" data-idx="'+(s*PER_SHELF+i)+'"></div>'}
     }
     h+='<div class="shelf"><div class="row">'+row+'</div></div><div class="plank"></div><div class="plates">'+plates+'</div>';
   }
+  if(active==="wishlist"&&!L.length)h='<div class="wl-empty"><b>Your wishlist is empty</b>Perfumes you want to buy will sit here. Send me the Fragrantica card of any perfume and I will add it. Open one and tap Move to wardrobe when you get it.</div>';
   cab.innerHTML=h;
+  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The tag on each bottle shows whether it is for women, men or unisex.":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).";
   $("#resetw").innerHTML=ORDER[active]?' <button class="reset" id="resetb" type="button">Reset order</button>':'';
   const rb=$("#resetb");if(rb)rb.onclick=()=>{delete ORDER[active];try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}build()};
   cab.querySelectorAll("button.bottle img").forEach(im=>{const f=()=>{if(im.naturalWidth/im.naturalHeight>.75)im.classList.add("wide")};im.complete&&im.naturalWidth?f():im.addEventListener("load",f)});
@@ -472,7 +497,7 @@ function lySection(p){
   const L=list();if(L.length<2||!L.some(x=>x.id===p.id))return '';
   const P=L.map(lyProf),me=P.find(x=>x.p.id===p.id);
   const rs=P.filter(x=>x!==me).map(x=>lyPair(me,x)).sort((x,y)=>y.s-x.s).slice(0,3);
-  return '<section><h3>Layers well with</h3><p class="ab-sub">From your '+esc(COLLECTIONS[active].who)+' wardrobe. Heavier one first, lighter on top, 1–2 sprays each. Tap a bottle to open it.</p>'+rs.map(r=>lyHtml(r,p.id)).join("")+'<div class="src">A rule of thumb from shared notes, accords and weight. Always test a new pairing on skin first.</div></section>';
+  return '<section><h3>Layers well with</h3><p class="ab-sub">From '+(active==='wishlist'?'your wishlist':esc(COLLECTIONS[active].who)+' wardrobe')+'. Heavier one first, lighter on top, 1–2 sprays each. Tap a bottle to open it.</p>'+rs.map(r=>lyHtml(r,p.id)).join("")+'<div class="src">A rule of thumb from shared notes, accords and weight. Always test a new pairing on skin first.</div></section>';
 }
 function lyAbout(L){
   if(L.length<2)return '';
@@ -480,6 +505,27 @@ function lyAbout(L){
   all.forEach(r=>{if(pick.length>=6)return;if((cnt[r.a.id]||0)>=2||(cnt[r.b.id]||0)>=2)return;cnt[r.a.id]=(cnt[r.a.id]||0)+1;cnt[r.b.id]=(cnt[r.b.id]||0)+1;pick.push(r)});
   return '<section><h3>Layering ideas</h3><p class="ab-sub">The best pairs from this wardrobe, by shared notes and how well their weights balance. Heavier one first, lighter on top, 1–2 sprays each.</p>'+pick.map(r=>lyHtml(r)).join("")+'<div class="src">Each bottle appears at most twice here. Open any bottle to see its own best partners. Test on skin before committing to a pairing.</div></section>';
 }
+
+function mvHtml(p){
+  if(active!=="wishlist"||MOVES[p.id])return '';
+  return '<div class="mv" id="mvbox"><button type="button" class="pri" data-mv="'+p.id+'">Move to wardrobe</button></div>';
+}
+function toast(msg,undo){
+  document.querySelectorAll(".toast").forEach(x=>x.remove());
+  const t=document.createElement("div");t.className="toast";t.setAttribute("role","status");t.innerHTML='<span>'+esc(msg)+'</span>'+(undo?'<button type="button">Undo</button>':'');
+  document.body.appendChild(t);
+  if(undo)t.querySelector("button").onclick=()=>{undo();t.remove()};
+  setTimeout(()=>t.remove(),6500);
+}
+document.addEventListener("click",e=>{
+  const a=e.target.closest("[data-mv]"),b=e.target.closest("[data-mvto]"),c=e.target.closest("[data-mvcancel]");
+  const box=document.getElementById("mvbox");
+  if(a&&box){box.innerHTML='<p>Move to which wardrobe?</p><div class="mvrow"><button type="button" class="pri" data-mvto="mannu" data-id="'+a.dataset.mv+'">Mannu\u2019s</button><button type="button" class="pri" data-mvto="nix" data-id="'+a.dataset.mv+'">Nix\u2019s</button><button type="button" class="ghost" data-mvcancel data-id="'+a.dataset.mv+'">Cancel</button></div>';return}
+  if(c&&box){box.innerHTML='<button type="button" class="pri" data-mv="'+c.dataset.id+'">Move to wardrobe</button>';return}
+  if(b){const id=b.dataset.id,to=b.dataset.mvto,p=PERFUMES.find(x=>x.id===id);if(!p)return;
+    MOVES[id]=to;saveMoves();shut();build();window.scrollTo(0,0);
+    toast("Moved "+sname(p)+" to "+COLLECTIONS[to].who+" wardrobe",()=>{delete MOVES[id];saveMoves();build()});}
+});
 function open(p){
   const acc=p.accords.map(([n,w])=>'<div class="'+(LIGHT.includes(n)?'lt':'')+'" style="width:'+w+'%;background:'+(ACC[n]||"#8a6a4a")+'">'+esc(n)+'</div>').join("");
   const notes=p.notes.map(n=>'<div class="note"><img src="data:image/webp;base64,'+NOTE_IMG[n]+'" alt="">'+esc(n)+'</div>').join("");
@@ -487,8 +533,8 @@ function open(p){
   const seasons=Object.entries(p.seasons).map(([n,v])=>'<div class="m"><span>'+n+'</span><div class="track"><div class="fill" style="width:'+v+'%;background:'+sc[n]+'"></div></div><span class="pct">'+v+'%</span></div>').join("");
   $("#sheetIn").innerHTML=
    '<button class="close" id="close" aria-label="Close">✕</button>'+
-   '<div class="hd"><img src="'+p.img+'" alt="'+esc(p.name)+' bottle"><div><h2 id="sheetTitle">'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+esc(p.gender)+'</div><div class="rate"><b>'+p.rating+'</b><span class="stars">'+stars(p.rating)+'</span><span class="votes">('+p.votes.toLocaleString("en-IN")+')</span></div></div></div>'+
-   priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
+   '<div class="hd"><img src="'+p.img+'" alt="'+esc(p.name)+' bottle"><div><h2 id="sheetTitle">'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+esc(p.gender)+(active==="wishlist"?gbHtml(p):'')+'</div><div class="rate"><b>'+p.rating+'</b><span class="stars">'+stars(p.rating)+'</span><span class="votes">('+p.votes.toLocaleString("en-IN")+')</span></div></div></div>'+
+   mvHtml(p)+priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
    '<section><h3>Notes</h3><div class="notes">'+notes+'</div></section>'+
    pyrHtml(p)+
    '<section><h3>Fragrance profile</h3><div class="stats"><div class="stat"><b>'+esc(p.longevity)+'</b><span>Longevity</span></div><div class="stat"><b>'+esc(p.sillage)+'</b><span>Sillage</span></div></div></section>'+
@@ -542,7 +588,9 @@ function suggest(L){
   return{top:res,picks:L.slice(0,5)};
 }
 function openAbout(){
-  const L=list(),n=L.length,pct=(a,b)=>Math.round(100*a/b);
+  const L=list(),n=L.length;
+  if(!n){$("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">\u2715</button><div><h3 id="sheetTitle">About '+COLLECTIONS[active].name+'</h3><p class="ab-read">Nothing here yet. Add a few perfumes and this fills in.</p></div>';$("#sheet").classList.add("on");$("#scrim").classList.add("on");$("#close").onclick=shut;return}
+  const pct=(a,b)=>Math.round(100*a/b);
   const accT={};let accSum=0;L.forEach(p=>p.accords.forEach(([k,w])=>{accT[k]=(accT[k]||0)+w;accSum+=w}));
   const accs=Object.entries(accT).sort((a,b)=>b[1]-a[1]).slice(0,8);
   const famT={};Object.entries(FAM).forEach(([f,a])=>famT[f]=a.reduce((s,k)=>s+(accT[k]||0),0));
@@ -559,7 +607,7 @@ function openAbout(){
   const pr=L.map(p=>({p,x:PRICES[p.id]})).filter(r=>r.x),tot=pr.reduce((s,r)=>s+r.x.p,0),top=pr.slice().sort((a,b)=>b.x.p-a.x.p)[0];
   const gaps=fams.filter(f=>pct(f[1],accSum)<12).map(f=>f[0].toLowerCase());
   const lowest=sea.slice().sort((a,b)=>a[1]-b[1])[0],best=sea.slice().sort((a,b)=>b[1]-a[1])[0];
-  const read=COLLECTIONS[active].who+" wardrobe leans "+fams[0][0].toLowerCase()+" ("+pct(fams[0][1],accSum)+"% of the accord mix), with "+fams[1][0].toLowerCase()+" in second place. "+accs[0][0]+" and "+accs[1][0].toLowerCase()+" show up most, and "+notes[0][0].toLowerCase()+" is the note you own most.";
+  const read=(active==="wishlist"?"Your wishlist":COLLECTIONS[active].who+" wardrobe")+" leans "+fams[0][0].toLowerCase()+" ("+pct(fams[0][1],accSum)+"% of the accord mix), with "+fams[1][0].toLowerCase()+" in second place. "+accs[0][0]+" and "+accs[1][0].toLowerCase()+" show up most, and "+notes[0][0].toLowerCase()+" is the note you own most.";
   const row=(l,v,c,t,g)=>'<button type="button" class="ab-row" data-g="'+g+'"><span>'+esc(l)+'</span><div class="t"><i style="width:'+Math.min(100,v)+'%;background:'+c+'"></i></div><span class="v">'+(t||v+'%')+'</span></button>';
   const G={},sn=p=>p.short.join(" ").trim();
   const mk=(arr)=>arr.map(([p,t])=>({p,t}));
@@ -582,7 +630,7 @@ function openAbout(){
    '<section><h3>At a glance</h3><div class="ab-grid">'+
     st(n,'Bottles',brs.length+' brands','g:all')+st(rt.toFixed(1),'Average rating',esc(byR[0].short.join(" ").trim())+' rates highest','g:rate')+
     st(Math.round(lng)+' h','Average longevity',strong+' of '+n+' project strongly (\u25cf)','g:long')+st(esc(brs[0][0]),'Top brand',brs[0][1]+' bottles','g:brand')+
-    st(esc(byV[0].short.join(" ").trim()),'Crowd favourite',byV[0].votes.toLocaleString("en-IN")+' votes','g:votes')+st(inr(Math.round(tot/pr.length)),'Average bottle',top?'Priciest: '+esc(top.p.short.join(" ").trim())+' '+inr(top.x.p):'','g:price')+
+    st(esc(byV[0].short.join(" ").trim()),'Crowd favourite',byV[0].votes.toLocaleString("en-IN")+' votes','g:votes')+st(inr(Math.round(tot/(pr.length||1))),'Average bottle',top?'Priciest: '+esc(top.p.short.join(" ").trim())+' '+inr(top.x.p):'','g:price')+
     st(gF+' / '+gM+' / '+gU,'Women / men / unisex','by Fragrantica listing','g:gender')+st(pct(L.filter(p=>p.night>p.day).length,n)+'%','Night-leaning','bottles with more night votes','g:night')+
    '</div></section>'+
    (function(){const S=suggest(L);if(!S.top.length)return '';
