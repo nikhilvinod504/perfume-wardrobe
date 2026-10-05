@@ -157,6 +157,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .brand .gb{position:static;display:inline-block;vertical-align:1px;margin-left:6px;font-size:10px;padding:3px 8px;box-shadow:none}
 .wl-empty{padding:44px 20px;text-align:center;color:var(--ink-soft);background:var(--card);border:1px dashed var(--line);border-radius:14px;line-height:1.5}
 .wl-empty b{display:block;font-family:var(--display);font-weight:400;font-size:22px;color:var(--ink);margin-bottom:6px}
+.syncst{display:block;margin-top:6px;font-size:11px;opacity:.6}
 .mv{margin:14px 0 4px;padding:12px;background:var(--chip);border:1px solid var(--line);border-radius:12px}
 .mv>p{margin:0 0 8px;font-size:13px;color:var(--ink-soft)}
 .mv .mvrow{display:flex;flex-wrap:wrap;gap:8px}
@@ -181,7 +182,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
     <div class="tools"><div class="switch" role="group" aria-label="Choose wardrobe"><button type="button" data-c="mannu" aria-pressed="true">Mannu's</button><button type="button" data-c="nix" aria-pressed="false">Nix's</button><button type="button" data-c="wishlist" aria-pressed="false">Wishlist</button></div><button class="valbtn" id="valbtn" type="button">See wardrobe value</button><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
   </header>
   <div class="cabinet" id="cabinet" aria-label="Perfume wardrobe"></div>
-  <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span></p>
+  <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span> <span id="syncst" class="syncst"></span></p>
 </div>
 <div class="scrim" id="scrim"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"><div class="sheet-in" id="sheetIn"></div></div>
@@ -491,6 +492,7 @@ function syncPush(){if(REMOTE===null)return;clearTimeout(pushT);pushT=setTimeout
  Object.keys(REMOTE).forEach(k=>{if(REMOTE[k]!==null&&!(k in d))rows.push({key:k,value:null,updated_at:new Date().toISOString()})});
  if(!rows.length)return;
  try{if(await remotePut(rows))rows.forEach(x=>{REMOTE[x.key]=x.value})}catch(e){}},400)}
+function setSt(t){const e=document.getElementById('syncst');if(e)e.textContent=t}
 async function syncPull(first){
  try{const rows=await remoteGet(),R={};rows.forEach(x=>{R[x.key]=x.value});
   const prev=REMOTE;REMOTE=R;
@@ -505,7 +507,7 @@ async function syncPull(first){
   MOVES=m;SHARE=sh;ORDER=o;
   try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES));localStorage.setItem("wardrobe-share",JSON.stringify(SHARE));localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}
   if(changed&&!document.querySelector(".sheet.on"))build();
-  syncPush()}catch(e){}}
+  setSt('Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(IN_ART()?' (via connector)':''));syncPush()}catch(e){setSt('Sync off: '+((e&&(e.code||e.message))||'error'))}}
 const PER_SHELF=4, MIN_SHELVES=1;
 const $=s=>document.querySelector(s);
 const cab=$("#cabinet");
