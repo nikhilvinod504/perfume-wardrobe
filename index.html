@@ -165,6 +165,10 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .mv button.ghost{border-color:var(--line);color:var(--ink-soft)}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:50;max-width:calc(100vw - 32px);display:flex;gap:14px;align-items:center;background:var(--wood-deep);color:#f3e8df;border:1px solid var(--brass);padding:11px 16px;border-radius:99px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.35)}
 .toast button{background:none;border:0;color:var(--brass-soft);font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:0}
+
+.plate{position:relative}
+.plate .gb{top:-6px;left:50%;transform:translateX(-50%);font-size:6.5px;line-height:1;letter-spacing:.06em;padding:1.5px 4.5px;opacity:.85;box-shadow:none;border:0}
+.plate .gb-w{background:rgba(184,69,111,.92)}.plate .gb-m{background:rgba(63,111,163,.92)}.plate .gb-u{background:rgba(117,89,156,.92)}
 </style>
 </head>
 <body>
@@ -455,8 +459,8 @@ function build(){
     for(let i=0;i<PER_SHELF;i++){
       const p=L[s*PER_SHELF+i];
       if(p){
-        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"||gk(p)==="u"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt="">'+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</button>';
-        plates+='<button class="plate" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><b>'+esc(p.short[0])+'</b><small>'+esc(p.short[1])+'</small></button>';
+        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"||gk(p)==="u"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt=""></button>';
+        plates+='<button class="plate" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><b>'+esc(p.short[0])+'</b><small>'+esc(p.short[1])+'</small>'+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</button>';
       }else{row+='<div class="empty" data-idx="'+(s*PER_SHELF+i)+'"></div>';plates+='<div class="plate ghost" data-idx="'+(s*PER_SHELF+i)+'"></div>'}
     }
     h+='<div class="shelf"><div class="row">'+row+'</div></div><div class="plank"></div><div class="plates">'+plates+'</div>';
