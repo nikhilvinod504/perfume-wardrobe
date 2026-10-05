@@ -468,8 +468,12 @@ async function mcpSql(sql){if(MCPDEAD)throw new Error("off");
  try{const r=await MCPNS.callTool("Supabase","execute_sql",{project_id:SBPID,query:sql});return r.payload!==undefined?r.payload:r.content}
  catch(e){if(e&&(e.code==="not_in_manifest"||e.code==="server_not_connected"||e.code==="needs_reauth"||e.code==="not_granted"||e.code==="capability_disabled"||e.code==="consent_required"))MCPDEAD=true;throw e}}
 function parseRows(p){let t=typeof p==="string"?p:(p&&typeof p.result==="string"?p.result:JSON.stringify(p));
- const m=t.match(/<untrusted-data-[^>]*>\s*([\s\S]*?)\s*<\/untrusted-data-/);if(m)t=m[1];
- let v=JSON.parse(t);if(v&&v.result&&typeof v.result==="string"){return parseRows(v.result)}return Array.isArray(v)?v:[]}
+ try{const v=JSON.parse(t);if(Array.isArray(v))return v;if(v&&typeof v.result==="string")t=v.result}catch(e){}
+ let best=null;const re=/<untrusted-data-([\w-]+)>\s*([\s\S]*?)\s*<\/untrusted-data-\1>/g;let m;
+ while((m=re.exec(t))){if(m[2].charAt(0)==="[")best=m[2]}
+ if(best===null){const i=t.indexOf("[{"),j=t.lastIndexOf("}]");if(i>=0&&j>i)best=t.slice(i,j+2);else if(t.indexOf("[]")>=0)best="[]"}
+ if(best===null)throw new Error("unreadable reply");
+ const v=JSON.parse(best);return Array.isArray(v)?v:[]}
 async function remoteGet(){
  const viaMcp=()=>mcpSql("select key,value from public.wardrobe_state").then(parseRows);
  if(IN_ART())return viaMcp();
