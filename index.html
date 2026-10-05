@@ -167,8 +167,9 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .toast button{background:none;border:0;color:var(--brass-soft);font:inherit;font-size:14px;text-decoration:underline;cursor:pointer;padding:0}
 
 .plate{position:relative}
-.plate .gb{top:-6px;left:50%;transform:translateX(-50%);font-size:6.5px;line-height:1;letter-spacing:.06em;padding:1.5px 4.5px;opacity:.85;box-shadow:none;border:0}
-.plate .gb-w{background:rgba(184,69,111,.92)}.plate .gb-m{background:rgba(63,111,163,.92)}.plate .gb-u{background:rgba(117,89,156,.92)}
+.gs{position:absolute;top:1px;left:1px;z-index:2;pointer-events:none;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 2px rgba(0,0,0,.35);opacity:.93}
+.gs svg{width:12px;height:12px;fill:none;stroke:#fff;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.gs-w{background:#b8456f}.gs-m{background:#3f6fa3}.gs-u{background:#75599c}
 </style>
 </head>
 <body>
@@ -436,6 +437,11 @@ const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
  return a};
 const gk=p=>p.gender==="for women"?"w":p.gender==="for men"?"m":"u";
 const gLabel={w:"Women",m:"Men",u:"Unisex"};
+const SYM={
+ w:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="9" r="4.6"/><path d="M12 13.6V21M8.6 18h6.8"/></svg>',
+ m:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="14" r="4.6"/><path d="M13.3 10.7L19.5 4.5M14.5 4.5h5v5"/></svg>',
+ u:'<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="13" r="4"/><path d="M13.9 10.1L19.5 4.5M15 4.5h4.5V9M11 17v5M8.5 19.8h5"/></svg>'};
+const gsHtml=p=>'<i class="gs gs-'+gk(p)+'" role="img" aria-label="'+gLabel[gk(p)]+'" title="'+gLabel[gk(p)]+'">'+SYM[gk(p)]+'</i>';
 const gbHtml=p=>'<i class="gb gb-'+gk(p)+'">'+gLabel[gk(p)]+'</i>';
 let active="mannu";
 try{const s=localStorage.getItem("wardrobe");if(s&&COLLECTIONS[s])active=s}catch(e){}
@@ -459,15 +465,15 @@ function build(){
     for(let i=0;i<PER_SHELF;i++){
       const p=L[s*PER_SHELF+i];
       if(p){
-        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"||gk(p)==="u"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt=""></button>';
-        plates+='<button class="plate" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><b>'+esc(p.short[0])+'</b><small>'+esc(p.short[1])+'</small>'+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</button>';
+        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"||gk(p)==="u"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt="">'+(active==="wishlist"||gk(p)==="u"?gsHtml(p):'')+'</button>';
+        plates+='<button class="plate" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><b>'+esc(p.short[0])+'</b><small>'+esc(p.short[1])+'</small></button>';
       }else{row+='<div class="empty" data-idx="'+(s*PER_SHELF+i)+'"></div>';plates+='<div class="plate ghost" data-idx="'+(s*PER_SHELF+i)+'"></div>'}
     }
     h+='<div class="shelf"><div class="row">'+row+'</div></div><div class="plank"></div><div class="plates">'+plates+'</div>';
   }
   if(active==="wishlist"&&!L.length)h='<div class="wl-empty"><b>Your wishlist is empty</b>Perfumes you want to buy will sit here. Send me the Fragrantica card of any perfume and I will add it. Open one and tap Move to wardrobe when you get it.</div>';
   cab.innerHTML=h;
-  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The tag on each bottle shows whether it is for women, men or unisex.":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles are tagged and shown in both wardrobes.";
+  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The round symbol on each bottle marks women (pink), men (blue) or unisex (purple).":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles carry the purple unisex symbol and show in both wardrobes.";
   $("#resetw").innerHTML=ORDER[active]?' <button class="reset" id="resetb" type="button">Reset order</button>':'';
   const rb=$("#resetb");if(rb)rb.onclick=()=>{delete ORDER[active];try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}build()};
   cab.querySelectorAll("button.bottle img").forEach(im=>{const f=()=>{if(im.naturalWidth/im.naturalHeight>.75)im.classList.add("wide")};im.complete&&im.naturalWidth?f():im.addEventListener("load",f)});
