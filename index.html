@@ -429,11 +429,15 @@ const COLLECTIONS={
 };
 let MOVES={};try{MOVES=JSON.parse(localStorage.getItem("wardrobe-moves")||"{}")||{}}catch(e){MOVES={}}
 function saveMoves(){try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES))}catch(e){}}
+let SHARE={};try{SHARE=JSON.parse(localStorage.getItem("wardrobe-share")||"{}")||{}}catch(e){SHARE={}}
+function saveShare(){try{localStorage.setItem("wardrobe-share",JSON.stringify(SHARE))}catch(e){}}
 const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
  if(c==="wishlist")return W.filter(id=>!MOVES[id]);
  const own=k=>{const a=COLLECTIONS[k].ids.slice();Object.keys(MOVES).forEach(id=>{if(MOVES[id]===k&&W.includes(id)&&!a.includes(id))a.push(id)});return a};
- const a=own(c),other=c==="mannu"?"nix":"mannu";
- own(other).forEach(id=>{const p=PERFUMES.find(x=>x.id===id);if(p&&gk(p)==="u"&&!a.includes(id))a.push(id)});
+ const other=c==="mannu"?"nix":"mannu",a=[];
+ own(c).concat(own(other)).forEach(id=>{if(a.includes(id))return;const p=PERFUMES.find(x=>x.id===id);if(!p)return;
+  if(gk(p)!=="u"){if(own(c).includes(id))a.push(id);return}
+  const sh=SHARE[id]||"both";if(sh==="both"||sh===c)a.push(id)});
  return a};
 const gk=p=>p.gender==="for women"?"w":p.gender==="for men"?"m":"u";
 const gLabel={w:"Women",m:"Men",u:"Unisex"};
@@ -473,7 +477,7 @@ function build(){
   }
   if(active==="wishlist"&&!L.length)h='<div class="wl-empty"><b>Your wishlist is empty</b>Perfumes you want to buy will sit here. Send me the Fragrantica card of any perfume and I will add it. Open one and tap Move to wardrobe when you get it.</div>';
   cab.innerHTML=h;
-  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The round symbol on each bottle marks women (pink), men (blue) or unisex (purple).":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles carry the purple unisex symbol and show in both wardrobes.";
+  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The round symbol on each bottle marks women (pink), men (blue) or unisex (purple).":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles carry the purple unisex symbol and show in both wardrobes (change this on the bottle\u2019s card).";
   $("#resetw").innerHTML=ORDER[active]?' <button class="reset" id="resetb" type="button">Reset order</button>':'';
   const rb=$("#resetb");if(rb)rb.onclick=()=>{delete ORDER[active];try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}build()};
   cab.querySelectorAll("button.bottle img").forEach(im=>{const f=()=>{if(im.naturalWidth/im.naturalHeight>.75)im.classList.add("wide")};im.complete&&im.naturalWidth?f():im.addEventListener("load",f)});
@@ -529,6 +533,9 @@ function lyAbout(L){
 }
 
 function mvHtml(p){
+  if(active!=="wishlist"&&gk(p)==="u"){const sh=SHARE[p.id]||"both";
+   const o=(v,l)=>'<button type="button" class="'+(sh===v?'pri':'ghost')+'" data-share="'+v+'" data-id="'+p.id+'" aria-pressed="'+(sh===v)+'">'+l+'</button>';
+   return '<div class="mv" id="sharebox"><p>Unisex \u2014 show this bottle in</p><div class="mvrow">'+o("both","Both")+o("mannu","Mannu\u2019s only")+o("nix","Nix\u2019s only")+'</div></div>'}
   if(active!=="wishlist"||MOVES[p.id])return '';
   return '<div class="mv" id="mvbox"><button type="button" class="pri" data-mv="'+p.id+'">Move to wardrobe</button></div>';
 }
@@ -540,6 +547,11 @@ function toast(msg,undo){
   setTimeout(()=>t.remove(),6500);
 }
 document.addEventListener("click",e=>{
+  const sb=e.target.closest("[data-share]");
+  if(sb){const id=sb.dataset.id,v=sb.dataset.share,p=PERFUMES.find(x=>x.id===id);if(!p)return;
+   if(v==="both")delete SHARE[id];else SHARE[id]=v;saveShare();
+   shut();build();window.scrollTo(0,0);
+   toast(v==="both"?sname(p)+" shows in both wardrobes":sname(p)+" now only in "+COLLECTIONS[v].who+" wardrobe",()=>{delete SHARE[id];saveShare();build()});return}
   const a=e.target.closest("[data-mv]"),b=e.target.closest("[data-mvto]"),c=e.target.closest("[data-mvcancel]");
   const box=document.getElementById("mvbox");
   if(a&&box){box.innerHTML='<p>Move to which wardrobe?</p><div class="mvrow"><button type="button" class="pri" data-mvto="mannu" data-id="'+a.dataset.mv+'">Mannu\u2019s</button><button type="button" class="pri" data-mvto="nix" data-id="'+a.dataset.mv+'">Nix\u2019s</button><button type="button" class="ghost" data-mvcancel data-id="'+a.dataset.mv+'">Cancel</button></div>';return}
