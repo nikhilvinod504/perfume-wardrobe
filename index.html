@@ -458,6 +458,25 @@ function saveOrder(a){ORDER[active]=a;try{localStorage.setItem("wardrobe-order",
 const SB="https://otcgkxtvmgktskmoysjg.supabase.co/rest/v1/wardrobe_state",SBK="sb_publishable_rrHg1n1oMZxCawGupzSb6g_Go9LVjxH";
 const SBH={apikey:SBK,Authorization:"Bearer "+SBK,"Content-Type":"application/json"};
 let REMOTE=null,pushT=0;
+const IN_ART=!!(window.claude&&typeof window.claude.use==="function");
+let MCPNS=null,MCPDEAD=false;
+const SBPID="otcgkxtvmgktskmoysjg",q1=x=>"'"+String(x).replace(/'/g,"''")+"'";
+async function mcpSql(sql){if(MCPDEAD)throw new Error("off");
+ if(!MCPNS)MCPNS=await window.claude.use("mcp");
+ if(!MCPNS){MCPDEAD=true;throw new Error("no mcp")}
+ try{const r=await MCPNS.callTool("Supabase","execute_sql",{project_id:SBPID,query:sql});return r.payload!==undefined?r.payload:r.content}
+ catch(e){if(e&&(e.code==="not_in_manifest"||e.code==="server_not_connected"||e.code==="needs_reauth"||e.code==="not_granted"||e.code==="capability_disabled"||e.code==="consent_required"))MCPDEAD=true;throw e}}
+function parseRows(p){let t=typeof p==="string"?p:(p&&typeof p.result==="string"?p.result:JSON.stringify(p));
+ const m=t.match(/<untrusted-data-[^>]*>\s*([\s\S]*?)\s*<\/untrusted-data-/);if(m)t=m[1];
+ let v=JSON.parse(t);if(v&&v.result&&typeof v.result==="string"){return parseRows(v.result)}return Array.isArray(v)?v:[]}
+async function remoteGet(){
+ if(IN_ART)return parseRows(await mcpSql("select key,value from public.wardrobe_state"));
+ const r=await fetch(SB+"?select=key,value",{headers:SBH,cache:"no-store"});if(!r.ok)throw new Error("get");return r.json()}
+async function remotePut(rows){
+ if(IN_ART){const v=rows.map(x=>"("+q1(x.key)+","+(x.value===null?"null::jsonb":q1(JSON.stringify(x.value))+"::jsonb")+",now())").join(",");
+  await mcpSql("insert into public.wardrobe_state(key,value,updated_at) values "+v+" on conflict(key) do update set value=excluded.value, updated_at=now()");return true}
+ const r=await fetch(SB+"?on_conflict=key",{method:"POST",headers:Object.assign({Prefer:"resolution=merge-duplicates,return=minimal"},SBH),body:JSON.stringify(rows)});return r.ok}
+
 function desired(){const d={};
  Object.keys(MOVES).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["move:"+id]=MOVES[id]});
  Object.keys(SHARE).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["share:"+id]=SHARE[id]});
@@ -467,11 +486,9 @@ function syncPush(){if(REMOTE===null)return;clearTimeout(pushT);pushT=setTimeout
  Object.keys(d).forEach(k=>{if(JSON.stringify(REMOTE[k])!==JSON.stringify(d[k]))rows.push({key:k,value:d[k],updated_at:new Date().toISOString()})});
  Object.keys(REMOTE).forEach(k=>{if(REMOTE[k]!==null&&!(k in d))rows.push({key:k,value:null,updated_at:new Date().toISOString()})});
  if(!rows.length)return;
- try{const r=await fetch(SB+"?on_conflict=key",{method:"POST",headers:Object.assign({Prefer:"resolution=merge-duplicates,return=minimal"},SBH),body:JSON.stringify(rows)});
-  if(r.ok)rows.forEach(x=>{REMOTE[x.key]=x.value})}catch(e){}},400)}
+ try{if(await remotePut(rows))rows.forEach(x=>{REMOTE[x.key]=x.value})}catch(e){}},400)}
 async function syncPull(first){
- try{const r=await fetch(SB+"?select=key,value",{headers:SBH,cache:"no-store"});if(!r.ok)return;
-  const rows=await r.json(),R={};rows.forEach(x=>{R[x.key]=x.value});
+ try{const rows=await remoteGet(),R={};rows.forEach(x=>{R[x.key]=x.value});
   const prev=REMOTE;REMOTE=R;
   const m={},sh={},o={};
   Object.keys(R).forEach(k=>{const v=R[k];if(v===null)return;const i=k.indexOf(":"),t=k.slice(0,i),id=k.slice(i+1);
