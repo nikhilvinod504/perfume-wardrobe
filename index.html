@@ -426,7 +426,10 @@ let MOVES={};try{MOVES=JSON.parse(localStorage.getItem("wardrobe-moves")||"{}")|
 function saveMoves(){try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES))}catch(e){}}
 const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
  if(c==="wishlist")return W.filter(id=>!MOVES[id]);
- const a=COLLECTIONS[c].ids.slice();Object.keys(MOVES).forEach(id=>{if(MOVES[id]===c&&W.includes(id)&&!a.includes(id))a.push(id)});return a};
+ const own=k=>{const a=COLLECTIONS[k].ids.slice();Object.keys(MOVES).forEach(id=>{if(MOVES[id]===k&&W.includes(id)&&!a.includes(id))a.push(id)});return a};
+ const a=own(c),other=c==="mannu"?"nix":"mannu";
+ own(other).forEach(id=>{const p=PERFUMES.find(x=>x.id===id);if(p&&gk(p)==="u"&&!a.includes(id))a.push(id)});
+ return a};
 const gk=p=>p.gender==="for women"?"w":p.gender==="for men"?"m":"u";
 const gLabel={w:"Women",m:"Men",u:"Unisex"};
 const gbHtml=p=>'<i class="gb gb-'+gk(p)+'">'+gLabel[gk(p)]+'</i>';
@@ -452,7 +455,7 @@ function build(){
     for(let i=0;i<PER_SHELF;i++){
       const p=L[s*PER_SHELF+i];
       if(p){
-        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt="">'+(active==="wishlist"?gbHtml(p):'')+'</button>';
+        row+='<button class="bottle'+(p.glass?' glass':'')+'" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+(active==="wishlist"||gk(p)==="u"?', '+gLabel[gk(p)]:'')+'"><img src="'+p.img+'" alt="">'+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</button>';
         plates+='<button class="plate" data-idx="'+(s*PER_SHELF+i)+'" data-id="'+p.id+'" aria-label="Open '+esc(p.name)+'"><b>'+esc(p.short[0])+'</b><small>'+esc(p.short[1])+'</small></button>';
       }else{row+='<div class="empty" data-idx="'+(s*PER_SHELF+i)+'"></div>';plates+='<div class="plate ghost" data-idx="'+(s*PER_SHELF+i)+'"></div>'}
     }
@@ -460,7 +463,7 @@ function build(){
   }
   if(active==="wishlist"&&!L.length)h='<div class="wl-empty"><b>Your wishlist is empty</b>Perfumes you want to buy will sit here. Send me the Fragrantica card of any perfume and I will add it. Open one and tap Move to wardrobe when you get it.</div>';
   cab.innerHTML=h;
-  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The tag on each bottle shows whether it is for women, men or unisex.":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).";
+  $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The tag on each bottle shows whether it is for women, men or unisex.":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles are tagged and shown in both wardrobes.";
   $("#resetw").innerHTML=ORDER[active]?' <button class="reset" id="resetb" type="button">Reset order</button>':'';
   const rb=$("#resetb");if(rb)rb.onclick=()=>{delete ORDER[active];try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}build()};
   cab.querySelectorAll("button.bottle img").forEach(im=>{const f=()=>{if(im.naturalWidth/im.naturalHeight>.75)im.classList.add("wide")};im.complete&&im.naturalWidth?f():im.addEventListener("load",f)});
@@ -542,7 +545,7 @@ function open(p){
   const seasons=Object.entries(p.seasons).map(([n,v])=>'<div class="m"><span>'+n+'</span><div class="track"><div class="fill" style="width:'+v+'%;background:'+sc[n]+'"></div></div><span class="pct">'+v+'%</span></div>').join("");
   $("#sheetIn").innerHTML=
    '<button class="close" id="close" aria-label="Close">✕</button>'+
-   '<div class="hd"><img src="'+p.img+'" alt="'+esc(p.name)+' bottle"><div><h2 id="sheetTitle">'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+esc(p.gender)+(active==="wishlist"?gbHtml(p):'')+'</div><div class="rate"><b>'+p.rating+'</b><span class="stars">'+stars(p.rating)+'</span><span class="votes">('+p.votes.toLocaleString("en-IN")+')</span></div></div></div>'+
+   '<div class="hd"><img src="'+p.img+'" alt="'+esc(p.name)+' bottle"><div><h2 id="sheetTitle">'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+esc(p.gender)+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</div><div class="rate"><b>'+p.rating+'</b><span class="stars">'+stars(p.rating)+'</span><span class="votes">('+p.votes.toLocaleString("en-IN")+')</span></div></div></div>'+
    mvHtml(p)+priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
    '<section><h3>Notes</h3><div class="notes">'+notes+'</div></section>'+
    pyrHtml(p)+
