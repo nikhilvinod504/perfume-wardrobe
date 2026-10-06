@@ -868,7 +868,7 @@ let suppress=false;
 cab.addEventListener("click",e=>{if(suppress){e.preventDefault();return}const b=e.target.closest("button[data-id]");if(b)open(PERFUMES.find(p=>p.id===b.dataset.id))});
 $("#scrim").onclick=shut;
 $("#valbtn").onclick=openValue;$("#aboutbtn").onclick=openAbout;
-document.querySelectorAll(".switch button").forEach(b=>b.onclick=()=>{active=b.dataset.c;try{localStorage.setItem("wardrobe",active)}catch(e){}shut();build();window.scrollTo(0,0)});
+document.querySelectorAll(".switch button").forEach(b=>b.onclick=()=>{active=b.dataset.c;try{localStorage.setItem("wardrobe",active)}catch(e){}shut();window.__intro=true;build();window.scrollTo(0,0)});
 $("#sheetIn").addEventListener("click",e=>{const b=e.target.closest("[data-reveal]");if(b){b.hidden=true;b.nextElementSibling.hidden=false}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){if($("#nsheet").classList.contains("on"))closeNote();else shut()}});
 $("#nscrim").addEventListener("click",closeNote);
