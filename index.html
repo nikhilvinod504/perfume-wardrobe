@@ -160,7 +160,30 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .vrow .n small{display:block;color:var(--ink-soft);font-size:12px}
 .vrow .p{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
 .vrow .p.na{color:var(--ink-soft);font-weight:300}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* motion */
+@keyframes bIn{0%{opacity:0;transform:translateY(26px) scale(.9)}60%{opacity:1}100%{opacity:1;transform:none}}
+@keyframes bSheen{0%{transform:translateX(-140%) skewX(-18deg);opacity:0}30%{opacity:.9}100%{transform:translateX(260%) skewX(-18deg);opacity:0}}
+@keyframes heroPop{0%{opacity:0;transform:translateY(40px) scale(.55) rotate(-4deg)}65%{opacity:1;transform:translateY(-4px) scale(1.04) rotate(0)}100%{opacity:1;transform:none}}
+@keyframes barGrow{from{clip-path:inset(0 100% 0 0 round 5px);opacity:.4}to{clip-path:inset(0 0 0 0 round 5px);opacity:1}}
+@keyframes starPop{0%{opacity:0;transform:scale(.3)}70%{transform:scale(1.25)}100%{opacity:1;transform:none}}
+@keyframes riseIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes notePop{0%{opacity:0;transform:scale(.6) rotate(-6deg)}70%{transform:scale(1.07) rotate(1deg)}100%{opacity:1;transform:none}}
+#cabinet.intro button.bottle img{animation:bIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*38ms)}
+#cabinet.intro button.bottle::after{content:"";position:absolute;top:6%;bottom:4%;left:20%;width:26%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none;animation:bSheen .9s ease-out both;animation-delay:calc(var(--i,0)*38ms + .45s)}
+.sheet.on .hd>img{animation:heroPop .7s cubic-bezier(.2,.9,.3,1.1) .18s both}
+.sheet.on .acc div{animation:barGrow .7s cubic-bezier(.25,.8,.3,1) both}
+.sheet.on .acc div:nth-child(1){animation-delay:.3s}.sheet.on .acc div:nth-child(2){animation-delay:.4s}.sheet.on .acc div:nth-child(3){animation-delay:.5s}.sheet.on .acc div:nth-child(4){animation-delay:.6s}.sheet.on .acc div:nth-child(5){animation-delay:.7s}
+.sheet.on .fill{transform-origin:left;animation:barGrow .8s cubic-bezier(.25,.8,.3,1) .45s both}
+.sheet.on .dn>div{animation:barGrow .8s cubic-bezier(.25,.8,.3,1) .4s both}
+.sheet.on .hd .stars{display:inline-block;animation:starPop .5s ease-out .35s both}
+.sheet.on .note{animation:notePop .5s cubic-bezier(.2,.9,.3,1.2) both}
+.sheet.on .note:nth-child(1){animation-delay:.35s}.sheet.on .note:nth-child(2){animation-delay:.42s}.sheet.on .note:nth-child(3){animation-delay:.49s}.sheet.on .note:nth-child(4){animation-delay:.56s}.sheet.on .note:nth-child(5){animation-delay:.63s}.sheet.on .note:nth-child(6){animation-delay:.7s}.sheet.on .note:nth-child(n+7){animation-delay:.77s}
+.nsheet.on .nh img,.nsheet.on .nh .ni{animation:notePop .55s cubic-bezier(.2,.9,.3,1.2) .12s both}
+.nsheet.on .nh h2,.nsheet.on .nfam{animation:riseIn .45s ease-out .22s both}
+.nsheet.on section{animation:riseIn .5s ease-out both}
+.nsheet.on section:nth-of-type(1){animation-delay:.3s}.nsheet.on section:nth-of-type(2){animation-delay:.42s}.nsheet.on section:nth-of-type(3){animation-delay:.54s}.nsheet.on section:nth-of-type(4){animation-delay:.66s}.nsheet.on section:nth-of-type(5){animation-delay:.78s}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 @media (min-width:560px){button.bottle{height:138px}button.bottle img,.empty{height:136px}button.bottle img.wide{max-height:136px}.plate b{font-size:12px}.plate small{font-size:11px}.hd img{height:210px}}
 .ly{padding:12px 0;border-top:1px solid var(--line)}
 .ly:first-of-type{border-top:0}
@@ -586,6 +609,7 @@ function build(){
   $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The round symbol on each bottle marks women (pink), men (blue) or unisex (purple).":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles carry the purple unisex symbol and show in both wardrobes (change this on the bottle\u2019s card).";
   $("#resetw").innerHTML=ORDER[active]?' <button class="reset" id="resetb" type="button">Reset order</button>':'';
   const rb=$("#resetb");if(rb)rb.onclick=()=>{delete ORDER[active];try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}syncPush();build()};
+  if(window.__intro!==false){window.__intro=false;const bs=cab.querySelectorAll("button.bottle");bs.forEach((b,i)=>b.style.setProperty("--i",Math.min(i,24)));cab.classList.add("intro");setTimeout(()=>{cab.classList.remove("intro");bs.forEach(b=>b.style.removeProperty("--i"))},2400)}
   cab.querySelectorAll("button.bottle img").forEach(im=>{const f=()=>{if(im.naturalWidth/im.naturalHeight>.75)im.classList.add("wide")};im.complete&&im.naturalWidth?f():im.addEventListener("load",f)});
 }
 function stars(r){const f=Math.round(r);return "★".repeat(f)+"☆".repeat(5-f)}
