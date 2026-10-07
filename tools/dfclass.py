@@ -1,0 +1,21 @@
+import re
+BR=["Paco Rabanne","Jean Paul Gaultier","Yves Saint Laurent","Estée Lauder","Carolina Herrera","Calvin Klein","Tom Ford","Jo Malone","Marc Jacobs","Michael Kors","Narciso Rodriguez","Giorgio Armani","Armani Prive","Armani","Viktor & Rolf","Kilian","Hugo Boss","Elizabeth Arden","Issey Miyake","John Varvatos","David Beckham","Ralph Lauren","Jimmy Choo","Thierry Mugler","Tiffany & Co.","Kylie","Mont blanc","Montblanc","Versace","Valentino","Valentina","Dior","Christian Miss Dior","Miss Dior","Chanel","Gucci","Burberry","Bvlgari","BVLGARI","Givenchy","Lancome","Lancôme","Guerlain","Hermes","Hermès","Prada","Davidoff","Clinique","Chloe","Kenzo","Azzaro","Mugler","Coach","Lacoste","Moschino","Azzaro","Aramis","Nautica","Lancaster","Boss","BOSS","Hugo","YSL","Cosmic","Polo","Starwalker","Explorer","Bottled","Opium","Eau De Givenchy","Aqua Kenzo","Flower By Kenzo","Flower by Kenzo","Santal Royal","Mon Guerlain","Versace","Terre d'Hermes","Blue De Chanel","Idole","CH ","CK","Theiry Mugler","JPG","HERMES","NARCISO RODRIGUEZ","VERSACE","GUCCI","KENZO","VIKTOR & ROLF","Dior","DIOR","Jimmy ChooI"]
+MAP={"Hermès":"Hermès","Hermes":"Hermès","HERMES":"Hermès","Lancome":"Lancôme","Lancôme":"Lancôme","Mont blanc":"Montblanc","Armani Prive":"Armani Privé","Giorgio Armani":"Armani","BOSS":"Hugo Boss","Boss":"Hugo Boss","Hugo":"Hugo Boss","YSL":"Yves Saint Laurent","Christian Miss Dior":"Dior","Miss Dior":"Dior","DIOR":"Dior","Cosmic":"Kylie Cosmetics","Kylie":"Kylie Cosmetics","Theiry Mugler":"Mugler","Thierry Mugler":"Mugler","Eau De Givenchy":"Givenchy","Aqua Kenzo":"Kenzo","Flower By Kenzo":"Kenzo","Flower by Kenzo":"Kenzo","Santal Royal":"Guerlain","Mon Guerlain":"Guerlain","Terre d'Hermes":"Hermès","Blue De Chanel":"Chanel","Idole":"Lancôme","CH ":"Carolina Herrera","CK":"Calvin Klein","JPG":"Jean Paul Gaultier","Polo":"Ralph Lauren","Bottled":"Hugo Boss","Explorer":"Montblanc","Starwalker":"Montblanc","Opium":"Yves Saint Laurent","NARCISO RODRIGUEZ":"Narciso Rodriguez","VERSACE":"Versace","GUCCI":"Gucci","KENZO":"Kenzo","VIKTOR & ROLF":"Viktor & Rolf","BVLGARI":"Bvlgari","Jimmy ChooI":"Jimmy Choo","Valentina":"Valentino","Tiffany & Co.":"Tiffany & Co."}
+def brand(t):
+    for b in BR:
+        if t.lower().startswith(b.lower()): return MAP.get(b,b)
+    for b in BR:
+        if b.lower() in t.lower() and len(b)>5: return MAP.get(b,b)
+    return "Other"
+M=r"\b(men|man|homme|him|uomo|pour homme|masc|male|boy|hero|sauvage|eros(?! pour femme)|invictus|phantom|bleu de chanel|blue de chanel|fahrenheit|1 ?million(?! gold for her)|terre d|wanted|legend|ideal|habit rouge|explorer|bad boy|badboy|fame intense refillable|spicebomb|spice bomb|le beau|le male|le mâle|scandal pour homme|polo|club new york|ombr|mr\. burberry|aramis|nautica|david beckham|varvatos|a\*men|gentlem|davidoff game|cool water men|cool water ltd)\b"
+W=r"\b(women|woman|femme|her|donna|girl|lady|miss dior|j'adore|poison|libre|la vie est belle|joy|flower|bloom|daisy|alien|angel|chloe|chloé|goddess|olympea|fame|million gold|rose|bright crystal|crystal noir|idole|paradoxe|my way|si |eternity eau de parfum for women|good girl|flora|la belle|dahlia|ange ou|irresistible|candy|luna|cherry|magnolia|pleasures|beautiful|bronze goddess|modern muse|white linen|youth-dew|omnia|allegra|noir? extreme|l'interdit|love story|nomade|tiffany|coco|chance|n°5|no 5|chance|pour femme|toy 2|tutti|barenia|twilly|kylie|cosmic|mon guerlain|la bomba|euphoria|l'eau d'issey(?! pour homme)|prada candy|sweet|caramel|aromatics|happy heart|happy™ eau|weekend|perfect|dylan pour femme|jasmin|vanille|orchid|gardenia|jasmine|rose goldea|blooming)\b"
+U=r"\b(unisex|santal|oud|jo malone|cologne|atelier|alchemist|kilian|angels|prive|privé|collection|miniature|set|vetiver|patchouli|tobacco|fabulous|lost cherry|tuxedo|figue|neroli|jasmin rouge|rose exposed|soleil|body spray|hair)\b"
+def gender(t):
+    s=t.lower()
+    if re.search(r"\bunisex\b",s): return "Unisex"
+    if re.search(r"\b(women|woman|femme|for her|donna|girl|lady)\b",s) or re.search(r"\b(her|miss dior|j'adore)\b",s) and not re.search(r"\bmen|homme|him\b",s): return "Women"
+    if re.search(r"\b(men|man|homme|for him|uomo|pour homme)\b",s) or re.search(r"\bhim\b",s): return "Men"
+    if re.search(M,s): return "Men"
+    if re.search(U,s): return "Unisex"
+    if re.search(W,s): return "Women"
+    return "Unisex"
