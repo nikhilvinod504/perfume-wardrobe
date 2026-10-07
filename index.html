@@ -210,7 +210,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 @keyframes starPop{0%{opacity:0;transform:scale(.3)}70%{transform:scale(1.25)}100%{opacity:1;transform:none}}
 @keyframes riseIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes notePop{0%{opacity:0;transform:scale(.6) rotate(-6deg)}70%{transform:scale(1.07) rotate(1deg)}100%{opacity:1;transform:none}}
-#cabinet.intro button.bottle img{animation:bIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*38ms)}
+#cabinet.intro button.bottle img{animation:bIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*38ms)}#cabinet.intro.late button.bottle img{animation-delay:calc(var(--i,0)*38ms + .4s)}#cabinet.intro.late button.bottle::after{animation-delay:calc(var(--i,0)*38ms + .85s)}
 #cabinet.intro button.bottle::after{content:"";position:absolute;top:6%;bottom:4%;left:20%;width:26%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none;animation:bSheen .9s ease-out both;animation-delay:calc(var(--i,0)*38ms + .45s)}
 .sheet.on .hd>img{animation:heroPop .7s cubic-bezier(.2,.9,.3,1.1) .08s both}
 .sheet.on .acc div{animation:barGrow .7s cubic-bezier(.25,.8,.3,1) both}
@@ -269,7 +269,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
  if(!w)return;if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches){w.remove();return}
  h.classList.add("wd-lock");
  function open(){if(done)return;done=true;w.classList.add("go");
-  try{window.__intro=true;if(typeof build==="function")build()}catch(e){}
+  try{window.__intro=true;window.__late=true;if(typeof build==="function")build()}catch(e){}
   setTimeout(function(){h.classList.remove("wd-lock");w.remove()},1500)}
  function ready(){var wait=Math.max(0,1900-(Date.now()-t0));setTimeout(open,wait)}
  if(document.readyState==="complete")ready();else window.addEventListener("load",ready);
@@ -667,7 +667,7 @@ function build(){
   $("#hinttxt").textContent=active==="wishlist"?"Tap a bottle to open its card. Open one and tap Move to wardrobe once you own it. The round symbol on each bottle marks women (pink), men (blue) or unisex (purple).":"Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first). Unisex bottles carry the purple unisex symbol and show in both wardrobes (change this on the bottle\u2019s card).";
   $("#resetw").innerHTML=ORDER[active]?' <button class="reset" id="resetb" type="button">Reset order</button>':'';
   const rb=$("#resetb");if(rb)rb.onclick=()=>{delete ORDER[active];try{localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}syncPush();build()};
-  if(window.__intro!==false){window.__intro=false;const bs=cab.querySelectorAll("button.bottle");bs.forEach((b,i)=>b.style.setProperty("--i",Math.min(i,24)));cab.classList.add("intro");setTimeout(()=>{cab.classList.remove("intro");bs.forEach(b=>b.style.removeProperty("--i"))},2400)}
+  {const wd=document.getElementById("wd");if(window.__intro!==false&&!(wd&&!wd.classList.contains("go"))){window.__intro=false;const bs=cab.querySelectorAll("button.bottle");bs.forEach((b,i)=>b.style.setProperty("--i",Math.min(i,24)));cab.classList.toggle("late",!!window.__late);window.__late=false;cab.classList.add("intro");clearTimeout(window.__introT);window.__introT=setTimeout(()=>{cab.classList.remove("intro","late");bs.forEach(b=>b.style.removeProperty("--i"))},3200)}}
   cab.querySelectorAll("button.bottle img").forEach(im=>{const f=()=>{if(im.naturalWidth/im.naturalHeight>.75)im.classList.add("wide")};im.complete&&im.naturalWidth?f():im.addEventListener("load",f)});
 }
 function stars(r){const f=Math.round(r);return "★".repeat(f)+"☆".repeat(5-f)}
