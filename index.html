@@ -884,7 +884,7 @@ let suppress=false;
     if(!st||e.pointerId!==st.pid)return;
     if(st.on){
       const c=cellAt(e.clientX,e.clientY);const a=ids();
-      if(c){let to=Math.min(+c.dataset.idx,a.length-1);if(to!==st.from){const[m]=a.splice(st.from,1);a.splice(to,0,m);saveOrder(a);suppress=true;setTimeout(()=>suppress=false,0);cancel();build();return}}
+      if(c){const ti=+c.dataset.idx;let to=Math.min(ti,a.length-1);if(to!==st.from){if(ti<a.length){const t=a[st.from];a[st.from]=a[to];a[to]=t}else{const[m]=a.splice(st.from,1);a.push(m)}saveOrder(a);suppress=true;setTimeout(()=>suppress=false,0);cancel();build();return}}
       suppress=true;setTimeout(()=>suppress=false,0)
     }
     cancel();
