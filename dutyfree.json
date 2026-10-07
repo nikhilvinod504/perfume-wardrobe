@@ -1,0 +1,145 @@
+{
+ "asOf": "8 Oct 2026",
+ "where": "Mumbai airport (CSMIA), arrivals, pre-order",
+ "source": "https://www.adanione.com/csmia-mumbai-airport/duty-free/beauty/fragrances?location=arrival&c=fragrances",
+ "items": {
+  "i-want-choo-le-parfum": {
+   "match": "Jimmy ChooI Want Choo Le Parfum, 100ML",
+   "p": 11925,
+   "mrp": 13250,
+   "size": "100 ml"
+  },
+  "good-girl-blush-elixir": {
+   "match": "Carolina Herrera Good Girl Blush Elixir Eau De Parfum, Women, 80ML",
+   "p": 9990,
+   "mrp": 11100,
+   "size": "80 ml"
+  },
+  "goddess": {
+   "match": "Burberry Goddess EDP 100ml",
+   "p": 9225,
+   "mrp": 10250,
+   "size": "100 ml"
+  },
+  "bright-crystal-absolu": {
+   "match": "Versace Bright Crystal Absolue EDP 90ml",
+   "p": 9855,
+   "mrp": 10950,
+   "size": "90 ml"
+  },
+  "chloe-edp": {
+   "match": "Chloe Signature EDP 75 ml",
+   "p": 8415,
+   "mrp": 9350,
+   "size": "75 ml"
+  },
+  "pleasures": {
+   "match": "Estée Lauder Estée Lauder Pleasures Eau de Parfum Spray",
+   "p": 5535,
+   "mrp": 6150,
+   "size": ""
+  },
+  "clinique-happy-for-men": {
+   "match": "Clinique Happy™ For Men Cologne Spray",
+   "p": 3015,
+   "mrp": 3350,
+   "size": ""
+  },
+  "sauvage": {
+   "match": "Dior Sauvage EDP Spray 100ML",
+   "p": 13250,
+   "mrp": null,
+   "size": "100 ml"
+  },
+  "cool-water": {
+   "match": "Davidoff Cool Water Men EDT 125ml Spray",
+   "p": 3990,
+   "mrp": null,
+   "size": "125 ml"
+  },
+  "myslf-edp": {
+   "match": "Yves Saint Laurent Myslf Eau De Parfum YSL NEW MASC V, Men, 100ML",
+   "p": 10485,
+   "mrp": 11650,
+   "size": "100 ml"
+  },
+  "myslf-le-parfum": {
+   "match": "Yves Saint Laurent Myslf Le Parfum EDP, Men, 100ML",
+   "p": 11835,
+   "mrp": 13150,
+   "size": "100 ml"
+  },
+  "ck-one": {
+   "match": "Calvin Klein CK One EDT 200ml Spray",
+   "p": 3990,
+   "mrp": null,
+   "size": "200 ml"
+  },
+  "prada-paradoxe": {
+   "match": "Prada Paradoxe EDP 90ml",
+   "p": 10791,
+   "mrp": 11990,
+   "size": "90 ml"
+  },
+  "i-want-choo": {
+   "match": "Jimmy Choo I Want Choo Eau De Parfum, 100ML",
+   "p": 10980,
+   "mrp": 12200,
+   "size": "100 ml"
+  },
+  "alien": {
+   "match": "Mugler Alien EDP 90ml",
+   "p": 11295,
+   "mrp": 12550,
+   "size": "90 ml"
+  },
+  "bright-crystal": {
+   "match": "Versace Bright Crystal EDT 90ml",
+   "p": 9135,
+   "mrp": 10150,
+   "size": "90 ml"
+  },
+  "million-gold-for-her": {
+   "match": "Paco Rabanne Million Gold Eau de Parfum Natural Spray, Women, 90ML",
+   "p": 9630,
+   "mrp": 10700,
+   "size": "90 ml"
+  },
+  "lady-million": {
+   "match": "Paco Rabanne Lady Million Edp 80ml",
+   "p": 8190,
+   "mrp": 9100,
+   "size": "80 ml"
+  },
+  "scandal": {
+   "match": "Jean Paul Gaultier Scandal Re24 Her EDP 80ML",
+   "p": 10125,
+   "mrp": 11250,
+   "size": "80 ml"
+  },
+  "bleu-de-chanel-edp": {
+   "match": "Chanel Bleu De Chanel EDP Spray 100 ML",
+   "p": 11750,
+   "mrp": null,
+   "size": "100 ml"
+  },
+  "le-male-elixir": {
+   "match": "Jean Paul Gaultier Le Male Elixir Parfum, Men, 125ML",
+   "p": 8595,
+   "mrp": 9550,
+   "size": "125 ml"
+  },
+  "valentino-donna-born-in-roma": {
+   "match": "Valentino Born in Roma Donna EDP 100ml",
+   "p": 11691,
+   "mrp": 12990,
+   "size": "100 ml"
+  },
+  "bvlgari-rose-goldea-blossom-delight": {
+   "match": "Bvlgari Rose Goldea Blossom Delight Eau De Parfum, Women, 75ML",
+   "p": 10935,
+   "mrp": 12150,
+   "size": "75 ml"
+  }
+ }
+}
