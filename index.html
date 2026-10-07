@@ -26,6 +26,15 @@
   --wood:#4a2b1d; --wood-deep:#2b1810; --wood-edge:#69402c;
   --back:#3a2a1e; --back-shade:#2a1d14;
   --card:#241a16; --line:#3d2e27; --chip:#33261f; --bar:#3a2c25; --label:#f3e8df; color-scheme:dark}
+
+:root[data-theme="light"]{color-scheme:light}
+header{position:relative}
+#themebtn{position:absolute;top:0;right:0;width:40px;height:40px;border-radius:50%;border:1px solid var(--brass);background:transparent;color:var(--brass);display:grid;place-items:center;cursor:pointer;padding:0}
+#themebtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+#themebtn svg[hidden]{display:none}
+#themebtn:active{transform:scale(.92)}
+#themebtn small{position:absolute;top:44px;right:0;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap;opacity:0;transition:opacity .25s}
+#themebtn.say small{opacity:1}
 *{box-sizing:border-box}
 body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:28px 48px}
 .wrap{max-width:760px;margin-inline:auto}
@@ -277,8 +286,26 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
  if(document.readyState==="complete")ready();else window.addEventListener("load",ready);
  setTimeout(open,7000)})();
 </script>
+<script>
+(function(){var R=document.documentElement,K='pw_theme',M=['auto','light','dark'],L={auto:'Auto',light:'Light',dark:'Dark'};
+function get(){try{var v=localStorage.getItem(K);return M.indexOf(v)>=0?v:'auto'}catch(e){return 'auto'}}
+function apply(m,say){if(m==='auto')R.removeAttribute('data-theme');else R.setAttribute('data-theme',m);
+ var b=document.getElementById('themebtn');if(!b)return;
+ b.querySelectorAll('svg').forEach(function(x){x.hidden=x.getAttribute('data-m')!==m});
+ b.title='Theme: '+L[m]+' (tap to change)';b.setAttribute('aria-label','Theme: '+L[m]);
+ var sm=b.querySelector('small');sm.textContent=L[m];
+ if(say){b.classList.add('say');clearTimeout(b._t);b._t=setTimeout(function(){b.classList.remove('say')},1400)}
+ var mt=document.querySelector('meta[name=theme-color]');
+ if(mt){var d=m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme:dark)').matches);mt.setAttribute('content',d?'#1a1210':'#efe7e1')}}
+var m=get();if(m!=='auto')R.setAttribute('data-theme',m);
+document.addEventListener('DOMContentLoaded',function(){apply(get());document.getElementById('themebtn').addEventListener('click',function(){
+ var n=M[(M.indexOf(get())+1)%3];try{localStorage.setItem(K,n)}catch(e){}apply(n,true)})});
+if(document.readyState!=='loading'){apply(get())}
+})();
+</script>
 <div class="wrap">
   <header>
+    <button type="button" id="themebtn" aria-label="Colour theme"><svg data-m="auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor" stroke="none"/></svg><svg data-m="light" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg data-m="dark" viewBox="0 0 24 24" hidden><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg><small></small></button>
     <div class="eyebrow"><span id="cname"></span> · <span id="count"></span></div>
     <h1>Perfume Wardrobe</h1>
     <div class="tools"><div class="switch" role="group" aria-label="Choose wardrobe"><button type="button" data-c="mannu" aria-pressed="true">Mannu's</button><button type="button" data-c="nix" aria-pressed="false">Nix's</button><button type="button" data-c="wishlist" aria-pressed="false">Wishlist</button></div><button class="valbtn" id="valbtn" type="button">See wardrobe value</button><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
