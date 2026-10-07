@@ -303,24 +303,22 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 
 #dfv{position:fixed;inset:0;z-index:65;background:var(--page);color:var(--ink);display:none;flex-direction:column;font-family:var(--body)}
 #dfv.on{display:flex}
-#dfv .dfh{padding:14px 16px 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+#dfv .dfh{padding:12px 16px 10px;border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:9px}
 #dfv .dft{display:flex;align-items:center;justify-content:space-between;gap:10px}
-#dfv h2{margin:0;font:400 26px/1.1 var(--display)}
+#dfv h2{margin:0;font:400 23px/1.1 var(--display)}
 #dfv .dfs{font-size:11.5px;color:var(--ink-soft);margin-top:3px}
 #dfv .dfx{width:38px;height:38px;border-radius:50%;border:1px solid var(--brass);background:none;color:var(--ink);font-size:16px;cursor:pointer}
-#dfv input[type=search]{width:100%;box-sizing:border-box;font:inherit;font-size:15px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:10px 16px;outline:none}
+#dfv input[type=search]{width:100%;box-sizing:border-box;font:inherit;font-size:14px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;outline:none}
 #dfv input[type=search]:focus{border-color:var(--brass)}
-#dfv .dfr{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;align-items:center}
-#dfv .dfr::-webkit-scrollbar{display:none}
-#dfv .dfr>label{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);flex:none}
-#dfv .chip{flex:none;font:inherit;font-size:12.5px;color:var(--ink);background:none;border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer;white-space:nowrap}
-#dfv .chip[aria-pressed=true]{background:var(--brass);border-color:var(--brass);color:#2a1b16}
-#dfv .dfbr{position:relative;flex:none}
-#dfv .dfbm{position:fixed;left:16px;right:16px;top:150px;bottom:20px;z-index:3;background:var(--card);border:1px solid var(--brass);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.4);padding:6px;overflow:auto}
-#dfv .dfbm[hidden]{display:none}
-#dfv .dfbm button{display:flex;justify-content:space-between;width:100%;font:inherit;font-size:15px;color:var(--ink);background:none;border:0;border-radius:12px;padding:10px 12px;cursor:pointer;text-align:left}
-#dfv .dfbm button small{color:var(--ink-soft)}
-#dfv .dfbm button[aria-selected=true]{background:var(--chip)}
+#dfv .dfr{display:flex;gap:8px;flex-wrap:nowrap;align-items:center}
+#dfv .dsel{display:inline-flex;min-width:0;align-items:center;gap:6px;font:inherit;font-size:13px;color:#2a1b16;background:linear-gradient(180deg,var(--brass-soft),var(--brass));border:1px solid var(--brass);border-radius:99px;padding:6px 10px 6px 12px;cursor:pointer;white-space:nowrap;max-width:34vw;overflow:hidden;text-overflow:ellipsis}
+#dfv .dsel.off{background:none;color:var(--ink);border-color:var(--line)}
+#dfv .dsel svg{width:11px;height:7px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+#dfv .dsel[aria-expanded=true] svg{transform:rotate(180deg)}
+#dfv .ddm{min-width:190px;max-height:58vh;overflow:auto;z-index:70}
+#dfv .ddm.r{left:auto;right:0}
+#dfv .ddm button span{font-family:var(--body);font-size:15px;flex:1;flex-direction:row;justify-content:space-between;gap:14px;white-space:nowrap}
+#dfv .ddm button em{font-style:normal;font-size:12px;color:var(--ink-soft)}
 #dfv .dfn{padding:8px 16px;font-size:12px;color:var(--ink-soft)}
 #dfv .dfl{flex:1;overflow-y:auto;padding:4px 16px 40px;-webkit-overflow-scrolling:touch}
 #dfv .dfc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px 14px;margin:8px 0;display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
@@ -351,7 +349,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
   <path d="M36 62h48a10 10 0 0 1 10 10v58a14 14 0 0 1-14 14H40a14 14 0 0 1-14-14V72a10 10 0 0 1 10-10z" fill="rgba(255,255,255,.08)" stroke="#e6c57a" stroke-width="2.5"/>
   <rect x="50" y="40" width="20" height="22" rx="3" fill="#d9b46a"/><rect x="44" y="18" width="32" height="24" rx="6" fill="#2a1b16" stroke="#e6c57a" stroke-width="2"/>
   <g class="puff"><circle cx="82" cy="24" r="5" style="--dx:18px"/><circle cx="84" cy="30" r="4" style="--dx:26px"/><circle cx="80" cy="20" r="4" style="--dx:12px"/></g></svg><span>Perfume Wardrobe</span></div></div>
-<div id="dfv" role="dialog" aria-label="Duty free list"><div class="dfh"><div class="dft"><div><h2>Duty free list</h2><div class="dfs" id="dfsub"></div></div><button class="dfx" id="dfx" aria-label="Close">&#10005;</button></div><input type="search" id="dfq" placeholder="Search brand or name" autocomplete="off"><div class="dfr" id="dfterm"><label>Where</label></div><div class="dfr" id="dfgen"><label>For</label></div><div class="dfr"><label>Brand</label><div class="dfbr"><button class="chip" id="dfbb" type="button">All brands &#9662;</button></div><button class="chip" id="dfsort" type="button"></button></div></div><div class="dfbm" id="dfbm" hidden></div><div class="dfn" id="dfcnt"></div><div class="dfl" id="dfl"></div></div>
+<div id="dfv" role="dialog" aria-label="Duty free list"><div class="dfh"><div class="dft"><div><h2>Duty free list</h2><div class="dfs" id="dfsub"></div></div><button class="dfx" id="dfx" aria-label="Close">&#10005;</button></div><input type="search" id="dfq" placeholder="Search brand or name" autocomplete="off"><div class="dfr" id="dfdd"><div class="dd" data-k="term"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm " role="listbox" hidden></div></div><div class="dd" data-k="gen"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm " role="listbox" hidden></div></div><div class="dd" data-k="brand"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div><div class="dd" data-k="sort"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div></div></div><div class="dfn" id="dfcnt"></div><div class="dfl" id="dfl"></div></div>
 <script>
 (function(){var w=document.getElementById("wd"),h=document.documentElement,t0=Date.now(),done=false;
  if(!w)return;if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches){w.remove();return}
@@ -631,35 +629,39 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
 (function(){try{fetch("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/dutyfree_all.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.rows&&j.rows.length)DFALL=j}).catch(()=>{})}catch(e){}})();
 (function(){
  const st={q:"",term:"all",gen:"all",brand:"",sort:"disc",n:60};
- const TERM=[["all","All"],["both","Both"],["A","Arrivals only"],["D","Departure only"]],GEN=[["all","All"],["Men","Men"],["Women","Women"],["Unisex","Unisex"]];
- const SORT=[["disc","Biggest discount"],["lo","Price: low to high"],["hi","Price: high to low"],["az","A to Z"]];
+ const OPT={term:[["all","All terminals"],["both","Both"],["A","Arrivals only"],["D","Departure only"]],gen:[["all","Everyone"],["Men","Men"],["Women","Women"],["Unisex","Unisex"]],sort:[["disc","Biggest discount"],["lo","Price: low to high"],["hi","Price: high to low"],["az","A to Z"]]};
+ const LAB={term:"Where",gen:"For",brand:"Brand",sort:"Sort"},DEF={term:"all",gen:"all",brand:"",sort:"disc"};
  const off=r=>r[4]>r[5]?(r[4]-r[5])/r[4]:0;
  const IB="https://sa.adanione.com/-/media/Foundation/Adani/Dutyfree/ProductImages/Beauty/";
  function iu(c){const v=DFALL.img&&DFALL.img[c];if(!v)return"";const k=v.indexOf("|"),f=v.slice(0,k),fn=v.slice(k+1).split("~").join(c);return IB+(f==="Fragrances"?"Fragrances/":f.indexOf("perfumes/")===0?f+"/":"Fragrances/"+f+"/")+c+"/"+fn}
- function chips(id,arr,key){const el=document.getElementById(id);el.querySelectorAll(".chip").forEach(c=>c.remove());arr.forEach(([v,l])=>{const b=document.createElement("button");b.type="button";b.className="chip";b.textContent=l;b.setAttribute("aria-pressed",String(st[key]===v));b.onclick=()=>{st[key]=v;st.n=60;chips(id,arr,key);draw()};el.appendChild(b)})}
+ function opts(k){if(k!=="brand")return OPT[k];const c={};DFALL.rows.forEach(r=>c[r[2]]=(c[r[2]]||0)+1);return [["","All brands",DFALL.rows.length]].concat(Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([n,v])=>[n,n,v]))}
+ const CARET='<svg viewBox="0 0 12 8"><path d="M1 1.5l5 5 5-5"/></svg>';
+ function labels(){document.querySelectorAll("#dfdd .dd").forEach(d=>{const k=d.dataset.k,b=d.querySelector(".dsel"),isDef=st[k]===DEF[k];
+  let t=LAB[k];if(k==="sort"){t=st.sort==="disc"?"Sort":({lo:"Low to high",hi:"High to low",az:"A to Z"})[st.sort]}else if(!isDef)t=k==="brand"?st.brand:({both:"Both",A:"Arrivals",D:"Departure"}[st[k]]||st[k]);
+  b.innerHTML=esc(t)+CARET;b.classList.toggle("off",isDef)})}
+ function closeAll(){document.querySelectorAll("#dfdd .ddm").forEach(m=>m.hidden=true);document.querySelectorAll("#dfdd .dsel").forEach(b=>b.setAttribute("aria-expanded","false"))}
  function rows(){const q=st.q.trim().toLowerCase();let L=DFALL.rows.filter(r=>{
   if(q&&!(r[1]+" "+r[2]).toLowerCase().includes(q))return false;
   if(st.term==="both"&&r[6]!=="AD")return false;if(st.term==="A"&&r[6]!=="A")return false;if(st.term==="D"&&r[6]!=="D")return false;
   if(st.gen!=="all"&&r[3]!==st.gen)return false;if(st.brand&&r[2]!==st.brand)return false;return true});
   const f={disc:(a,b)=>off(b)-off(a)||a[5]-b[5],lo:(a,b)=>a[5]-b[5],hi:(a,b)=>b[5]-a[5],az:(a,b)=>a[1].localeCompare(b[1])}[st.sort];return L.sort(f)}
- function draw(){const L=rows(),box=document.getElementById("dfl");
+ function draw(){const L=rows(),box=document.getElementById("dfl");labels();
   document.getElementById("dfcnt").textContent=L.length+" of "+DFALL.rows.length+" fragrances";
-  document.getElementById("dfsort").textContent="Sort: "+SORT.find(x=>x[0]===st.sort)[1];
-  document.getElementById("dfbb").textContent=(st.brand||"All brands")+" \u25be";
-  box.innerHTML=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6];
-   const u=iu(r[0]);return '<div class="dfc'+(r[7]?' own':'')+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="this.remove()">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' \u00b7 '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+'</div></div>'}).join("")+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');
+  box.innerHTML=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6],u=iu(r[0]);
+   return '<div class="dfc'+(r[7]?' own':'')+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="this.remove()">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+'</div></div>'}).join("")+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');
   const m=document.getElementById("dfmore");if(m)m.onclick=()=>{st.n+=80;draw()}}
- function brandMenu(){const c={};DFALL.rows.forEach(r=>c[r[2]]=(c[r[2]]||0)+1);const m=document.getElementById("dfbm");
-  m.innerHTML=[["","All brands",DFALL.rows.length]].concat(Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([k,v])=>[k,k,v])).map(([k,l,v])=>'<button type="button" data-b="'+esc(k)+'" aria-selected="'+(st.brand===k)+'">'+esc(l)+'<small>'+v+'</small></button>').join("");m.hidden=false}
- function open(){const v=document.getElementById("dfv");document.getElementById("dfsub").textContent="Mumbai airport (CSMIA) \u00b7 arrivals & departure \u00b7 as of "+DFALL.asOf;chips("dfterm",TERM,"term");chips("dfgen",GEN,"gen");draw();v.classList.add("on");document.body.style.overflow="hidden"}
- function close(){document.getElementById("dfv").classList.remove("on");document.getElementById("dfbm").hidden=true;document.body.style.overflow=""}
+ function openMenu(d){const k=d.dataset.k,m=d.querySelector(".ddm"),b=d.querySelector(".dsel"),was=!m.hidden;closeAll();if(was)return;
+  m.innerHTML=opts(k).map(([v,l,c])=>'<button type="button" role="option" data-v="'+esc(v)+'" aria-selected="'+(st[k]===v)+'"><span>'+esc(l)+(c!=null?'<em>'+c+'</em>':'')+'</span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>').join("");
+  m.hidden=false;b.setAttribute("aria-expanded","true");const sel=m.querySelector('[aria-selected="true"]');if(sel&&k==="brand")m.scrollTop=Math.max(0,sel.offsetTop-60)}
+ function open(){document.getElementById("dfsub").textContent="Mumbai airport · as of "+DFALL.asOf;draw();document.getElementById("dfv").classList.add("on");document.body.style.overflow="hidden"}
+ function close(){closeAll();document.getElementById("dfv").classList.remove("on");document.body.style.overflow=""}
  document.getElementById("wmenu").addEventListener("click",e=>{const o=e.target.closest("button[data-df]");if(!o)return;e.stopPropagation();document.getElementById("wmenu").hidden=true;document.getElementById("wsel").setAttribute("aria-expanded","false");open()});
  document.getElementById("dfx").onclick=close;
  document.getElementById("dfq").oninput=e=>{st.q=e.target.value;st.n=60;draw()};
- document.getElementById("dfsort").onclick=()=>{const i=SORT.findIndex(x=>x[0]===st.sort);st.sort=SORT[(i+1)%SORT.length][0];draw()};
- document.getElementById("dfbb").onclick=()=>{const m=document.getElementById("dfbm");if(m.hidden)brandMenu();else m.hidden=true};
- document.getElementById("dfbm").onclick=e=>{const b=e.target.closest("button[data-b]");if(!b)return;st.brand=b.dataset.b;st.n=60;document.getElementById("dfbm").hidden=true;draw()};
- document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("dfv").classList.contains("on")){const m=document.getElementById("dfbm");if(!m.hidden)m.hidden=true;else close()}});
+ document.getElementById("dfdd").addEventListener("click",e=>{e.stopPropagation();const d=e.target.closest(".dd");if(!d)return;const o=e.target.closest("button[data-v]");
+  if(o){st[d.dataset.k]=o.dataset.v;st.n=60;closeAll();draw();return}if(e.target.closest(".dsel"))openMenu(d)});
+ document.getElementById("dfv").addEventListener("click",e=>{if(!e.target.closest("#dfdd"))closeAll()});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&document.getElementById("dfv").classList.contains("on")){if(document.querySelector("#dfdd .ddm:not([hidden])"))closeAll();else close()}});
 })();
 function dfHtml(p){const d=DUTYFREE[p.id];if(!d)return '';
   return '<div class="df"><h3>Duty free</h3><div class="amt">'+inr(d.p)+(d.mrp&&d.mrp!==d.p?'<s>'+inr(d.mrp)+'</s>':'')+'</div><div class="meta">'+(d.size?esc(d.size)+' \u00b7 ':'')+esc(DFINFO.where)+' \u00b7 as of '+esc(DFINFO.asOf)+'</div></div>'}
