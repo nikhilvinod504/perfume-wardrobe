@@ -318,6 +318,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 #dfv .ddm{min-width:190px;max-height:58vh;overflow:auto;z-index:70}
 #dfv .ddm.r{left:auto;right:0}
 #dfv .ddm button span{font-family:var(--body);font-size:15px;flex:1;flex-direction:row;justify-content:space-between;gap:14px;white-space:nowrap}
+#dfv .ddm button.z{opacity:.4}
 #dfv .ddm button em{font-style:normal;font-size:12px;color:var(--ink-soft)}
 #dfv .dfn{padding:8px 16px;font-size:12px;color:var(--ink-soft)}
 #dfv .dfl{flex:1;overflow-y:auto;padding:4px 16px 40px;-webkit-overflow-scrolling:touch}
@@ -633,16 +634,21 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  const LAB={term:"Where",gen:"For",brand:"Brand",sort:"Sort"},DEF={term:"all",gen:"all",brand:"",sort:"disc"};
  const off=r=>r[4]>r[5]?(r[4]-r[5])/r[4]:0;
  function iu(c){return DFALL.img&&DFALL.img[c]?(DFALL.imgBase||"")+c+".webp":""}
- function opts(k){if(k!=="brand")return OPT[k];const c={};DFALL.rows.forEach(r=>c[r[2]]=(c[r[2]]||0)+1);return [["","All brands",DFALL.rows.length]].concat(Object.entries(c).sort((a,b)=>b[1]-a[1]).map(([n,v])=>[n,n,v]))}
+ function ok(r,skip){const q=st.q.trim().toLowerCase();
+  if(q&&!(r[1]+" "+r[2]).toLowerCase().includes(q))return false;
+  if(skip!=="term"){if(st.term==="both"&&r[6]!=="AD")return false;if(st.term==="A"&&r[6]!=="A")return false;if(st.term==="D"&&r[6]!=="D")return false}
+  if(skip!=="gen"&&st.gen!=="all"&&r[3]!==st.gen)return false;if(skip!=="brand"&&st.brand&&r[2]!==st.brand)return false;return true}
+ function opts(k){if(k==="sort")return OPT.sort;const P=DFALL.rows.filter(r=>ok(r,k));
+  if(k==="term")return [["all","All terminals",P.length],["both","Both",P.filter(r=>r[6]==="AD").length],["A","Arrivals only",P.filter(r=>r[6]==="A").length],["D","Departure only",P.filter(r=>r[6]==="D").length]];
+  if(k==="gen")return [["all","Everyone",P.length]].concat(["Men","Women","Unisex"].map(g=>[g,g,P.filter(r=>r[3]===g).length]));
+  const c={};P.forEach(r=>c[r[2]]=(c[r[2]]||0)+1);if(st.brand&&!c[st.brand])c[st.brand]=0;
+  return [["","All brands",P.length]].concat(Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([n,v])=>[n,n,v]))}
  const CARET='<svg viewBox="0 0 12 8"><path d="M1 1.5l5 5 5-5"/></svg>';
  function labels(){document.querySelectorAll("#dfdd .dd").forEach(d=>{const k=d.dataset.k,b=d.querySelector(".dsel"),isDef=st[k]===DEF[k];
   let t=LAB[k];if(k==="sort"){t=st.sort==="disc"?"Sort":({lo:"Low to high",hi:"High to low",az:"A to Z"})[st.sort]}else if(!isDef)t=k==="brand"?st.brand:({both:"Both",A:"Arrivals",D:"Departure"}[st[k]]||st[k]);
   b.innerHTML=esc(t)+CARET;b.classList.toggle("off",isDef)})}
  function closeAll(){document.querySelectorAll("#dfdd .ddm").forEach(m=>m.hidden=true);document.querySelectorAll("#dfdd .dsel").forEach(b=>b.setAttribute("aria-expanded","false"))}
- function rows(){const q=st.q.trim().toLowerCase();let L=DFALL.rows.filter(r=>{
-  if(q&&!(r[1]+" "+r[2]).toLowerCase().includes(q))return false;
-  if(st.term==="both"&&r[6]!=="AD")return false;if(st.term==="A"&&r[6]!=="A")return false;if(st.term==="D"&&r[6]!=="D")return false;
-  if(st.gen!=="all"&&r[3]!==st.gen)return false;if(st.brand&&r[2]!==st.brand)return false;return true});
+ function rows(){let L=DFALL.rows.filter(r=>ok(r,null));
   const f={disc:(a,b)=>off(b)-off(a)||a[5]-b[5],lo:(a,b)=>a[5]-b[5],hi:(a,b)=>b[5]-a[5],az:(a,b)=>a[1].localeCompare(b[1])}[st.sort];return L.sort(f)}
  function draw(){const L=rows(),box=document.getElementById("dfl");labels();
   document.getElementById("dfcnt").textContent=L.length+" of "+DFALL.rows.length+" fragrances";
@@ -650,7 +656,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
    return '<div class="dfc'+(r[7]?' own':'')+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="this.parentNode.remove()">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+'</div></div>'}).join("")+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');
   const m=document.getElementById("dfmore");if(m)m.onclick=()=>{st.n+=80;draw()}}
  function openMenu(d){const k=d.dataset.k,m=d.querySelector(".ddm"),b=d.querySelector(".dsel"),was=!m.hidden;closeAll();if(was)return;
-  m.innerHTML=opts(k).map(([v,l,c])=>'<button type="button" role="option" data-v="'+esc(v)+'" aria-selected="'+(st[k]===v)+'"><span>'+esc(l)+(c!=null?'<em>'+c+'</em>':'')+'</span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>').join("");
+  m.innerHTML=opts(k).map(([v,l,c])=>'<button type="button" role="option" data-v="'+esc(v)+'"'+(c===0&&st[k]!==v?' class="z"':'')+' aria-selected="'+(st[k]===v)+'"><span>'+esc(l)+(c!=null?'<em>'+c+'</em>':'')+'</span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>').join("");
   m.hidden=false;b.setAttribute("aria-expanded","true");const sel=m.querySelector('[aria-selected="true"]');if(sel&&k==="brand")m.scrollTop=Math.max(0,sel.offsetTop-60)}
  function open(){document.getElementById("dfsub").textContent="Mumbai airport · as of "+DFALL.asOf;draw();document.getElementById("dfv").classList.add("on");document.body.style.overflow="hidden"}
  function close(){closeAll();document.getElementById("dfv").classList.remove("on");document.body.style.overflow=""}
