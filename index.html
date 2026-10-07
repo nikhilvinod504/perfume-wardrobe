@@ -50,10 +50,25 @@ header{position:relative}
 #mvq .mvb button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #mvq button:active{transform:scale(.96)}
 #mvq button.x{background:none;border:0;color:var(--ink-soft);font-size:14px;padding:8px 16px}
-.sel{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.04em;white-space:nowrap;text-transform:uppercase;color:var(--ink-soft)}
-.sel select{-webkit-appearance:none;appearance:none;font:inherit;font-size:13px;letter-spacing:.02em;text-transform:none;color:#2a1b16;background:linear-gradient(180deg,var(--brass-soft),var(--brass));border:1px solid var(--brass);border-radius:99px;padding:6px 28px 6px 12px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%232a1b16' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),linear-gradient(180deg,var(--brass-soft),var(--brass));background-repeat:no-repeat;background-position:right 10px center,0 0;background-size:11px 7px,100% 100%}
-.sel select:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
-.sel select option{color:#2a1b16;background:#fbf6f1;text-transform:none;letter-spacing:0}
+.sel{display:inline-flex;align-items:center;gap:6px;font-size:10px;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase;color:var(--ink-soft)}
+.dd{position:relative}
+#wsel{display:inline-flex;align-items:center;gap:6px;font:inherit;font-size:13px;letter-spacing:.01em;text-transform:none;color:#2a1b16;background:linear-gradient(180deg,var(--brass-soft),var(--brass));border:1px solid var(--brass);border-radius:99px;padding:6px 10px 6px 12px;cursor:pointer;box-shadow:0 2px 8px rgba(185,138,62,.3)}
+#wsel b{font-weight:500}
+#wsel svg{width:11px;height:7px;fill:none;stroke:#2a1b16;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+#wsel[aria-expanded="true"] svg{transform:rotate(180deg)}
+#wsel:active{transform:scale(.97)}
+#wsel:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.ddm{position:absolute;top:calc(100% + 8px);left:0;z-index:45;min-width:200px;padding:6px;background:var(--card);border:1px solid var(--brass);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.4);transform-origin:20px -8px;animation:ddIn .22s cubic-bezier(.2,.9,.3,1.2);text-transform:none;letter-spacing:0}
+.ddm[hidden]{display:none}
+@keyframes ddIn{from{opacity:0;transform:translateY(-6px) scale(.92)}to{opacity:1;transform:none}}
+.ddm button{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;font:inherit;font-size:16px;color:var(--ink);background:none;border:0;border-radius:12px;padding:11px 12px;cursor:pointer;text-align:left}
+.ddm button+button{margin-top:2px}
+.ddm button span{display:flex;flex-direction:column;font-family:var(--display);font-size:19px;line-height:1.15}
+.ddm button small{font:400 12px var(--body);color:var(--ink-soft);margin-top:2px}
+.ddm button svg{width:20px;height:20px;fill:none;stroke:var(--brass);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.ddm button[aria-selected="true"]{background:var(--chip)}
+.ddm button[aria-selected="true"] svg{opacity:1}
+.ddm button:active{background:var(--chip)}
 .ab-val{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;margin:12px 0 0;padding:12px 16px;background:var(--chip);color:var(--ink);border:1px solid var(--brass);border-radius:14px;font:inherit;font-size:14px;cursor:pointer;text-align:left}
 .ab-val b{font:400 20px var(--display);color:var(--brass)}.ab-val span{color:var(--ink-soft);font-size:13px}
 *{box-sizing:border-box}
@@ -329,7 +344,7 @@ if(document.readyState!=='loading'){apply(get())}
     <button type="button" id="themebtn" aria-label="Colour theme"><svg data-m="auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor" stroke="none"/></svg><svg data-m="light" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg data-m="dark" viewBox="0 0 24 24" hidden><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg><small></small></button>
     <div class="eyebrow"><span id="cname"></span> · <span id="count"></span></div>
     <h1>Perfume Wardrobe</h1>
-    <div class="tools"><label class="sel" for="wsel"><span>Select wardrobe</span><select id="wsel" aria-label="Select wardrobe"><option value="mannu">Mannu's</option><option value="nix">Nix's</option><option value="wishlist">Wishlist</option></select></label><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
+    <div class="tools"><div class="sel"><span>Select wardrobe</span><div class="dd"><button type="button" id="wsel" aria-haspopup="listbox" aria-expanded="false"><b id="wcur">Mannu's</b><svg viewBox="0 0 12 8"><path d="M1 1.5l5 5 5-5"/></svg></button><div class="ddm" id="wmenu" role="listbox" aria-label="Select wardrobe" hidden><button type="button" role="option" data-c="mannu"><span>Mannu's<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button type="button" role="option" data-c="nix"><span>Nix's<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button type="button" role="option" data-c="wishlist"><span>Wishlist<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button></div></div></div><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
   </header>
   <div class="cabinet" id="cabinet" aria-label="Perfume wardrobe"></div>
   <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span> <span id="syncst" class="syncst"></span></p>
@@ -699,7 +714,7 @@ function build(){
   const L=list();
   $("#cname").textContent=COLLECTIONS[active].name;
   $("#count").textContent=L.length+(L.length===1?" bottle":" bottles");
-  {const ws=document.getElementById("wsel");if(ws)ws.value=active}
+  syncDD()
   const shelves=Math.max(MIN_SHELVES,Math.ceil(L.length/PER_SHELF));
   let h="";
   for(let s=0;s<shelves;s++){
@@ -1048,7 +1063,15 @@ let suppress=false;
 cab.addEventListener("click",e=>{if(suppress){e.preventDefault();return}const b=e.target.closest("button[data-id]");if(b){const im=b.querySelector("img");open(PERFUMES.find(p=>p.id===b.dataset.id));try{flyOut(im)}catch(er){}}});
 $("#scrim").onclick=shut;
 $("#aboutbtn").onclick=openAbout;
-$("#wsel").onchange=function(){active=this.value;try{localStorage.setItem("wardrobe",active)}catch(e){}shut();window.__intro=true;build();window.scrollTo(0,0)};
+function syncDD(){const c=document.getElementById("wcur");if(!c)return;c.textContent=COLLECTIONS[active].who;
+ document.querySelectorAll("#wmenu button").forEach(b=>{const k=b.dataset.c;b.setAttribute("aria-selected",String(k===active));try{b.querySelector("small").textContent=baseIds(k).length+" bottles"}catch(e){}})}
+(function(){const btn=$("#wsel"),m=$("#wmenu");
+ const close=()=>{m.hidden=true;btn.setAttribute("aria-expanded","false")};
+ btn.onclick=e=>{e.stopPropagation();if(m.hidden){syncDD();m.hidden=false;btn.setAttribute("aria-expanded","true")}else close()};
+ m.onclick=e=>{const o=e.target.closest("button[data-c]");if(!o)return;e.stopPropagation();close();if(o.dataset.c===active)return;active=o.dataset.c;try{localStorage.setItem("wardrobe",active)}catch(er){}shut();window.__intro=true;build();window.scrollTo(0,0)};
+ document.addEventListener("click",e=>{if(!m.hidden&&!e.target.closest(".dd"))close()});
+ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)close()});
+})();
 $("#sheetIn").addEventListener("click",e=>{const b=e.target.closest("[data-reveal]");if(b){b.hidden=true;b.nextElementSibling.hidden=false}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){if($("#nsheet").classList.contains("on"))closeNote();else shut()}});
 $("#nscrim").addEventListener("click",closeNote);
