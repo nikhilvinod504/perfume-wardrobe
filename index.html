@@ -162,6 +162,18 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .vrow .p.na{color:var(--ink-soft);font-weight:300}
 
 *{-webkit-tap-highlight-color:transparent}
+
+.sheet-in{position:relative}
+.mist{position:absolute;left:-24px;right:-24px;top:-30px;height:380px;z-index:-1;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent);translate:calc(var(--tx,0)*-1.4px) calc(var(--ty,0)*-1px)}
+.mist b{position:absolute;border-radius:50%;filter:blur(42px);opacity:.0;animation:mistIn 1.6s ease-out .15s forwards,mistDrift 14s ease-in-out infinite alternate}
+.mist b:nth-child(1){width:260px;height:230px;left:-40px;top:20px;background:var(--m1)}
+.mist b:nth-child(2){width:300px;height:250px;right:-60px;top:70px;background:var(--m2);animation-delay:.35s,-6s;animation-duration:1.8s,17s}
+.mist b:nth-child(3){width:220px;height:200px;left:30%;top:-30px;background:var(--m3);animation-delay:.5s,-3s;animation-duration:2s,20s}
+.mist i{position:absolute;bottom:20px;width:var(--sz);height:var(--sz);border-radius:50%;background-size:cover;background-position:center;opacity:0;filter:blur(.4px) saturate(1.1);animation:petal var(--dur) linear var(--dl) infinite}
+@keyframes mistIn{to{opacity:.3}}
+@keyframes mistDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(34px,-22px) scale(1.18)}}
+@keyframes petal{0%{opacity:0;transform:translate(0,0) rotate(0)}12%{opacity:.5}70%{opacity:.35}100%{opacity:0;transform:translate(var(--sw),-300px) rotate(var(--rot))}}
+.sheet.on .hd>img{translate:calc(var(--tx,0)*1px) calc(var(--ty,0)*1px)}
 /* motion */
 @keyframes bIn{0%{opacity:0;transform:translateY(26px) scale(.9)}60%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes bSheen{0%{transform:translateX(-140%) skewX(-18deg);opacity:0}30%{opacity:.9}100%{transform:translateX(260%) skewX(-18deg);opacity:0}}
@@ -184,7 +196,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .nsheet.on .nh h2,.nsheet.on .nfam{animation:riseIn .45s ease-out .22s both}
 .nsheet.on section{animation:riseIn .5s ease-out both}
 .nsheet.on section:nth-of-type(1){animation-delay:.3s}.nsheet.on section:nth-of-type(2){animation-delay:.42s}.nsheet.on section:nth-of-type(3){animation-delay:.54s}.nsheet.on section:nth-of-type(4){animation-delay:.66s}.nsheet.on section:nth-of-type(5){animation-delay:.78s}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}.mist{display:none}.sheet.on .hd>img{translate:none}}
 @media (min-width:560px){button.bottle{height:138px}button.bottle img,.empty{height:136px}button.bottle img.wide{max-height:136px}.plate b{font-size:12px}.plate small{font-size:11px}.hd img{height:210px}}
 .ly{padding:12px 0;border-top:1px solid var(--line)}
 .ly:first-of-type{border-top:0}
@@ -691,6 +703,24 @@ document.addEventListener("click",e=>{
     MOVES[id]=to;saveMoves();shut();build();window.scrollTo(0,0);
     toast("Moved "+sname(p)+" to "+COLLECTIONS[to].who+" wardrobe",()=>{delete MOVES[id];saveMoves();build()});}
 });
+
+function mistHtml(p){
+  const cs=p.accords.slice(0,3).map(a=>ACC[a[0]]||"#c9a46a");while(cs.length<3)cs.push(cs[0]);
+  const pt=p.notes.filter(n=>NOTE_IMG[n]).slice(0,6).map((n,i)=>{const sz=22+(i*7)%16,l=8+((i*37)%80),dur=9+((i*5)%6),dl=-((i*2.3)%9),sw=(i%2?1:-1)*(18+(i*11)%34),rot=(i%2?1:-1)*(40+i*25);
+    return '<i style="left:'+l+'%;--sz:'+sz+'px;--dur:'+dur+'s;--dl:'+dl+'s;--sw:'+sw+'px;--rot:'+rot+'deg;background-image:url(data:image/webp;base64,'+NOTE_IMG[n]+')"></i>'}).join("");
+  return '<div class="mist" aria-hidden="true" style="--m1:'+cs[0]+';--m2:'+cs[1]+';--m3:'+cs[2]+'"><b></b><b></b><b></b>'+pt+'</div>'}
+const tilt={x:0,y:0,tx:0,ty:0,o:null,raf:0};
+function tiltTick(){tilt.tx+=(tilt.x-tilt.tx)*.14;tilt.ty+=(tilt.y-tilt.ty)*.14;const sh=document.getElementById("sheet");
+  sh.style.setProperty("--tx",tilt.tx.toFixed(2));sh.style.setProperty("--ty",tilt.ty.toFixed(2));
+  tilt.raf=(Math.abs(tilt.x-tilt.tx)>.04||Math.abs(tilt.y-tilt.ty)>.04)?requestAnimationFrame(tiltTick):0}
+function tiltKick(){if(!tilt.raf)tilt.raf=requestAnimationFrame(tiltTick)}
+const clampT=(v,m)=>Math.max(-m,Math.min(m,v));
+window.addEventListener("deviceorientation",e=>{if(e.gamma==null||!document.getElementById("sheet").classList.contains("on"))return;
+  if(!tilt.o)tilt.o=[e.gamma,e.beta];tilt.o[0]+=(e.gamma-tilt.o[0])*.01;tilt.o[1]+=(e.beta-tilt.o[1])*.01;
+  tilt.x=clampT((e.gamma-tilt.o[0])*.5,9);tilt.y=clampT((e.beta-tilt.o[1])*.4,7);tiltKick()},true);
+window.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse"||!document.getElementById("sheet").classList.contains("on"))return;
+  tilt.x=(e.clientX/innerWidth-.5)*16;tilt.y=(e.clientY/innerHeight-.5)*12;tiltKick()});
+document.addEventListener("click",()=>{try{if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==="function"&&!tilt.asked){tilt.asked=1;DeviceOrientationEvent.requestPermission().catch(()=>{})}}catch(e){}},{once:true});
 function open(p){
   const acc=p.accords.map(([n,w])=>'<div class="'+(LIGHT.includes(n)?'lt':'')+'" style="width:'+w+'%;background:'+(ACC[n]||"#8a6a4a")+'">'+esc(n)+'</div>').join("");
   const notes=p.notes.map(n=>'<button type="button" class="note" data-note="'+esc(n)+'"><img src="data:image/webp;base64,'+NOTE_IMG[n]+'" alt="">'+esc(n)+'</button>').join("");
@@ -707,6 +737,7 @@ function open(p){
    '<section><h3>Seasons</h3><div class="meter">'+seasons+'</div></section>'+
    lySection(p)+
    '<div class="src">Notes and ratings read from the Fragrantica card; percentages are estimated from bar lengths.</div>';
+  $("#sheetIn").insertAdjacentHTML("afterbegin",mistHtml(p));tilt.o=null;tilt.x=tilt.y=0;
   $("#sheetIn").onclick=function(e){const bb=e.target.closest(".ly .ab-b");if(!bb)return;const q=list().find(x=>x.id===bb.dataset.id);if(!q)return;const had=$("#sheetIn .back");open(q);if(had){const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1])}$("#sheet").scrollTop=0};
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
   $("#close").onclick=shut;$("#close").focus();
