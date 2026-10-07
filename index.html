@@ -69,8 +69,7 @@ header{position:relative}
 .ddm button[aria-selected="true"]{background:var(--chip)}
 .ddm button[aria-selected="true"] svg{opacity:1}
 .ddm button:active{background:var(--chip)}
-.ab-val{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;margin:12px 0 0;padding:12px 16px;background:var(--chip);color:var(--ink);border:1px solid var(--brass);border-radius:14px;font:inherit;font-size:14px;cursor:pointer;text-align:left}
-.ab-val b{font:400 20px var(--display);color:var(--brass)}.ab-val span{color:var(--ink-soft);font-size:13px}
+.ab-val{display:inline-block;align-self:flex-start;width:auto;justify-self:start;margin:2px 0 0;padding:3px 0;background:none;border:0;border-bottom:1px dotted var(--ink-soft);color:var(--ink-soft);font:inherit;font-size:12px;letter-spacing:.06em;cursor:pointer}.ab-val:hover,.ab-val:active{color:var(--brass);border-bottom-color:var(--brass)}
 *{box-sizing:border-box}
 body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:28px 48px}
 .wrap{max-width:760px;margin-inline:auto}
@@ -961,7 +960,7 @@ function openAbout(){
   const mx=accs[0][1],st=(v,l,sm,g)=>'<button type="button" class="ab-stat" data-g="'+g+'"><b>'+v+'</b><span>'+l+'</span>'+(sm?'<small>'+sm+'</small>':'')+'</button>';
   $("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">✕</button>'+
    '<div><h3 id="sheetTitle">About '+COLLECTIONS[active].name+'</h3><p class="ab-read">'+esc(read)+'</p></div>'+
-   '<button type="button" class="ab-val" id="abval"><span>What is this wardrobe worth?</span><b>'+inr(tot)+'</b></button>'+
+   '<button type="button" class="ab-val" id="abval">Wardrobe worth</button>'+
    '<section><h3>Scent families</h3><div class="ab-list">'+fams.map((f,i)=>row(f[0],pct(f[1],accSum),["#c9a24b","#d9622b","#e07a9a","#7a4513","#b3402a"][i%5],pct(f[1],accSum)+"%","f:"+f[0])).join("")+'</div></section>'+
    '<section><h3>Most-owned notes</h3><div class="ab-notes">'+notes.map(k=>'<button type="button" class="ab-n" data-g="n:'+esc(k[0])+'">'+(NOTE_IMG[k[0]]?'<img src="data:image/webp;base64,'+NOTE_IMG[k[0]]+'" alt="">':'<div class="ph"></div>')+'<span>'+esc(k[0])+'</span><em>'+k[1]+'/'+n+'</em></button>').join("")+'</div><div class="src">Counted across top, heart and base notes. Bottles containing the note, out of '+n+'.</div></section>'+
    '<section><h3>Signature accords</h3><div class="ab-list">'+accs.map(a=>row(a[0],pct(a[1],accSum),ACC[a[0]]||"#8a6a4a",pct(a[1],accSum)+"%","a:"+a[0])).join("")+'</div><div class="src">Tap any row, note or card to see its bottles. Each accord is its share of the combined strength of all accords across '+n+' bottles; on a bottle it is that accord\u2019s share of that bottle.</div></section>'+
