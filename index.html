@@ -210,7 +210,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 @keyframes starPop{0%{opacity:0;transform:scale(.3)}70%{transform:scale(1.25)}100%{opacity:1;transform:none}}
 @keyframes riseIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 @keyframes notePop{0%{opacity:0;transform:scale(.6) rotate(-6deg)}70%{transform:scale(1.07) rotate(1deg)}100%{opacity:1;transform:none}}
-#cabinet.intro button.bottle img{animation:bIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*38ms)}#cabinet.intro.late button.bottle img{animation-delay:calc(var(--i,0)*38ms + .4s)}#cabinet.intro.late button.bottle::after{animation-delay:calc(var(--i,0)*38ms + .85s)}
+#cabinet.intro button.bottle img,#cabinet.intro button.bottle .gs{animation:bIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*38ms)}#cabinet.intro.late button.bottle img,#cabinet.intro.late button.bottle .gs{animation-delay:calc(var(--i,0)*38ms + .4s)}#cabinet.intro.late button.bottle::after{animation-delay:calc(var(--i,0)*38ms + .85s)}
 #cabinet.intro button.bottle::after{content:"";position:absolute;top:6%;bottom:4%;left:20%;width:26%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none;animation:bSheen .9s ease-out both;animation-delay:calc(var(--i,0)*38ms + .45s)}
 .sheet.on .hd>img{animation:heroPop .7s cubic-bezier(.2,.9,.3,1.1) .08s both}
 .sheet.on .acc div{animation:barGrow .7s cubic-bezier(.25,.8,.3,1) both}
