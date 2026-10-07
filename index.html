@@ -29,7 +29,7 @@
 
 :root[data-theme="light"]{color-scheme:light}
 header{position:relative}
-#themebtn{position:absolute;top:0;right:0;width:40px;height:40px;border-radius:50%;border:1px solid var(--brass);background:transparent;color:var(--brass);display:grid;place-items:center;cursor:pointer;padding:0}
+#themebtn{position:absolute;top:22px;right:0;width:40px;height:40px;border-radius:50%;border:1px solid var(--brass);background:transparent;color:var(--brass);display:grid;place-items:center;cursor:pointer;padding:0}
 #themebtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 #themebtn svg[hidden]{display:none}
 #themebtn:active{transform:scale(.92)}
@@ -50,6 +50,12 @@ header{position:relative}
 #mvq .mvb button svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 #mvq button:active{transform:scale(.96)}
 #mvq button.x{background:none;border:0;color:var(--ink-soft);font-size:14px;padding:8px 16px}
+.sel{display:inline-flex;align-items:center;gap:8px;font-size:10px;letter-spacing:.04em;white-space:nowrap;text-transform:uppercase;color:var(--ink-soft)}
+.sel select{-webkit-appearance:none;appearance:none;font:inherit;font-size:13px;letter-spacing:.02em;text-transform:none;color:#2a1b16;background:linear-gradient(180deg,var(--brass-soft),var(--brass));border:1px solid var(--brass);border-radius:99px;padding:6px 28px 6px 12px;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%232a1b16' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"),linear-gradient(180deg,var(--brass-soft),var(--brass));background-repeat:no-repeat;background-position:right 10px center,0 0;background-size:11px 7px,100% 100%}
+.sel select:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.sel select option{color:#2a1b16;background:#fbf6f1;text-transform:none;letter-spacing:0}
+.ab-val{display:flex;justify-content:space-between;align-items:center;gap:10px;width:100%;margin:12px 0 0;padding:12px 16px;background:var(--chip);color:var(--ink);border:1px solid var(--brass);border-radius:14px;font:inherit;font-size:14px;cursor:pointer;text-align:left}
+.ab-val b{font:400 20px var(--display);color:var(--brass)}.ab-val span{color:var(--ink-soft);font-size:13px}
 *{box-sizing:border-box}
 body{background:var(--page);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;padding-inline:16px;padding-block:28px 48px}
 .wrap{max-width:760px;margin-inline:auto}
@@ -165,10 +171,10 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .dn{display:flex;height:30px;border-radius:6px;overflow:hidden;font-size:13px;font-weight:500}
 .dn div{display:flex;align-items:center;justify-content:center}
 .src{font-size:12px;color:var(--ink-soft)}
-.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}.switch{display:inline-flex;border:1px solid var(--brass);border-radius:99px;overflow:hidden}.switch button{background:none;border:0;color:var(--ink);font:inherit;font-size:13px;padding:7px 16px;cursor:pointer}.switch button[aria-pressed="true"]{background:var(--brass);color:#2a1b16}.switch button:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}.switch{display:inline-flex;border:1px solid var(--brass);border-radius:99px;overflow:hidden}.switch button{background:none;border:0;color:var(--ink);font:inherit;font-size:13px;padding:7px 16px;cursor:pointer}.switch button[aria-pressed="true"]{background:var(--brass);color:#2a1b16}.switch button:focus-visible{outline:2px solid var(--ink);outline-offset:-3px}
 .valbtn{align-self:flex-start;background:none;color:var(--ink);border:1px solid var(--brass);border-radius:99px;padding:7px 16px;font:inherit;font-size:13px;letter-spacing:.04em;cursor:pointer}
 .valbtn:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
-.tools .valbtn{margin-top:0}
+.tools .valbtn{margin-top:0;padding:6px 12px;font-size:12.5px;letter-spacing:.02em;white-space:nowrap}
 .price{display:flex;flex-direction:column;gap:2px;align-items:flex-start}.price>div{display:flex;flex-direction:column;gap:2px}
 .price [hidden]{display:none!important}.valbtn[hidden]{display:none}
 .price .amt{font-family:var(--display);font-size:32px;line-height:1.1;font-variant-numeric:tabular-nums}
@@ -323,7 +329,7 @@ if(document.readyState!=='loading'){apply(get())}
     <button type="button" id="themebtn" aria-label="Colour theme"><svg data-m="auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor" stroke="none"/></svg><svg data-m="light" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg data-m="dark" viewBox="0 0 24 24" hidden><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg><small></small></button>
     <div class="eyebrow"><span id="cname"></span> · <span id="count"></span></div>
     <h1>Perfume Wardrobe</h1>
-    <div class="tools"><div class="switch" role="group" aria-label="Choose wardrobe"><button type="button" data-c="mannu" aria-pressed="true">Mannu's</button><button type="button" data-c="nix" aria-pressed="false">Nix's</button><button type="button" data-c="wishlist" aria-pressed="false">Wishlist</button></div><button class="valbtn" id="valbtn" type="button">See wardrobe value</button><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
+    <div class="tools"><label class="sel" for="wsel"><span>Select wardrobe</span><select id="wsel" aria-label="Select wardrobe"><option value="mannu">Mannu's</option><option value="nix">Nix's</option><option value="wishlist">Wishlist</option></select></label><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
   </header>
   <div class="cabinet" id="cabinet" aria-label="Perfume wardrobe"></div>
   <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span> <span id="syncst" class="syncst"></span></p>
@@ -693,7 +699,7 @@ function build(){
   const L=list();
   $("#cname").textContent=COLLECTIONS[active].name;
   $("#count").textContent=L.length+(L.length===1?" bottle":" bottles");
-  document.querySelectorAll(".switch button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.c===active)));
+  {const ws=document.getElementById("wsel");if(ws)ws.value=active}
   const shelves=Math.max(MIN_SHELVES,Math.ceil(L.length/PER_SHELF));
   let h="";
   for(let s=0;s<shelves;s++){
@@ -940,6 +946,7 @@ function openAbout(){
   const mx=accs[0][1],st=(v,l,sm,g)=>'<button type="button" class="ab-stat" data-g="'+g+'"><b>'+v+'</b><span>'+l+'</span>'+(sm?'<small>'+sm+'</small>':'')+'</button>';
   $("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">✕</button>'+
    '<div><h3 id="sheetTitle">About '+COLLECTIONS[active].name+'</h3><p class="ab-read">'+esc(read)+'</p></div>'+
+   '<button type="button" class="ab-val" id="abval"><span>What is this wardrobe worth?</span><b>'+inr(tot)+'</b></button>'+
    '<section><h3>Scent families</h3><div class="ab-list">'+fams.map((f,i)=>row(f[0],pct(f[1],accSum),["#c9a24b","#d9622b","#e07a9a","#7a4513","#b3402a"][i%5],pct(f[1],accSum)+"%","f:"+f[0])).join("")+'</div></section>'+
    '<section><h3>Most-owned notes</h3><div class="ab-notes">'+notes.map(k=>'<button type="button" class="ab-n" data-g="n:'+esc(k[0])+'">'+(NOTE_IMG[k[0]]?'<img src="data:image/webp;base64,'+NOTE_IMG[k[0]]+'" alt="">':'<div class="ph"></div>')+'<span>'+esc(k[0])+'</span><em>'+k[1]+'/'+n+'</em></button>').join("")+'</div><div class="src">Counted across top, heart and base notes. Bottles containing the note, out of '+n+'.</div></section>'+
    '<section><h3>Signature accords</h3><div class="ab-list">'+accs.map(a=>row(a[0],pct(a[1],accSum),ACC[a[0]]||"#8a6a4a",pct(a[1],accSum)+"%","a:"+a[0])).join("")+'</div><div class="src">Tap any row, note or card to see its bottles. Each accord is its share of the combined strength of all accords across '+n+' bottles; on a bottle it is that accord\u2019s share of that bottle.</div></section>'+
@@ -965,6 +972,7 @@ function openAbout(){
    '<div class="src">Worked out from the Fragrantica data stored for each bottle, so it updates as you add bottles.</div>';
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");$("#close").onclick=shut;$("#close").focus();
   $("#sheetIn").onclick=function(e){
+   if(e.target.closest("#abval")){openValue();const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1]);$("#sheet").scrollTop=0;return}
    const bb=e.target.closest(".ab-b");if(bb){const p=list().find(x=>x.id===bb.dataset.id);if(p){open(p);const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1]);$("#sheet").scrollTop=0}return}
    const el=e.target.closest("[data-g]");if(!el)return;
    const anchor=el.parentElement.classList.contains("dn")?el.parentElement:el;
@@ -1039,8 +1047,8 @@ let suppress=false;
 })();
 cab.addEventListener("click",e=>{if(suppress){e.preventDefault();return}const b=e.target.closest("button[data-id]");if(b){const im=b.querySelector("img");open(PERFUMES.find(p=>p.id===b.dataset.id));try{flyOut(im)}catch(er){}}});
 $("#scrim").onclick=shut;
-$("#valbtn").onclick=openValue;$("#aboutbtn").onclick=openAbout;
-document.querySelectorAll(".switch button").forEach(b=>b.onclick=()=>{active=b.dataset.c;try{localStorage.setItem("wardrobe",active)}catch(e){}shut();window.__intro=true;build();window.scrollTo(0,0)});
+$("#aboutbtn").onclick=openAbout;
+$("#wsel").onchange=function(){active=this.value;try{localStorage.setItem("wardrobe",active)}catch(e){}shut();window.__intro=true;build();window.scrollTo(0,0)};
 $("#sheetIn").addEventListener("click",e=>{const b=e.target.closest("[data-reveal]");if(b){b.hidden=true;b.nextElementSibling.hidden=false}});
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){if($("#nsheet").classList.contains("on"))closeNote();else shut()}});
 $("#nscrim").addEventListener("click",closeNote);
