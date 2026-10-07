@@ -164,7 +164,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 *{-webkit-tap-highlight-color:transparent}
 
 .sheet-in{position:relative}
-.mist{position:absolute;left:-24px;right:-24px;top:-30px;height:380px;z-index:-1;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent);translate:calc(var(--tx,0)*-1.4px) calc(var(--ty,0)*-1px)}
+.mist{position:absolute;left:-24px;right:-24px;top:-30px;height:380px;z-index:-1;pointer-events:none;overflow:hidden;-webkit-mask-image:linear-gradient(180deg,#000 55%,transparent);mask-image:linear-gradient(180deg,#000 55%,transparent);translate:calc(var(--tx,0)*-1.2px) calc(var(--ty,0)*-.8px)}
 .mist b{position:absolute;border-radius:50%;filter:blur(42px);opacity:.0;animation:mistIn 1.6s ease-out .15s forwards,mistDrift 14s ease-in-out infinite alternate}
 .mist b:nth-child(1){width:260px;height:230px;left:-40px;top:20px;background:var(--m1)}
 .mist b:nth-child(2){width:300px;height:250px;right:-60px;top:70px;background:var(--m2);animation-delay:.35s,-6s;animation-duration:1.8s,17s}
@@ -712,16 +712,16 @@ function mistHtml(p){
   return '<div class="mist" aria-hidden="true" style="--m1:'+cs[0]+';--m2:'+cs[1]+';--m3:'+cs[2]+'"><b></b><b></b><b></b></div>'}
 if(window.Capacitor){const d=document.createElement('div');d.id='sbfix';document.body.appendChild(d)}
 const tilt={x:0,y:0,tx:0,ty:0,o:null,raf:0};
-function tiltTick(){tilt.tx+=(tilt.x-tilt.tx)*.14;tilt.ty+=(tilt.y-tilt.ty)*.14;const sh=document.getElementById("sheet");
+function tiltTick(){tilt.tx+=(tilt.x-tilt.tx)*.07;tilt.ty+=(tilt.y-tilt.ty)*.07;const sh=document.getElementById("sheet");
   sh.style.setProperty("--tx",tilt.tx.toFixed(2));sh.style.setProperty("--ty",tilt.ty.toFixed(2));
   tilt.raf=(Math.abs(tilt.x-tilt.tx)>.04||Math.abs(tilt.y-tilt.ty)>.04)?requestAnimationFrame(tiltTick):0}
 function tiltKick(){if(!tilt.raf)tilt.raf=requestAnimationFrame(tiltTick)}
 const clampT=(v,m)=>Math.max(-m,Math.min(m,v));
 window.addEventListener("deviceorientation",e=>{if(e.gamma==null||!document.getElementById("sheet").classList.contains("on"))return;
-  if(!tilt.o)tilt.o=[e.gamma,e.beta];tilt.o[0]+=(e.gamma-tilt.o[0])*.01;tilt.o[1]+=(e.beta-tilt.o[1])*.01;
-  tilt.x=clampT((e.gamma-tilt.o[0])*.5,9);tilt.y=clampT((e.beta-tilt.o[1])*.4,7);tiltKick()},true);
+  if(!tilt.o)tilt.o=[e.gamma,e.beta];tilt.o[0]+=(e.gamma-tilt.o[0])*.03;tilt.o[1]+=(e.beta-tilt.o[1])*.03;
+  tilt.x=clampT((e.gamma-tilt.o[0])*.15,2.5);tilt.y=clampT((e.beta-tilt.o[1])*.12,1.8);tiltKick()},true);
 window.addEventListener("pointermove",e=>{if(e.pointerType!=="mouse"||!document.getElementById("sheet").classList.contains("on"))return;
-  tilt.x=(e.clientX/innerWidth-.5)*16;tilt.y=(e.clientY/innerHeight-.5)*12;tiltKick()});
+  tilt.x=(e.clientX/innerWidth-.5)*5;tilt.y=(e.clientY/innerHeight-.5)*3.5;tiltKick()});
 document.addEventListener("click",()=>{try{if(window.DeviceOrientationEvent&&typeof DeviceOrientationEvent.requestPermission==="function"&&!tilt.asked){tilt.asked=1;DeviceOrientationEvent.requestPermission().catch(()=>{})}}catch(e){}},{once:true});
 function open(p){
   const acc=p.accords.map(([n,w])=>'<div class="'+(LIGHT.includes(n)?'lt':'')+'" style="width:'+w+'%;background:'+(ACC[n]||"#8a6a4a")+'">'+esc(n)+'</div>').join("");
