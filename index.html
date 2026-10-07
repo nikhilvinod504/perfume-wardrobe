@@ -161,6 +161,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .vrow .p{font-variant-numeric:tabular-nums;font-weight:500;text-align:right}
 .vrow .p.na{color:var(--ink-soft);font-weight:300}
 
+*{-webkit-tap-highlight-color:transparent}
 /* motion */
 @keyframes bIn{0%{opacity:0;transform:translateY(26px) scale(.9)}60%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes bSheen{0%{transform:translateX(-140%) skewX(-18deg);opacity:0}30%{opacity:.9}100%{transform:translateX(260%) skewX(-18deg);opacity:0}}
@@ -171,9 +172,9 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 @keyframes notePop{0%{opacity:0;transform:scale(.6) rotate(-6deg)}70%{transform:scale(1.07) rotate(1deg)}100%{opacity:1;transform:none}}
 #cabinet.intro button.bottle img{animation:bIn .6s cubic-bezier(.2,.9,.3,1.2) both;animation-delay:calc(var(--i,0)*38ms)}
 #cabinet.intro button.bottle::after{content:"";position:absolute;top:6%;bottom:4%;left:20%;width:26%;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55),rgba(255,255,255,0));pointer-events:none;animation:bSheen .9s ease-out both;animation-delay:calc(var(--i,0)*38ms + .45s)}
-.sheet.on .hd>img{animation:heroPop .7s cubic-bezier(.2,.9,.3,1.1) .18s both}
+.sheet.on .hd>img{animation:heroPop .7s cubic-bezier(.2,.9,.3,1.1) .08s both}
 .sheet.on .acc div{animation:barGrow .7s cubic-bezier(.25,.8,.3,1) both}
-.sheet.on .acc div:nth-child(1){animation-delay:.3s}.sheet.on .acc div:nth-child(2){animation-delay:.4s}.sheet.on .acc div:nth-child(3){animation-delay:.5s}.sheet.on .acc div:nth-child(4){animation-delay:.6s}.sheet.on .acc div:nth-child(5){animation-delay:.7s}
+.sheet.on .acc div:nth-child(1){animation-delay:.2s}.sheet.on .acc div:nth-child(2){animation-delay:.28s}.sheet.on .acc div:nth-child(3){animation-delay:.36s}.sheet.on .acc div:nth-child(4){animation-delay:.44s}.sheet.on .acc div:nth-child(5){animation-delay:.52s}
 .sheet.on .fill{transform-origin:left;animation:barGrow .8s cubic-bezier(.25,.8,.3,1) .45s both}
 .sheet.on .dn>div{animation:barGrow .8s cubic-bezier(.25,.8,.3,1) .4s both}
 .sheet.on .hd .stars{display:inline-block;animation:starPop .5s ease-out .35s both}
