@@ -345,6 +345,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 #dfd.on{display:flex}
 #dfd .pn{width:100%;max-height:92vh;overflow-y:auto;background:var(--page);color:var(--ink);border-radius:24px 24px 0 0;border-top:1px solid var(--brass);padding:16px 18px calc(24px + env(safe-area-inset-bottom,0px));font-family:var(--body);animation:dfUp .26s cubic-bezier(.2,.9,.3,1)}
 @keyframes dfUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+#dfd .px{position:sticky;top:0;float:right;margin:-4px -4px 0 8px;width:34px;height:34px;border-radius:50%;border:1px solid var(--brass);background:var(--page);color:var(--ink);font-size:14px;cursor:pointer;z-index:2}
 #dfd .gr{width:40px;height:4px;border-radius:9px;background:var(--line);margin:0 auto 12px}
 #dfd .hd{display:flex;gap:14px;align-items:center}
 #dfd .im{flex:none;width:96px;height:120px;border-radius:14px;background:#f4eee8;display:grid;place-items:center;overflow:hidden}
@@ -690,7 +691,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  function list(a){return a&&a.length?a.map(x=>'<i>'+esc(x)+'</i>').join(""):""}
  function showD(c){const r=rowOf(c);if(!r)return;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c);
   const where=r[6]==="AD"?"Arrivals and departure":r[6]==="A"?"Arrivals only":"Departure only";
-  let h='<div class="gr"></div><div class="hd"><div class="im">'+(u?'<img alt="" referrerpolicy="no-referrer" src="'+u+'" onerror="this.parentNode.remove()">':'')+'</div><div><h3>'+esc(r[1])+'</h3><div class="sb">'+esc(r[2])+' · '+esc(r[3])+(i&&i.y?' · '+i.y:'')+'</div></div></div>';
+  let h='<button class="px" id="dfpx" type="button" aria-label="Close">\u2715</button><div class="gr"></div><div class="hd"><div class="im">'+(u?'<img alt="" referrerpolicy="no-referrer" src="'+u+'" onerror="this.parentNode.remove()">':'')+'</div><div><h3>'+esc(r[1])+'</h3><div class="sb">'+esc(r[2])+' · '+esc(r[3])+(i&&i.y?' · '+i.y:'')+'</div></div></div>';
   h+='<div class="pr"><b>'+inr(r[5])+'</b>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+'</div>';
   h+='<div class="sv">'+(o>0?'You save '+inr(r[4]-r[5])+'. ':'')+(f.sz?inr(Math.round(r[5]/f.sz))+' per ml.':'')+'</div>';
   h+='<h4>Duty free</h4><div class="kv"><span>Where</span><span>'+where+'</span>'+(f.sz?'<span>Size</span><span>'+f.sz+' ml</span>':'')+(f.conc?'<span>Type</span><span>'+f.conc+'</span>':'')+'<span>Product code</span><span>'+esc(c)+'</span></div>';
@@ -701,7 +702,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
    if(i.ap)h+='<div class="nb">Closest match: details are for the base perfume, not this exact variant.</div>'}
   else h+='<div class="nb">Perfume details (notes, accords, ratings) are not loaded for this one yet.</div>';
   h+='<div class="ac">'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," "))+'" target="_blank" rel="noopener">Fragrantica</a></div>';
-  document.getElementById("dfp").innerHTML=h;document.getElementById("dfd").classList.add("on");
+  document.getElementById("dfp").innerHTML=h;document.getElementById("dfd").classList.add("on");document.getElementById("dfpx").onclick=closeD;
   const ob=document.getElementById("dfown");if(ob)ob.onclick=()=>{closeD();close();try{const p=PERFUMES.find(x=>x.id===r[7]);if(p)window.open(p)}catch(e){}}}
  function closeD(){document.getElementById("dfd").classList.remove("on")}
  function draw(){const L=rows(),box=document.getElementById("dfl");labels();
