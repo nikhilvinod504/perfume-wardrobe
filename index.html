@@ -172,6 +172,10 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 @keyframes mistIn{to{opacity:.3}}
 @keyframes mistDrift{from{transform:translate(0,0) scale(1)}to{transform:translate(34px,-22px) scale(1.18)}}
 .sheet.on .hd>img{translate:calc(var(--tx,0)*1px) calc(var(--ty,0)*1px)}
+
+#sbfix{position:fixed;top:0;left:0;right:0;height:max(env(safe-area-inset-top,0px),26px);background:var(--page);z-index:40;pointer-events:none}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .mist b{mix-blend-mode:screen}}
+:root[data-theme="dark"] .mist b{mix-blend-mode:screen}
 /* motion */
 @keyframes bIn{0%{opacity:0;transform:translateY(26px) scale(.9)}60%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes bSheen{0%{transform:translateX(-140%) skewX(-18deg);opacity:0}30%{opacity:.9}100%{transform:translateX(260%) skewX(-18deg);opacity:0}}
@@ -703,8 +707,10 @@ document.addEventListener("click",e=>{
 });
 
 function mistHtml(p){
-  const cs=p.accords.slice(0,3).map(a=>ACC[a[0]]||"#c9a46a");while(cs.length<3)cs.push(cs[0]);
+  const lum=h=>{const m=/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h||"");if(!m)return 0;const r=parseInt(m[1],16)/255,g=parseInt(m[2],16)/255,b=parseInt(m[3],16)/255,mx=Math.max(r,g,b),mn=Math.min(r,g,b);return (mx+mn)/2};
+  const all=p.accords.map(a=>ACC[a[0]]||"#c9a46a"),good=all.filter(c=>lum(c)>.3),cs=(good.length?good:all).slice(0,3);while(cs.length<3)cs.push(cs[cs.length-1]);
   return '<div class="mist" aria-hidden="true" style="--m1:'+cs[0]+';--m2:'+cs[1]+';--m3:'+cs[2]+'"><b></b><b></b><b></b></div>'}
+if(window.Capacitor){const d=document.createElement('div');d.id='sbfix';document.body.appendChild(d)}
 const tilt={x:0,y:0,tx:0,ty:0,o:null,raf:0};
 function tiltTick(){tilt.tx+=(tilt.x-tilt.tx)*.14;tilt.ty+=(tilt.y-tilt.ty)*.14;const sh=document.getElementById("sheet");
   sh.style.setProperty("--tx",tilt.tx.toFixed(2));sh.style.setProperty("--ty",tilt.ty.toFixed(2));
