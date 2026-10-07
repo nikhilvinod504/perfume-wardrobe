@@ -194,7 +194,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .price .amt{font-family:var(--display);font-size:32px;line-height:1.1;font-variant-numeric:tabular-nums}
 .price .amt s{font-family:var(--body);font-size:15px;color:var(--ink-soft);margin-left:8px}
 .price .meta{font-size:13px;color:var(--ink-soft)}
-.price a{color:var(--ink);font-size:13px}
+.price a{color:var(--ink);font-size:13px}.price .df{margin-top:14px;padding-top:12px;border-top:1px dotted var(--line)}.price .df h3{margin:0 0 2px}.price .df .amt{font-size:24px}
 .price.none .amt{font-size:20px;color:var(--ink-soft)}
 .total{font-family:var(--display);font-size:clamp(34px,10vw,48px);line-height:1.05;font-variant-numeric:tabular-nums}
 .vrows{display:flex;flex-direction:column}
@@ -579,19 +579,23 @@ const PRICES={"embark-my-life-for-him":{p:1895,mrp:null,size:"",shop:"",url:""},
  "la-vie-est-belle-domaine-de-la-rose":{p:9900,mrp:null,size:"",shop:"",url:""},
  "killer-queen":{p:4398,mrp:null,size:"",shop:"",url:""}
 };
+const DUTYFREE={"i-want-choo-le-parfum":{p:11925,mrp:13250,size:"100 ml"},"good-girl-blush-elixir":{p:9990,mrp:11100,size:"80 ml"},"goddess":{p:9225,mrp:10250,size:"100 ml"},"bright-crystal-absolu":{p:9855,mrp:10950,size:"90 ml"},"chloe-edp":{p:8415,mrp:9350,size:"75 ml"},"pleasures":{p:5535,mrp:6150,size:""},"clinique-happy-for-men":{p:3015,mrp:3350,size:""},"sauvage":{p:11550,mrp:null,size:"100 ml"},"cool-water":{p:3990,mrp:null,size:"125 ml"},"myslf-edp":{p:10485,mrp:11650,size:"100 ml"},"myslf-le-parfum":{p:11835,mrp:13150,size:"100 ml"},"ck-one":{p:3990,mrp:null,size:"200 ml"},"prada-paradoxe":{p:10791,mrp:11990,size:"90 ml"},"i-want-choo":{p:10980,mrp:12200,size:"100 ml"},"alien":{p:11295,mrp:12550,size:"90 ml"},"bright-crystal":{p:9135,mrp:10150,size:"90 ml"},"million-gold-for-her":{p:9630,mrp:10700,size:"90 ml"},"lady-million":{p:8190,mrp:9100,size:"80 ml"},"scandal":{p:10125,mrp:11250,size:"80 ml"},"bleu-de-chanel-edp":{p:11750,mrp:null,size:"100 ml"},"le-male-elixir":{p:8595,mrp:9550,size:"125 ml"},"valentino-donna-born-in-roma":{p:11691,mrp:12990,size:"100 ml"},"bvlgari-rose-goldea-blossom-delight":{p:10935,mrp:12150,size:"75 ml"}};
+const DFINFO={asOf:"8 Oct 2026",where:"Mumbai airport (CSMIA), arrivals, pre-order"};
 const inr=n=>"\u20b9"+n.toLocaleString("en-IN");
+function dfHtml(p){const d=DUTYFREE[p.id];if(!d)return '';
+  return '<div class="df"><h3>Duty free</h3><div class="amt">'+inr(d.p)+(d.mrp&&d.mrp!==d.p?'<s>'+inr(d.mrp)+'</s>':'')+'</div><div class="meta">'+(d.size?esc(d.size)+' \u00b7 ':'')+esc(DFINFO.where)+' \u00b7 as of '+esc(DFINFO.asOf)+'</div></div>'}
 function priceHtml(p){
   const x=PRICES[p.id];
   const btn='<button class="valbtn" type="button" data-reveal>See value</button>';
-  if(!x)return '<section class="price none">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">Price not found</div><div class="meta">No Indian listing turned up for this one.</div></div></section>';
-  return '<section class="price">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">'+inr(x.p)+(x.mrp&&x.mrp!==x.p?'<s>'+inr(x.mrp)+'</s>':'')+'</div><div class="meta">'+(x.url?esc(x.size)+' \u00b7 '+esc(x.shop)+(x.mrp&&x.mrp!==x.p?' \u00b7 current price, MRP struck':' \u00b7 MRP incl. taxes'):'Price you shared')+'</div>'+(x.url?'<a href="'+x.url+'" target="_blank" rel="noopener">View listing \u2197</a>':'')+'</div></section>';
+  if(!x)return '<section class="price none">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">Price not found</div><div class="meta">No Indian listing turned up for this one.</div>'+dfHtml(p)+'</div></section>';
+  return '<section class="price">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">'+inr(x.p)+(x.mrp&&x.mrp!==x.p?'<s>'+inr(x.mrp)+'</s>':'')+'</div><div class="meta">'+(x.url?esc(x.size)+' \u00b7 '+esc(x.shop)+(x.mrp&&x.mrp!==x.p?' \u00b7 current price, MRP struck':' \u00b7 MRP incl. taxes'):'Price you shared')+'</div>'+(x.url?'<a href="'+x.url+'" target="_blank" rel="noopener">View listing \u2197</a>':'')+dfHtml(p)+'</div></section>';
 }
 function openValue(){
   const rows=list().map(p=>({p,x:PRICES[p.id]})).sort((a,b)=>(b.x?b.x.p:-1)-(a.x?a.x.p:-1));
   const priced=rows.filter(r=>r.x),total=priced.reduce((s,r)=>s+r.x.p,0),missing=rows.length-priced.length;
   $("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">\u2715</button>'+
    '<div><h3 id="sheetTitle">'+(active==="wishlist"?'Wishlist value':COLLECTIONS[active].who+' wardrobe value')+'</h3><div class="total">'+inr(total)+'</div><div class="brand">'+priced.length+' of '+rows.length+' bottles priced'+(missing?'; '+missing+' not found, so left out':'')+'</div></div>'+
-   '<div class="vrows">'+rows.map(r=>'<div class="vrow"><img src="'+r.p.img+'" alt=""><div class="n">'+esc(r.p.name)+'<small>'+(r.x?(r.x.url?esc(r.x.size)+' \u00b7 '+esc(r.x.shop):'Price you shared'):'No Indian listing found')+'</small></div><div class="p'+(r.x?'':' na')+'">'+(r.x?inr(r.x.p):'\u2014')+'</div></div>').join("")+'</div>'+
+   '<div class="vrows">'+rows.map(r=>'<div class="vrow"><img src="'+r.p.img+'" alt=""><div class="n">'+esc(r.p.name)+'<small>'+(r.x?(r.x.url?esc(r.x.size)+' \u00b7 '+esc(r.x.shop):'Price you shared'):'No Indian listing found')+(DUTYFREE[r.p.id]?' \u00b7 Duty free '+inr(DUTYFREE[r.p.id].p):'')+'</small></div><div class="p'+(r.x?'':' na')+'">'+(r.x?inr(r.x.p):'\u2014')+'</div></div>').join("")+'</div>'+
    '<div class="src">Current Indian retail prices for the size shown, found online in October 2026. Your own bottle sizes and what you paid may differ. Prices marked as shared are the ones you gave.</div>';
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
   $("#close").onclick=shut;$("#close").focus();
