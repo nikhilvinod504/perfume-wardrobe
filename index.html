@@ -714,13 +714,13 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   h+='<div class="sv">'+(o>0?'You save '+inr(r[4]-r[5])+'. ':'')+(f.sz?inr(Math.round(r[5]/f.sz))+' per ml.':'')+'</div>';
   if(isGone(r))h+='<div class="nb">No longer listed on the Adani One site. Last seen '+dmy(r[8])+'. Price shown is the last one seen.</div>';else{if(isNew(r))h+='<div class="nb">New this week: first seen '+dmy(DFALL.first[c])+'.</div>';const cc=chg(r);if(cc)h+='<div class="nb">Price '+(r[5]<cc[0]?'dropped':'rose')+' from '+inr(cc[0])+' to '+inr(r[5])+' ('+dmy(cc[1])+').</div>'}
   h+='<h4>Duty free</h4><div class="kv"><span>Where</span><span>'+where+'</span>'+(f.sz?'<span>Size</span><span>'+f.sz+' ml</span>':'')+(f.conc?'<span>Type</span><span>'+f.conc+'</span>':'')+'<span>Product code</span><span>'+esc(c)+'</span></div>';
-  if(i&&i.m){h+='<h4>About this perfume</h4><div class="kv">'+(i.f?'<span>Family</span><span>'+esc(i.f.replace(/ \/ $/,""))+'</span>':'')+(i.p&&i.p.length?'<span>Perfumer</span><span>'+esc(i.p.join(", "))+'</span>':'')+(i.s!=null?'<span>Community score</span><span>'+Number(i.s).toFixed(1)+' / 10'+(i.c?' ('+i.c+' ratings)':'')+'</span>':'')+'</div>';
+  if(i&&i.m){h+='<h4>About this perfume</h4><div class="kv">'+(i.f?'<span>Family</span><span>'+esc(i.f.replace(/ \/ $/,""))+'</span>':'')+(i.p&&i.p.length?'<span>Perfumer</span><span>'+esc(i.p.join(", "))+'</span>':'')+(i.s!=null?'<span>Community score</span><span>'+Number(i.s).toFixed(1)+' / '+(i.r||10)+(i.c?' ('+i.c+' ratings)':'')+'</span>':'')+'</div>';
    if(i.a&&i.a.length)h+='<h4>Accords</h4><div class="pl">'+list(i.a)+'</div>';
    const n=[["Top",i.t],["Heart",i.h],["Base",i.b],["Also",i.o]].filter(x=>x[1]&&x[1].length);
    if(n.length)h+='<h4>Notes</h4><div class="nt">'+n.map(x=>'<div><b>'+x[0]+'</b> · '+esc(x[1].join(", "))+'</div>').join("")+'</div>';
    if(i.ap)h+='<div class="nb">Closest match: details are for the base perfume, not this exact variant.</div>'}
   else h+='<div class="nb">Perfume details (notes, accords, ratings) are not loaded for this one yet.</div>';
-  h+='<div class="ac">'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," "))+'" target="_blank" rel="noopener">Fragrantica</a></div>';
+  h+='<div class="ac">'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(i&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div>';
   document.getElementById("dfp").innerHTML=h;document.getElementById("dfd").classList.add("on");document.getElementById("dfpx").onclick=closeD;
   const ob=document.getElementById("dfown");if(ob)ob.onclick=()=>{closeD();close();try{const p=PERFUMES.find(x=>x.id===r[7]);if(p)window.open(p)}catch(e){}}}
  function closeD(){document.getElementById("dfd").classList.remove("on")}
