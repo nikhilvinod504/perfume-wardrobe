@@ -366,6 +366,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 #dfd h4{margin:18px 0 8px;font:500 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft)}
 #dfd .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
 #dfd .kv span:nth-child(odd){color:var(--ink-soft)}
+#dfd .ab{display:flex;flex-direction:column;gap:4px}#dfd .ar{height:24px}#dfd .ar b{display:flex;align-items:center;height:100%;box-sizing:border-box;padding:0 10px;border-radius:6px;font-weight:500;font-size:12.5px;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.45);white-space:nowrap;overflow:hidden;min-width:fit-content}
 #dfd .pl{display:flex;flex-wrap:wrap;gap:6px}
 #dfd .pl i{font-style:normal;font-size:12.5px;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:4px 11px}
 #dfd .nt{font-size:14px;line-height:1.55}
@@ -715,7 +716,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   if(isGone(r))h+='<div class="nb">No longer listed on the Adani One site. Last seen '+dmy(r[8])+'. Price shown is the last one seen.</div>';else{if(isNew(r))h+='<div class="nb">New this week: first seen '+dmy(DFALL.first[c])+'.</div>';const cc=chg(r);if(cc)h+='<div class="nb">Price '+(r[5]<cc[0]?'dropped':'rose')+' from '+inr(cc[0])+' to '+inr(r[5])+' ('+dmy(cc[1])+').</div>'}
   h+='<h4>Duty free</h4><div class="kv"><span>Where</span><span>'+where+'</span>'+(f.sz?'<span>Size</span><span>'+f.sz+' ml</span>':'')+(f.conc?'<span>Type</span><span>'+f.conc+'</span>':'')+'<span>Product code</span><span>'+esc(c)+'</span></div>';
   if(i&&i.m){h+='<h4>About this perfume</h4><div class="kv">'+(i.f?'<span>Family</span><span>'+esc(i.f.replace(/ \/ $/,""))+'</span>':'')+(i.p&&i.p.length?'<span>Perfumer</span><span>'+esc(i.p.join(", "))+'</span>':'')+(i.s!=null?'<span>Community score</span><span>'+Number(i.s).toFixed(1)+' / '+(i.r||10)+(i.c?' ('+i.c+' ratings)':'')+'</span>':'')+'</div>';
-   if(i.a&&i.a.length)h+='<h4>Accords</h4><div class="pl">'+list(i.a)+'</div>';
+   if(i.a&&i.a.length){if(Array.isArray(i.a[0]))h+='<h4>Accords</h4><div class="ab">'+i.a.map(x=>{const w=Math.max(8,Math.min(100,Math.round(x[1]||0))),c=/^#[0-9a-f]{3,8}$/i.test(x[2]||"")?x[2]:"#b08a4a";const hx=c.replace("#","").replace(/^(.)(.)(.)$/,"$1$1$2$2$3$3"),lum=(parseInt(hx.slice(0,2),16)*.299+parseInt(hx.slice(2,4),16)*.587+parseInt(hx.slice(4,6),16)*.114),tc=lum>150?"color:#2a1b16;text-shadow:none":"";return '<div class="ar"><b style="width:'+w+'%;background:'+c+';'+tc+'">'+esc(x[0])+'</b></div>'}).join("")+'</div>';else h+='<h4>Accords</h4><div class="pl">'+list(i.a)+'</div>'}
    const n=[["Top",i.t],["Heart",i.h],["Base",i.b],["Also",i.o]].filter(x=>x[1]&&x[1].length);
    if(n.length)h+='<h4>Notes</h4><div class="nt">'+n.map(x=>'<div><b>'+x[0]+'</b> · '+esc(x[1].join(", "))+'</div>').join("")+'</div>';
    if(i.ap)h+='<div class="nb">Closest match: details are for the base perfume, not this exact variant.</div>'}
