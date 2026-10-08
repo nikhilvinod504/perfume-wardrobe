@@ -1501,6 +1501,8 @@ function overlay(blob,name){let o=document.getElementById("shov");if(o)o.remove(
   if(navigator.share){const n=document.getElementById("shn");n.hidden=false;n.onclick=()=>{try{navigator.share({url:j.url,title:name}).catch(()=>{})}catch(e){}}}
  }).catch(fail)}
 window.pwShareCard=async function(spec,name,btn){const old=btn&&btn.textContent;try{if(btn){btn.disabled=true;btn.textContent="Making card…"}const cv=await render(spec);const blob=await new Promise(r=>cv.toBlob(r,"image/png"));if(!blob)throw 0;const file=new File([blob],name+".png",{type:"image/png"});
+ try{const P=window.Capacitor&&Capacitor.Plugins;if(P&&P.Share&&P.Filesystem){const b64=await new Promise((ok,no)=>{const fr=new FileReader();fr.onload=()=>ok(String(fr.result).split(",")[1]);fr.onerror=no;fr.readAsDataURL(blob)});
+  const w=await P.Filesystem.writeFile({path:name+".png",data:b64,directory:"CACHE"});await P.Share.share({title:spec.title||"Perfume",files:[w.uri],dialogTitle:"Share card"});return}}catch(e){if(e&&/cancel|dismiss/i.test(String(e.message||e)))return}
  try{if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:spec.title||"Perfume"});return}}catch(e){if(e&&e.name==="AbortError")return}
  overlay(blob,name)}catch(e){try{alert("Could not make the card.")}catch(x){}}finally{if(btn){btn.disabled=false;btn.textContent=old}}};
 })();
