@@ -247,7 +247,7 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 #wd .mid svg{animation:wdBob 2.6s ease-in-out infinite}
 html.wd-lock,html.wd-lock body{overflow:hidden}
 
-.flyimg{position:fixed;z-index:60;pointer-events:none;transform-origin:0 0;will-change:transform;filter:drop-shadow(0 12px 12px rgba(0,0,0,.45))}
+.flyimg{position:fixed;z-index:95;pointer-events:none;transform-origin:0 0;will-change:transform;filter:drop-shadow(0 12px 12px rgba(0,0,0,.45))}
 /* motion */
 @keyframes bIn{0%{opacity:0;transform:translateY(26px) scale(.9)}60%{opacity:1}100%{opacity:1;transform:none}}
 @keyframes bSheen{0%{transform:translateX(-140%) skewX(-18deg);opacity:0}30%{opacity:.9}100%{transform:translateX(260%) skewX(-18deg);opacity:0}}
@@ -502,6 +502,8 @@ img.ld{animation:dfFade .4s ease}
 #dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld){animation:none!important;background:var(--chip)}
 #dfd .nn img,#dfd .smi img,#dfd .cph img{content-visibility:auto}
 #dfd .hd .im img{transition:opacity .25s ease}
+
+#dfp .hd .im img,#dfp .hd .im img.ld,#dfv .dfc .ph img.ld{animation:none!important}
 </style>
 </head>
 <body>
@@ -931,7 +933,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  let DFTH=null;
  function dfFlyIn(th){if(flyRM()||!th||!th.isConnected||!th.complete||!th.naturalWidth)return;const im=document.querySelector("#dfp .hd .im img");if(!im)return;const r0=th.getBoundingClientRect();if(r0.bottom<0||r0.top>innerHeight)return;const dr=im.getBoundingClientRect();const dy=-40;
   const a=fitBox(th,r0),b=fitBox(im,{left:dr.left,top:dr.top+dy,width:dr.width,height:dr.height,right:0,bottom:0});im.style.opacity="0";th.style.visibility="hidden";DFTH=th;
-  flyClone(im.src,a,b,460,()=>{const rv=()=>{im.style.opacity="";th.style.visibility=""};try{im.decode?im.decode().then(rv,rv):rv()}catch(e){rv()}})}
+  flyClone(im.src,a,b,460,()=>{im.style.opacity="";th.style.visibility=""})}
  function dfFlyOut(){const th=DFTH;DFTH=null;if(!th||!th.isConnected||flyRM())return;const im=document.querySelector("#dfp .hd .im img");if(!im||!im.naturalWidth)return;const r=im.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const t=th.getBoundingClientRect();if(t.bottom<0||t.top>innerHeight)return;
   const a=fitBox(im,r),b=fitBox(th,t);im.style.opacity="0";th.style.visibility="hidden";flyClone(im.src,a,b,340,()=>{th.style.visibility=""})}
  function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
@@ -1309,7 +1311,7 @@ function flyClone(src,a,b,ms,done){const c=document.createElement("img");c.class
   c.style.left=b.x+"px";c.style.top=b.y+"px";c.style.width=b.w+"px";c.style.height=b.h+"px";document.body.appendChild(c);
   const sx=a.w/b.w,sy=a.h/b.h;
   const an=c.animate([{transform:"translate("+(a.x-b.x)+"px,"+(a.y-b.y)+"px) scale("+sx+","+sy+")"},{transform:"none"}],{duration:ms,easing:"cubic-bezier(.22,.8,.24,1)",fill:"both"});
-  an.onfinish=()=>{c.remove();done&&done()};an.oncancel=()=>{c.remove();done&&done()};return c}
+  const fin=()=>{try{done&&done()}catch(e){}requestAnimationFrame(()=>requestAnimationFrame(()=>c.remove()))};an.onfinish=fin;an.oncancel=fin;return c}
 function flyOut(srcImg){ /* shelf bottle -> card hero */
   if(flyRM()||!srcImg||!srcImg.isConnected)return;const hero=document.querySelector("#sheetIn .hd>img"),sh=$("#sheet");if(!hero)return;
   hero.style.cssText="animation:none;opacity:0";const r0=srcImg.getBoundingClientRect(),a=fitBox(srcImg,r0);
