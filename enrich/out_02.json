@@ -2314,5 +2314,446 @@
 13
 ]
 }
+},
+"06A13072": {
+"m": 1,
+"id": 101529,
+"n": "Le Male Elixir Absolu",
+"y": 2025,
+"p": [
+"Quentin Bisch"
+],
+"g": "for men",
+"f": "Woody Aromatic",
+"a": [
+[
+"warm spicy",
+100,
+"#CC3300"
+],
+[
+"amber",
+83.3,
+"#bc4d10"
+],
+[
+"aromatic",
+82.1,
+"#37a089"
+],
+[
+"fruity",
+81.4,
+"#FC4B29"
+],
+[
+"sweet",
+77.5,
+"#ee363b"
+],
+[
+"vanilla",
+70.2,
+"#FFFEC0"
+],
+[
+"lavender",
+62.5,
+"#9B7DB8"
+],
+[
+"cinnamon",
+57.0,
+"#D2691E"
+],
+[
+"balsamic",
+47.3,
+"#ad8359"
+],
+[
+"fresh spicy",
+46.4,
+"#83C928"
+]
+],
+"t": [
+"Plum",
+"Cinnamon",
+"Cardamom",
+"Bergamot"
+],
+"h": [
+"Lavender",
+"Davana",
+"Artemisia"
+],
+"b": [
+"Tonka Bean",
+"Benzoin",
+"Ambrette (Musk Mallow)",
+"Patchouli",
+"Labdanum"
+],
+"o": [],
+"s": 4.1224,
+"r": 5,
+"c": 3636,
+"u": "https://www.fragrantica.com/perfume/Jean-Paul-Gaultier/Le-Male-Elixir-Absolu-101529.html",
+"ap": 1,
+"se": {
+"winter": 2160,
+"spring": 878,
+"summer": 241,
+"autumn": 1806,
+"day": 839,
+"night": 1871
+},
+"lg": {
+"avg": 3.9759,
+"n": 2033,
+"v": [
+28,
+23,
+311,
+1279,
+392
+]
+},
+"sl": {
+"avg": 2.8056,
+"n": 2001,
+"v": [
+55,
+492,
+1241,
+213
+]
+}
+},
+"06A03889": {
+"m": 1,
+"id": 31181,
+"n": "La Vie Est Belle L'Eau de Parfum Intense",
+"y": 2015,
+"p": [
+"Anne Flipo",
+"Dominique Ropion"
+],
+"g": "for women",
+"f": "Floral Fruity Gourmand",
+"a": [
+[
+"sweet",
+100,
+"#ee363b"
+],
+[
+"nutty",
+71.7,
+"#b4955f"
+],
+[
+"woody",
+67.9,
+"#774414"
+],
+[
+"vanilla",
+62.8,
+"#FFFEC0"
+],
+[
+"white floral",
+54.9,
+"#edf2fb"
+],
+[
+"iris",
+54.8,
+"#b7a7d7"
+],
+[
+"fruity",
+54.2,
+"#FC4B29"
+],
+[
+"lactonic",
+51.5,
+"#fbf9f2"
+],
+[
+"soft spicy",
+46.4,
+"#E27752"
+],
+[
+"citrus",
+46.3,
+"#F9FF52"
+]
+],
+"t": [
+"Pear",
+"Pink Pepper",
+"Currant buds",
+"Orange",
+"Bergamot"
+],
+"h": [
+"Iris",
+"Tuberose",
+"Ylang-Ylang",
+"Orange Blossom",
+"Jasmine Sambac"
+],
+"b": [
+"Whipped Cream",
+"Hazelnut"
+],
+"o": [],
+"s": 4.1558,
+"r": 5,
+"c": 2125,
+"u": "https://www.fragrantica.com/perfume/Lancome/La-Vie-Est-Belle-L-Eau-de-Parfum-Intense-31181.html",
+"ap": 1,
+"se": {
+"winter": 697,
+"spring": 303,
+"summer": 135,
+"autumn": 639,
+"day": 519,
+"night": 631
+},
+"lg": {
+"avg": 4.0181,
+"n": 938,
+"v": [
+40,
+41,
+158,
+322,
+377
+]
+},
+"sl": {
+"avg": 2.9632,
+"n": 1197,
+"v": [
+76,
+256,
+501,
+364
+]
+}
+},
+"06A15504": {
+"m": 1,
+"id": 101559,
+"n": "212 VIP Black Elixir",
+"y": 2025,
+"p": [],
+"g": "for men",
+"f": "Oriental Fougere",
+"a": [
+[
+"vanilla",
+100,
+"#FFFEC0"
+],
+[
+"soft spicy",
+86.2,
+"#E27752"
+],
+[
+"sweet",
+67.7,
+"#ee363b"
+],
+[
+"lavender",
+67.3,
+"#9B7DB8"
+],
+[
+"balsamic",
+51.4,
+"#ad8359"
+],
+[
+"powdery",
+51,
+"#EEDDCC"
+],
+[
+"anis",
+46.4,
+"#c3d7b3"
+],
+[
+"aromatic",
+44.9,
+"#37a089"
+]
+],
+"t": [
+"Lavender"
+],
+"h": [
+"Black Licorice"
+],
+"b": [
+"Vanilla"
+],
+"o": [],
+"s": 4.2892,
+"r": 5,
+"c": 612,
+"u": "https://www.fragrantica.com/perfume/Carolina-Herrera/212-VIP-Black-Elixir-101559.html",
+"ap": 0,
+"se": {
+"winter": 381,
+"spring": 156,
+"summer": 47,
+"autumn": 338,
+"day": 89,
+"night": 383
+},
+"lg": {
+"avg": 3.7262,
+"n": 347,
+"v": [
+3,
+9,
+98,
+207,
+30
+]
+},
+"sl": {
+"avg": 2.3684,
+"n": 342,
+"v": [
+12,
+204,
+114,
+12
+]
+}
+},
+"06A17617": {
+"m": 1,
+"id": 53493,
+"n": "212 VIP Black Extra",
+"y": 2019,
+"p": [
+"Carlos Benaïm",
+"Juliette Karagueuzoglou"
+],
+"g": "for men",
+"f": "Oriental Fougere",
+"a": [
+[
+"warm spicy",
+100,
+"#CC3300"
+],
+[
+"coca-cola",
+93.8,
+"#7a2f14"
+],
+[
+"cacao",
+87.3,
+"#9a3a0d"
+],
+[
+"rum",
+70.2,
+"#AC2005"
+],
+[
+"lavender",
+69.0,
+"#9B7DB8"
+],
+[
+"citrus",
+63.0,
+"#F9FF52"
+],
+[
+"leather",
+54.2,
+"#78483A"
+],
+[
+"musky",
+53.1,
+"#E7D8EA"
+],
+[
+"aromatic",
+50.9,
+"#37a089"
+],
+[
+"woody",
+50.8,
+"#774414"
+]
+],
+"t": [
+"Coca-Cola",
+"Rum",
+"Grapefruit"
+],
+"h": [
+"Lavender",
+"Leather",
+"Moss"
+],
+"b": [
+"Cacao Pod",
+"Musk"
+],
+"o": [],
+"s": 4.3713,
+"r": 5,
+"c": 237,
+"u": "https://www.fragrantica.com/perfume/Carolina-Herrera/212-VIP-Black-Extra-53493.html",
+"ap": 1,
+"se": {
+"winter": 119,
+"spring": 72,
+"summer": 24,
+"autumn": 124,
+"day": 38,
+"night": 135
+},
+"lg": {
+"avg": 3.5179,
+"n": 168,
+"v": [
+11,
+9,
+45,
+88,
+15
+]
+},
+"sl": {
+"avg": 2.7404,
+"n": 208,
+"v": [
+17,
+63,
+85,
+43
+]
+}
 }
 }
