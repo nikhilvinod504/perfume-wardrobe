@@ -390,6 +390,7 @@ img.ld{animation:dfFade .4s ease}
 #dfd .stt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#dfd .stt>div{background:var(--chip);border-radius:8px;padding:10px 12px}#dfd .stt b{display:block;font:400 20px var(--display)}#dfd .stt span{font-size:12px;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
 #dfd .dnb{display:flex;height:30px;border-radius:6px;overflow:hidden;font-size:13px;font-weight:500}#dfd .dnb div{display:flex;align-items:center;justify-content:center}
 #dfd .sea{display:flex;flex-direction:column;gap:8px}#dfd .m2{display:grid;grid-template-columns:62px 1fr 40px;gap:10px;align-items:center;font-size:13px}#dfd .tk{height:10px;border-radius:99px;background:var(--line);overflow:hidden}#dfd .tk div{height:100%;border-radius:99px}#dfd .pc{color:var(--ink-soft);text-align:right;font-variant-numeric:tabular-nums}
+.wear{margin:10px 0 2px}.wear .wr{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.wear .wbtn{font:inherit;font-size:14px;color:var(--ink);background:none;border:1px solid var(--brass);border-radius:99px;padding:8px 16px;cursor:pointer}.wear .wbtn.on{background:var(--chip);color:var(--brass)}.wear .wm{font-size:13px;color:var(--ink-soft)}
 #dfd .sml{display:flex;flex-direction:column;gap:6px}#dfd .smr{display:flex;align-items:center;gap:10px;font:inherit;color:inherit;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;cursor:pointer;width:100%}#dfd .smi{flex:none;width:40px;height:50px;display:flex;align-items:center;justify-content:center}#dfd .smi img{max-width:40px;max-height:50px;border-radius:6px}#dfd .smt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}#dfd .smt b{font-weight:500;font-size:13.5px}#dfd .smt small{color:var(--ink-soft);font-size:12px}#dfd .smt em{font-style:normal;color:#3f8f5a;font-size:12px}#dfd .smp{font:400 16px var(--display);color:var(--brass)}
 #dfd .cmp{display:flex;flex-direction:column;gap:2px}#dfd .ch,#dfd .cr,#dfd .cr2{display:grid;grid-template-columns:70px 1fr 1fr;gap:10px;align-items:start}#dfd .ch{grid-template-columns:1fr 1fr;margin-bottom:8px}#dfd .ch>div{display:flex;flex-direction:column;gap:3px;min-width:0}#dfd .ch b{font-weight:500;font-size:14px}#dfd .ch small{color:var(--ink-soft);font-size:12px}#dfd .cph{height:110px;display:flex;align-items:center;justify-content:center}#dfd .cph img{max-width:90px;max-height:110px;border-radius:10px}
 #dfd .cr{padding:8px 0;border-top:1px solid var(--line);font-size:13.5px}#dfd .cr>span{color:var(--ink-soft);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding-top:2px}#dfd .cr b{font:400 19px var(--display)}#dfd .cr2{grid-template-columns:1fr 1fr}#dfd .cs{margin-top:10px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);padding-top:8px;border-top:1px solid var(--line)}
@@ -858,6 +859,14 @@ const COLLECTIONS={
 };
 let MOVES={};try{MOVES=JSON.parse(localStorage.getItem("wardrobe-moves")||"{}")||{}}catch(e){MOVES={}}
 function saveMoves(){try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES))}catch(e){}if(typeof syncPush==="function")syncPush()}
+let WEAR={};try{WEAR=JSON.parse(localStorage.getItem("wardrobe-wear")||"{}")||{}}catch(e){WEAR={}}
+function saveWear(){try{localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR))}catch(e){}if(typeof syncPush==="function")syncPush()}
+const todayS=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const dAgo=s=>Math.round((Date.parse(todayS()+"T00:00:00")-Date.parse(s+"T00:00:00"))/864e5);
+const lastWorn=id=>{const a=WEAR[id];return a&&a.length?a[a.length-1]:null};
+function toggleWear(id){const t=todayS(),a=(WEAR[id]||[]).slice();const i=a.indexOf(t);if(i>=0)a.splice(i,1);else{a.push(t);a.sort()}if(a.length)WEAR[id]=a.slice(-400);else delete WEAR[id];saveWear()}
+function wearHtml(p){if(active==="wishlist"||MOVES[p.id]&&active==="wishlist")return '';const a=WEAR[p.id]||[],t=todayS(),on=a.indexOf(t)>=0,lw=lastWorn(p.id);const meta=a.length?('Worn '+a.length+(a.length===1?' time':' times')+' \u00b7 last '+(dAgo(lw)===0?'today':dAgo(lw)===1?'yesterday':dAgo(lw)+' days ago')):'Not logged yet';
+ return '<section class="wear"><div class="wr"><button type="button" class="wbtn'+(on?' on':'')+'" data-wear="'+p.id+'">'+(on?'\u2713 Worn today':'Wore it today')+'</button><span class="wm">'+meta+'</span></div></section>'}
 let SHARE={};try{SHARE=JSON.parse(localStorage.getItem("wardrobe-share")||"{}")||{}}catch(e){SHARE={}}
 function saveShare(){try{localStorage.setItem("wardrobe-share",JSON.stringify(SHARE))}catch(e){}if(typeof syncPush==="function")syncPush()}
 const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
@@ -937,7 +946,8 @@ async function remotePut(rows){
 function desired(){const d={};
  Object.keys(MOVES).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["move:"+id]=MOVES[id]});
  Object.keys(SHARE).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["share:"+id]=SHARE[id]});
- Object.keys(ORDER).forEach(c=>{d["order:"+c]=ORDER[c]});return d}
+ Object.keys(ORDER).forEach(c=>{d["order:"+c]=ORDER[c]});
+ Object.keys(WEAR).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id)&&WEAR[id].length)d["wear:"+id]=WEAR[id]});return d}
 function syncPush(){if(REMOTE===null)return;clearTimeout(pushT);pushT=setTimeout(async()=>{
  const d=desired(),rows=[];
  Object.keys(d).forEach(k=>{if(JSON.stringify(REMOTE[k])!==JSON.stringify(d[k]))rows.push({key:k,value:d[k],updated_at:new Date().toISOString()})});
@@ -948,16 +958,17 @@ function setSt(t){const e=document.getElementById('syncst');if(e)e.textContent=t
 async function syncPull(first){
  try{const rows=await remoteGet(),R={};rows.forEach(x=>{R[x.key]=x.value});
   const prev=REMOTE;REMOTE=R;
-  const m={},sh={},o={};
+  const m={},sh={},o={},wr={};
   Object.keys(R).forEach(k=>{const v=R[k];if(v===null)return;const i=k.indexOf(":"),t=k.slice(0,i),id=k.slice(i+1);
-   if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v});
+   if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v;else if(t==="wear"&&Array.isArray(v))wr[id]=v});
   if(first){/* keep local-only entries (they get pushed) */
    Object.keys(MOVES).forEach(id=>{if(!("move:"+id in R))m[id]=MOVES[id]});
    Object.keys(SHARE).forEach(id=>{if(!("share:"+id in R))sh[id]=SHARE[id]});
-   Object.keys(ORDER).forEach(c=>{if(!("order:"+c in R))o[c]=ORDER[c]})}
-  const changed=JSON.stringify([m,sh,o])!==JSON.stringify([MOVES,SHARE,ORDER]);
-  MOVES=m;SHARE=sh;ORDER=o;
-  try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES));localStorage.setItem("wardrobe-share",JSON.stringify(SHARE));localStorage.setItem("wardrobe-order",JSON.stringify(ORDER))}catch(e){}
+   Object.keys(ORDER).forEach(c=>{if(!("order:"+c in R))o[c]=ORDER[c]});
+   Object.keys(WEAR).forEach(id=>{if(!("wear:"+id in R))wr[id]=WEAR[id];else wr[id]=Array.from(new Set((wr[id]||[]).concat(WEAR[id]))).sort()})}
+  const changed=JSON.stringify([m,sh,o,wr])!==JSON.stringify([MOVES,SHARE,ORDER,WEAR]);
+  MOVES=m;SHARE=sh;ORDER=o;WEAR=wr;
+  try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES));localStorage.setItem("wardrobe-share",JSON.stringify(SHARE));localStorage.setItem("wardrobe-order",JSON.stringify(ORDER));localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR))}catch(e){}
   if(changed&&!document.querySelector(".sheet.on"))build();
   setSt('Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(IN_ART()?' (via connector)':''));syncPush()}catch(e){setSt('Sync off: '+((e&&(e.code||e.message))||'error'))}}
 const PER_SHELF=4, MIN_SHELVES=1;
@@ -1125,7 +1136,7 @@ function open(p){window.__curId=p.id;
   $("#sheetIn").innerHTML=
    '<button class="close" id="close" aria-label="Close">✕</button>'+
    '<div class="hd"><img src="'+p.img+'" alt="'+esc(p.name)+' bottle"><div><h2 id="sheetTitle">'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+esc(p.gender)+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</div>'+(p.rating==null?'<div class="rate"><span class="votes">No community rating yet</span></div>':'<div class="rate"><b>'+Number(p.rating).toFixed(1)+'</b><span class="stars">'+stars(p.rating)+'</span><span class="votes">('+p.votes.toLocaleString("en-IN")+')</span></div>')+'</div></div>'+
-   mvHtml(p)+priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
+   mvHtml(p)+wearHtml(p)+priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
    '<section><h3>Notes</h3><p class="hint2">Tap a note to see how it smells.</p><div class="notes">'+notes+'</div></section>'+
    pyrHtml(p)+
    '<section><h3>Fragrance profile</h3><div class="stats"><div class="stat"><b>'+esc(p.longevity)+'</b><span>Longevity</span></div><div class="stat"><b>'+esc(p.sillage)+'</b><span>Sillage</span></div></div></section>'+
@@ -1134,7 +1145,7 @@ function open(p){window.__curId=p.id;
    lySection(p)+
    '<div class="src">'+(p.est?'This bottle is not on Fragrantica, so there is no community rating. Notes are from its pack; accords, longevity, day and season figures are estimated from the notes.':'Notes and ratings read from the Fragrantica card; percentages are estimated from bar lengths.')+'</div>';
   $("#sheetIn").insertAdjacentHTML("afterbegin",mistHtml(p));tilt.lg=tilt.lb=null;tilt.x=tilt.y=0;
-  $("#sheetIn").onclick=function(e){const bb=e.target.closest(".ly .ab-b");if(!bb)return;const q=list().find(x=>x.id===bb.dataset.id);if(!q)return;const had=$("#sheetIn .back");open(q);if(had){const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1])}$("#sheet").scrollTop=0};
+  $("#sheetIn").onclick=function(e){const wb=e.target.closest("[data-wear]");if(wb){toggleWear(wb.dataset.wear);const q=list().find(x=>x.id===wb.dataset.wear);if(q){const y=$("#sheet").scrollTop;open(q);$("#sheet").scrollTop=y}return}const bb=e.target.closest(".ly .ab-b");if(!bb)return;const q=list().find(x=>x.id===bb.dataset.id);if(!q)return;const had=$("#sheetIn .back");open(q);if(had){const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1])}$("#sheet").scrollTop=0};
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
   $("#close").onclick=shut;$("#close").focus();
 }
@@ -1179,6 +1190,13 @@ function suggest(L){
   res.sort((p,q)=>q.fit-p.fit);
   return{top:res,picks:L.slice(0,5)};
 }
+function wearAbout(L){if(active==="wishlist")return '';const rows=L.map(p=>({p,a:WEAR[p.id]||[]}));const tot=rows.reduce((t,r)=>t+r.a.length,0);const cut=dAgo.bind(null);
+ const nm=p=>esc(p.short.join(" ").trim());
+ if(!tot)return '<section><h3>Wear log</h3><p class="ab-sub">Open a bottle and tap <b>Wore it today</b> to start tracking. This shows your most-worn bottles and the ones gathering dust.</p></section>';
+ const top=rows.filter(r=>r.a.length).sort((x,y)=>y.a.length-x.a.length).slice(0,5),mx=top[0].a.length;
+ const idle=rows.map(r=>({p:r.p,d:r.a.length?dAgo(r.a[r.a.length-1]):null})).filter(r=>r.d===null||r.d>=45).sort((x,y)=>(x.d===null?9999:x.d)-(y.d===null?9999:y.d)).reverse().slice(0,6);
+ const last30=rows.reduce((t,r)=>t+r.a.filter(x=>dAgo(x)<=30).length,0);
+ return '<section><h3>Wear log</h3><p class="ab-sub">'+tot+' wears logged \u00b7 '+last30+' in the last 30 days.</p><div class="ab-list">'+top.map(r=>'<div class="ab-row"><span>'+nm(r.p)+'</span><div class="t"><i style="width:'+Math.round(100*r.a.length/mx)+'%;background:var(--brass)"></i></div><span class="v">'+r.a.length+'</span></div>').join("")+'</div>'+(idle.length?'<h3 style="margin-top:16px">Gathering dust</h3><div class="ab-list">'+idle.map(r=>'<div class="ab-row"><span>'+nm(r.p)+'</span><div></div><span class="v">'+(r.d===null?'never':r.d+' d')+'</span></div>').join("")+'</div><div class="src">Bottles not worn in 45+ days, or never logged.</div>':'')+'</section>'}
 function openAbout(){
   const L=list(),n=L.length;
   if(!n){$("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">\u2715</button><div><h3 id="sheetTitle">About '+COLLECTIONS[active].name+'</h3><p class="ab-read">Nothing here yet. Add a few perfumes and this fills in.</p></div>';$("#sheet").classList.add("on");$("#scrim").classList.add("on");$("#close").onclick=shut;return}
@@ -1216,7 +1234,7 @@ function openAbout(){
   $("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">✕</button>'+
    '<div><h3 id="sheetTitle">About '+COLLECTIONS[active].name+'</h3><p class="ab-read">'+esc(read)+'</p></div>'+
    '<button type="button" class="ab-val" id="abval">Wardrobe worth</button>'+
-   '<section><h3>Scent families</h3><div class="ab-list">'+fams.map((f,i)=>row(f[0],pct(f[1],accSum),["#c9a24b","#d9622b","#e07a9a","#7a4513","#b3402a"][i%5],pct(f[1],accSum)+"%","f:"+f[0])).join("")+'</div></section>'+
+   wearAbout(L)+'<section><h3>Scent families</h3><div class="ab-list">'+fams.map((f,i)=>row(f[0],pct(f[1],accSum),["#c9a24b","#d9622b","#e07a9a","#7a4513","#b3402a"][i%5],pct(f[1],accSum)+"%","f:"+f[0])).join("")+'</div></section>'+
    '<section><h3>Most-owned notes</h3><div class="ab-notes">'+notes.map(k=>'<button type="button" class="ab-n" data-g="n:'+esc(k[0])+'">'+(NOTE_IMG[k[0]]?'<img src="data:image/webp;base64,'+NOTE_IMG[k[0]]+'" alt="">':'<div class="ph"></div>')+'<span>'+esc(k[0])+'</span><em>'+k[1]+'/'+n+'</em></button>').join("")+'</div><div class="src">Counted across top, heart and base notes. Bottles containing the note, out of '+n+'.</div></section>'+
    '<section><h3>Signature accords</h3><div class="ab-list">'+accs.map(a=>row(a[0],pct(a[1],accSum),ACC[a[0]]||"#8a6a4a",pct(a[1],accSum)+"%","a:"+a[0])).join("")+'</div><div class="src">Tap any row, note or card to see its bottles. Each accord is its share of the combined strength of all accords across '+n+' bottles; on a bottle it is that accord\u2019s share of that bottle.</div></section>'+
    '<section><h3>When you wear them</h3><div class="dn"><div data-g="d:day" style="width:'+day+'%;background:#b3dcfb;color:#1e3a52">Day '+day+'%</div><div data-g="d:night" style="width:'+(100-day)+'%;background:#80838d;color:#fff">Night '+(100-day)+'%</div></div><div class="ab-list" style="margin-top:12px">'+sea.map(k=>row(k[0],k[1],sc[k[0]],k[1]+"%","s:"+k[0])).join("")+'</div><div class="src">Strongest in '+best[0].toLowerCase()+', weakest in '+lowest[0].toLowerCase()+'.</div></section>'+
