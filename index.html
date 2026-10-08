@@ -466,7 +466,7 @@ img.ld{animation:dfFade .4s ease}
 #dfv .ddm input.mnq{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:7px 12px;border-radius:99px}
 #dfv .ddm .mft{position:sticky;bottom:0;background:var(--card);padding:6px 2px 2px;display:flex;gap:6px;justify-content:flex-end;border-top:1px solid var(--line);margin-top:4px}
 #dfv .ddm .mo button[aria-selected="true"]{background:var(--chip)}
-#dfv .dd[data-k=note] .ddm,#dfv .dd[data-k=gen] .ddm,#dfv .dd[data-k=brand] .ddm,#dfv .dd[data-k=show] .ddm{min-width:min(280px,86vw)}
+#dfv .dd[data-k=note] .ddm,#dfv .dd[data-k=gen] .ddm,#dfv .dd[data-k=brand] .ddm,#dfv .dd[data-k=show] .ddm{min-width:210px;max-width:calc(100vw - 24px)}
 #dfv .ddm .mn{font-size:12.5px;color:var(--ink-soft);padding:8px 12px}
 </style>
 </head>
@@ -953,7 +953,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   if(multi)h+='<div class="mft"><button type="button" class="mbt" data-clear="1">Clear</button><button type="button" class="mbt go" data-done="1">Done</button></div>';
   const keep=m.scrollTop;m.innerHTML=h;if(!fresh)m.scrollTop=keep}
  function openMenu(d){const k=d.dataset.k,m=d.querySelector(".ddm"),b=d.querySelector(".dsel"),was=!m.hidden;closeAll();if(was)return;
-  if(k!=="note")st.nq="";renderMenu(d,true);m.hidden=false;b.setAttribute("aria-expanded","true");const sel=m.querySelector('.mo [aria-selected="true"]');if(sel&&k==="brand")m.scrollTop=Math.max(0,sel.offsetTop-60)}
+  if(k!=="note")st.nq="";renderMenu(d,true);m.hidden=false;m.style.left="";m.style.right="";(function(){const an=m.style.animation;m.style.animation="none";const W=document.documentElement.clientWidth;for(let n=0;n<2;n++){const r=m.getBoundingClientRect();let dx=0;if(r.right>W-10)dx=W-10-r.right;if(r.left+dx<10)dx=10-r.left;if(!dx)break;m.style.right="auto";m.style.left=(m.offsetLeft+dx)+"px"}m.style.animation=an})();b.setAttribute("aria-expanded","true");const sel=m.querySelector('.mo [aria-selected="true"]');if(sel&&k==="brand")m.scrollTop=Math.max(0,sel.offsetTop-60)}
  function open(){document.getElementById("dfsub").textContent="Mumbai airport · as of "+DFALL.asOf+(window.__offTxt?" · "+window.__offTxt:"");draw();document.getElementById("dfv").classList.add("on");document.body.style.overflow="hidden"}
  function close(){CMP=null;try{cmpBar()}catch(e){}closeAll();document.getElementById("dfv").classList.remove("on");document.body.style.overflow=""}
  document.getElementById("wmenu").addEventListener("click",e=>{const o=e.target.closest("button[data-df]");if(!o)return;e.stopPropagation();document.getElementById("wmenu").hidden=true;document.getElementById("wsel").setAttribute("aria-expanded","false");open()});
