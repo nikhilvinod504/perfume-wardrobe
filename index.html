@@ -446,6 +446,14 @@ img.ld{animation:dfFade .4s ease}
 .bkt{display:flex;flex-direction:column;gap:12px}.bkt h3{margin:0;font:400 22px var(--display)}.bkt p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.45}
 .bkb{display:flex;flex-wrap:wrap;gap:10px}.bkb input[type=file]{display:none}
 .bkt .msg{font-size:13.5px;color:var(--brass)}
+.tools{flex-wrap:wrap;gap:5px}
+.tools .sel{flex:none}.tools .sel>span{display:block;width:54px;white-space:normal;line-height:1.1;text-align:left;font-size:9px;letter-spacing:.02em}
+.tools .sel .dd #wsel,.tools #wsel{padding-left:10px;padding-right:8px}
+.tools .valbtn{padding:6px 9px;font-size:11.5px;letter-spacing:0;flex:none}
+@media (max-width:350px){.tools .valbtn{padding:6px 8px;font-size:11px}}
+.fnc.sl button{background:var(--brass);border-color:var(--brass);color:#2a1b16}
+.fnc.sl button::after{content:" \2715";font-size:11px;opacity:.7}
+.fnr .fr small b{display:inline;font-weight:500;color:var(--brass);font-size:12px}
 </style>
 </head>
 <body>
@@ -922,6 +930,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  document.getElementById("wmenu").addEventListener("click",e=>{const o=e.target.closest("button[data-df]");if(!o)return;e.stopPropagation();document.getElementById("wmenu").hidden=true;document.getElementById("wsel").setAttribute("aria-expanded","false");open()});
  window.__dfShow=c=>showD(c);
  window.__dfNote=function(term,max){term=String(term||"").trim().toLowerCase();if(!term)return[];const out=[];DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m)return;const hit=nl(i).some(n=>n.indexOf(term)>=0);if(hit&&!isGone(r))out.push({c:r[0],name:r[1],brand:r[2],price:r[5],img:iu(r[0]),pm:(()=>{const f=facts(r[1]);return f.sz?r[5]/f.sz:0})(),s:i.s})});out.sort((x,y)=>(y.s||0)-(x.s||0));return out.slice(0,max||40)};
+ window.__dfNotes=function(terms,max){terms=terms.map(t=>String(t).trim().toLowerCase()).filter(Boolean);if(!terms.length)return[];const out=[];DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m||isGone(r))return;const ns=nl(i);const got=terms.filter(t=>ns.some(n=>n.indexOf(t)>=0));if(got.length)out.push({c:r[0],name:r[1],brand:r[2],price:r[5],img:iu(r[0]),pm:(()=>{const f=facts(r[1]);return f.sz?r[5]/f.sz:0})(),s:i.s,n:got.length,got})});out.sort((x,y)=>(y.n-x.n)||((y.s||0)-(x.s||0)));return out.slice(0,max||60)};
  window.__dfNoteNames=function(){const m={};DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m)return;nl(i).forEach(n=>{m[n]=(m[n]||0)+1})});return m};
  window.__dfInr=inr;
  document.getElementById("dfx").onclick=close;
@@ -1559,23 +1568,36 @@ function sheetOpen(h){$("#sheetIn").innerHTML='<button class="close" id="close" 
 function plug(n){try{const C=window.Capacitor;if(!C)return null;if(C.registerPlugin)return C.registerPlugin(n);if(C.Plugins&&C.Plugins[n])return C.Plugins[n]}catch(e){}return null}
 /* ---- Find by note ---- */
 function allNotes(){const m={};lyPool().forEach(o=>{const seen=new Set();o.p.notes.concat((PYR[o.p.id]&&[].concat(PYR[o.p.id].top||[],PYR[o.p.id].mid||[],PYR[o.p.id].base||[]))||[]).forEach(n=>{const k=String(n).trim().toLowerCase();if(k&&!seen.has(k)){seen.add(k);m[k]=(m[k]||0)+1}})});return m}
-function mine(term){const t=term.toLowerCase();return lyPool().map(o=>{const ns=o.p.notes.concat((PYR[o.p.id]&&[].concat(PYR[o.p.id].top||[],PYR[o.p.id].mid||[],PYR[o.p.id].base||[]))||[]);const hit=[...new Set(ns.filter(n=>String(n).toLowerCase().indexOf(t)>=0))];return hit.length?{o,hit}:null}).filter(Boolean)}
+function mine(terms){return lyPool().map(o=>{const ns=o.p.notes.concat((PYR[o.p.id]&&[].concat(PYR[o.p.id].top||[],PYR[o.p.id].mid||[],PYR[o.p.id].base||[]))||[]).map(n=>String(n).toLowerCase());const got=terms.filter(t=>ns.some(n=>n.indexOf(t)>=0));return got.length?{o,got,n:got.length}:null}).filter(Boolean).sort((x,y)=>y.n-x.n)}
 function openFind(q0){
- sheetOpen('<div class="fnh"><h3>Find by note</h3><input type="search" id="fnq" placeholder="Try oud, vanilla, bergamot\u2026" autocomplete="off" autocapitalize="none"><div class="fnc" id="fnc"></div></div><div class="fnr" id="fnr"></div>');
- const q=$("#fnq"),chips=$("#fnc"),res=$("#fnr");
+ sheetOpen('<div class="fnh"><h3>Find by note</h3><input type="search" id="fnq" placeholder="Pick one or more notes\u2026" autocomplete="off" autocapitalize="none"><div class="fnc sl" id="fns"></div><div class="fnc" id="fnc"></div></div><div class="fnr" id="fnr"></div>');
+ const q=$("#fnq"),chips=$("#fnc"),selEl=$("#fns"),res=$("#fnr");let SEL=[];
  let own=allNotes();try{const d=window.__dfNoteNames&&window.__dfNoteNames();if(d)for(const k in d)own[k]=(own[k]||0)}catch(e){}
- function sugg(t){const base=t?Object.keys(own).filter(k=>k.indexOf(t)>=0):Object.keys(own);return base.sort((a,b)=>(own[b]-own[a])||a.localeCompare(b)).slice(0,t?10:14)}
- function paint(){const t=q.value.trim().toLowerCase();chips.innerHTML=sugg(t).map(k=>'<button type="button" data-n="'+E(k)+'"'+(k===t?' class="on"':'')+'>'+E(k)+'</button>').join("");
-  if(!t){res.innerHTML='<div class="nb2">Type a note, or tap one above. You\u2019ll see which of your perfumes have it, and what the duty free list has.</div>';return}
-  const m=mine(t);let h='<h4>In your wardrobes ('+m.length+')</h4>';
-  h+=m.length?m.map(({o,hit},i)=>'<button type="button" class="fr" data-id="'+o.p.id+'" style="animation-delay:'+Math.min(i,10)*30+'ms"><span class="fi"><img alt="" src="'+o.p.img+'"></span><span class="ft"><b>'+E(sname(o.p))+'</b><small>'+E(o.who)+' \u00b7 '+E(hit.slice(0,3).join(", "))+'</small></span></button>').join(""):'<div class="nb2">None of your perfumes list this note.</div>';
-  let d=[];try{d=window.__dfNote?window.__dfNote(t,30):[]}catch(e){}
-  if(d.length||window.__dfNote){h+='<h4>In the duty free list ('+d.length+(d.length>=30?'+':'')+')</h4>';
-   h+=d.length?d.map((x,i)=>'<button type="button" class="fr" data-c="'+E(x.c)+'" style="animation-delay:'+Math.min(i,10)*30+'ms"><span class="fi">'+(x.img?'<img alt="" loading="lazy" referrerpolicy="no-referrer" src="'+E(x.img)+'" onerror="imgFail(this,\'e\')">':'')+'</span><span class="ft"><b>'+E(x.name)+'</b><small>'+E(x.brand)+(x.pm?' \u00b7 '+window.__dfInr(Math.round(x.pm))+'/ml':'')+(x.s!=null?' \u00b7 '+Number(x.s).toFixed(1)+'\u2605':'')+'</small></span><span class="fp">'+window.__dfInr(x.price)+'</span></button>').join(""):'<div class="nb2">No duty free match (details load once the app is online).</div>'}
+ function sugg(t){const base=t?Object.keys(own).filter(k=>k.indexOf(t)>=0):Object.keys(own);return base.filter(k=>SEL.indexOf(k)<0).sort((a,b)=>(own[b]-own[a])||a.localeCompare(b)).slice(0,t?10:14)}
+ const row=(x,i)=>x;
+ function paint(){const t=q.value.trim().toLowerCase();
+  selEl.innerHTML=SEL.map(k=>'<button type="button" data-r="'+E(k)+'">'+E(k)+'</button>').join("");selEl.style.display=SEL.length?"":"none";
+  chips.innerHTML=sugg(t).map(k=>'<button type="button" data-n="'+E(k)+'">'+E(k)+'</button>').join("");
+  const terms=SEL.slice();if(t&&terms.indexOf(t)<0&&!sugg(t).length===false)terms.push(t);
+  if(!terms.length){res.innerHTML='<div class="nb2">Choose one note, or several to find perfumes that combine them. Your own perfumes and the duty free list are both searched.</div>';return}
+  const m=mine(terms),N=terms.length,all=m.filter(x=>x.n===N),part=m.filter(x=>x.n<N&&x.n>=Math.max(1,N-1)&&N>1);
+  const mr=(x,i)=>'<button type="button" class="fr" data-id="'+x.o.p.id+'" style="animation-delay:'+Math.min(i,10)*30+'ms"><span class="fi"><img alt="" src="'+x.o.p.img+'"></span><span class="ft"><b>'+E(sname(x.o.p))+'</b><small>'+E(x.o.who)+' \u00b7 '+(N>1&&x.n<N?'<b>'+x.n+' of '+N+'</b> \u00b7 ':'')+E(x.got.join(", "))+'</small></span></button>';
+  let h='<h4>In your wardrobes \u00b7 '+(N>1?'has all '+N+' ('+all.length+')':'('+m.length+')')+'</h4>';
+  h+=(N>1?all:m).length?(N>1?all:m).map(mr).join(""):'<div class="nb2">'+(N>1?'None of your perfumes have all of these together.':'None of your perfumes list this note.')+'</div>';
+  if(part.length){h+='<h4>Close: '+(N-1)+' of '+N+' ('+part.length+')</h4>'+part.slice(0,12).map(mr).join("")}
+  let d=[];try{d=window.__dfNotes?window.__dfNotes(terms,80):[]}catch(e){}
+  const dall=N>1?d.filter(x=>x.n===N):d,dpart=N>1?d.filter(x=>x.n===N-1):[];
+  const dr=(x,i)=>'<button type="button" class="fr" data-c="'+E(x.c)+'" style="animation-delay:'+Math.min(i,10)*30+'ms"><span class="fi">'+(x.img?'<img alt="" loading="lazy" referrerpolicy="no-referrer" src="'+E(x.img)+'" onerror="imgFail(this,\'e\')">':'')+'</span><span class="ft"><b>'+E(x.name)+'</b><small>'+E(x.brand)+(x.pm?' \u00b7 '+window.__dfInr(Math.round(x.pm))+'/ml':'')+(x.s!=null?' \u00b7 '+Number(x.s).toFixed(1)+'\u2605':'')+(N>1&&x.n<N?' \u00b7 <b>'+x.n+' of '+N+'</b>':'')+'</small></span><span class="fp">'+window.__dfInr(x.price)+'</span></button>';
+  if(window.__dfNotes){h+='<h4>In the duty free list \u00b7 '+(N>1?'has all '+N+' ('+dall.length+')':'('+dall.length+')')+'</h4>';
+   h+=dall.length?dall.slice(0,30).map(dr).join(""):'<div class="nb2">'+(N>1?'No duty free perfume has all of these together.':'No duty free match (details load once the app is online).')+'</div>';
+   if(dpart.length)h+='<h4>Close: '+(N-1)+' of '+N+' ('+dpart.length+')</h4>'+dpart.slice(0,12).map(dr).join("")}
   res.innerHTML=h}
- q.oninput=paint;chips.onclick=e=>{const b=e.target.closest("button[data-n]");if(!b)return;q.value=b.dataset.n;paint()};
+ q.oninput=paint;
+ q.onkeydown=e=>{if(e.key==="Enter"){const t=q.value.trim().toLowerCase();if(!t)return;const s0=sugg(t);const pick=s0.indexOf(t)>=0?t:s0[0];if(pick&&SEL.indexOf(pick)<0){SEL.push(pick);q.value="";paint()}e.preventDefault()}};
+ chips.onclick=e=>{const b=e.target.closest("button[data-n]");if(!b)return;if(SEL.indexOf(b.dataset.n)<0)SEL.push(b.dataset.n);q.value="";paint();try{q.focus({preventScroll:true})}catch(er){}};
+ selEl.onclick=e=>{const b=e.target.closest("button[data-r]");if(!b)return;SEL=SEL.filter(x=>x!==b.dataset.r);paint()};
  res.onclick=e=>{const b=e.target.closest("button.fr");if(!b)return;if(b.dataset.id){const p=PERFUMES.find(x=>x.id===b.dataset.id);if(p)open(p)}else if(b.dataset.c&&window.__dfShow)window.__dfShow(b.dataset.c)};
- if(q0)q.value=q0;paint();if(!q0)setTimeout(()=>{try{q.focus()}catch(e){}},350)}
+ if(q0){SEL=[String(q0).toLowerCase()]}paint();if(!q0)setTimeout(()=>{try{q.focus()}catch(e){}},350)}
 $("#findbtn").onclick=()=>openFind();
 /* tapping a note on a card can also look it up: long-press not needed, exposed for later */
 window.openFind=openFind;
