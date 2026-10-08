@@ -359,7 +359,6 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 @keyframes dfPop{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:none}}
 @keyframes dfRise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 @keyframes dfShim{0%{background-position:-120px 0}100%{background-position:240px 0}}
-#dfd{animation:dfFade .22s ease}
 #dfd.out{animation:dfBg .2s ease forwards}#dfd.out .pn{animation:dfOut .2s ease forwards}
 #dfd .pn.drag{animation:none;transition:none}#dfd .pn.snap{animation:none;transition:transform .25s cubic-bezier(.2,.9,.3,1)}
 #dfd .ar b{animation:dfWipe .7s cubic-bezier(.2,.8,.2,1) both}
@@ -730,7 +729,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   const f={disc:(a,b)=>off(b)-off(a)||a[5]-b[5],lo:(a,b)=>a[5]-b[5],hi:(a,b)=>b[5]-a[5],az:(a,b)=>a[1].localeCompare(b[1])}[st.sort];return L.sort(f)}
 
  let DFI={};let NMAP={base:"",map:{}};
- try{fetch("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/note_map.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.map)NMAP=j}).catch(()=>{})}catch(e){}
+ try{fetch("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/note_map.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.map){NMAP=j;try{const ids=[...new Set(Object.values(j.map))];let k=0;const go=()=>{for(let n=0;n<4&&k<ids.length;n++){const im=new Image();im.src=j.base+ids[k++]+".webp"}if(k<ids.length)setTimeout(go,120)};setTimeout(go,4000)}catch(e){}try{const d=document.getElementById("dfd");if(d&&d.classList.contains("on")&&window.__dfCur)showD(window.__dfCur)}catch(e){}}}).catch(()=>{})}catch(e){}
  try{fetch("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/enrich/progress.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.total&&j.done<j.total){const e=document.getElementById("dfprog");if(e){e.innerHTML="Loading perfume details: "+j.done+" of "+j.total+' ('+Math.round(100*j.done/j.total)+'%)<div class="bar"><i style="width:'+(100*j.done/j.total)+'%"></i></div>';e.hidden=false}}}).catch(()=>{})}catch(e){}
  try{fetch("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/dutyfree_info.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.ok?r.json():null).then(j=>{if(j&&j.items)DFI=j.items}).catch(()=>{})}catch(e){}
  const rowOf=c=>ALL().find(r=>r[0]===c);
@@ -742,7 +741,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  const SCOL={Winter:"#5aa0e0",Spring:"#7cc552",Summer:"#f0b030",Autumn:"#d9622b"};
  const LNG=["Very weak","Weak","Moderate","Long lasting","Eternal"],SIL=["Intimate","Moderate","Strong","Enormous"];
  const nimg=n=>{try{return NOTE_IMG[n]||NOTE_IMG[String(n).replace(/\b\w/g,x=>x.toUpperCase())]||""}catch(e){return ""}};
- function showD(c){const r=rowOf(c);if(!r)return;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
+ function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
   const where=r[6]==="AD"?"Arrivals and departure":r[6]==="A"?"Arrivals only":"Departure only";
   const rt=has&&i.s!=null?Number(i.s):null,rmax=has&&i.r?i.r:10,stars5=rt==null?"":(()=>{const k=Math.round(rt/rmax*5);return "★".repeat(k)+"☆".repeat(5-k)})();
   let h='<button class="px" id="dfpx" type="button" aria-label="Close">✕</button><div class="gr"></div><div class="hd"><div class="im">'+(u?'<img alt="" referrerpolicy="no-referrer" src="'+u+'" onerror="this.parentNode.remove()">':'')+'</div><div><h3>'+esc(r[1])+'</h3><div class="sb">'+esc(r[2])+' · '+esc(r[3])+(has&&i.y?' · '+i.y:'')+'</div>'+(rt!=null?'<div class="rt"><b>'+rt.toFixed(1)+'</b><span class="st">'+stars5+'</span>'+(i.c?'<span class="vt">('+Number(i.c).toLocaleString("en-IN")+')</span>':'')+'</div>':'')+'</div></div>';
@@ -754,7 +753,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
    const kv=(i.f?'<span>Family</span><span>'+esc(i.f.replace(/ \/ $/,""))+'</span>':'')+(i.p&&i.p.length?'<span>Perfumer</span><span>'+esc(i.p.join(", "))+'</span>':'');if(kv)h+='<h4>About this perfume</h4><div class="kv">'+kv+'</div>';
    if(i.a&&i.a.length){if(Array.isArray(i.a[0]))h+='<h4>Main accords</h4><div class="ab">'+i.a.map(x=>{const w=Math.max(10,Math.min(100,Math.round(x[1]||0))),cl=/^#[0-9a-f]{3,8}$/i.test(x[2]||"")?x[2]:"#b08a4a";const hx=cl.replace("#","").replace(/^(.)(.)(.)$/,"$1$1$2$2$3$3"),lum=(parseInt(hx.slice(0,2),16)*.299+parseInt(hx.slice(2,4),16)*.587+parseInt(hx.slice(4,6),16)*.114),tc=lum>150?"color:#2a1b16;text-shadow:none":"";return '<div class="ar"><b style="width:'+w+'%;background:'+cl+';'+tc+'">'+esc(x[0])+'</b></div>'}).join("")+'</div>';else h+='<h4>Main accords</h4><div class="pl">'+list(i.a)+'</div>'}
    const all=[].concat(i.t||[],i.h||[],i.b||[],i.o||[]).filter((n,k,a)=>a.indexOf(n)===k);
-   if(all.length)h+='<h4>Notes</h4><div class="nts">'+all.map(n=>{const im=nimg(n);return '<div class="nn">'+(im?'<img alt="" src="data:image/webp;base64,'+im+'">':(NMAP.map[n]||NMAP.map[String(n).trim()]?'<img alt="" loading="lazy" onerror="this.outerHTML=\'<span class=ni></span>\'" src="'+NMAP.base+(NMAP.map[n]||NMAP.map[String(n).trim()])+'.webp">':'<span class="ni"></span>'))+esc(n)+'</div>'}).join("")+'</div>';
+   if(all.length)h+='<h4>Notes</h4><div class="nts">'+all.map(n=>{const im=nimg(n);return '<div class="nn">'+(im?'<img alt="" src="data:image/webp;base64,'+im+'">':(NMAP.map[n]||NMAP.map[String(n).trim()]?'<img alt="" decoding="async" onerror="this.outerHTML=\'<span class=ni></span>\'" src="'+NMAP.base+(NMAP.map[n]||NMAP.map[String(n).trim()])+'.webp">':'<span class="ni"></span>'))+esc(n)+'</div>'}).join("")+'</div>';
    const T=[["Top",i.t],["Heart",i.h],["Base",i.b],["Also",i.o]].filter(x=>x[1]&&x[1].length);
    if(T.length&&(i.t&&i.t.length||i.h&&i.h.length||i.b&&i.b.length))h+='<h4>Note pyramid</h4><div class="py">'+T.map(x=>'<div class="tr"><b>'+x[0]+'</b><div>'+x[1].map(n=>'<span>'+esc(n)+'</span>').join("")+'</div></div>').join("")+'</div>';
    const lg=i.lg&&i.lg.avg!=null?LNG[Math.max(0,Math.min(4,Math.round(i.lg.avg)-1))]:"",sl=i.sl&&i.sl.avg!=null?SIL[Math.max(0,Math.min(3,Math.round(i.sl.avg)-1))]:"";
@@ -767,7 +766,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   h+='<div class="ac">'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(has&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div>';
   document.getElementById("dfp").innerHTML=h;document.getElementById("dfd").classList.add("on");document.getElementById("dfpx").onclick=closeD;document.getElementById("dfp").scrollTop=0;
   const ob=document.getElementById("dfown");if(ob)ob.onclick=()=>{closeD();close();try{const p=PERFUMES.find(x=>x.id===r[7]);if(p)window.open(p)}catch(e){}}}
- function closeD(){const d=document.getElementById("dfd");if(!d.classList.contains("on")||d.classList.contains("out"))return;d.classList.add("out");setTimeout(()=>{d.classList.remove("on","out");const pn=document.getElementById("dfp");pn.style.transform="";pn.classList.remove("drag","snap")},190)}
+ function closeD(){window.__dfCur=null;const d=document.getElementById("dfd");if(!d.classList.contains("on")||d.classList.contains("out"))return;d.classList.add("out");setTimeout(()=>{d.classList.remove("on","out");const pn=document.getElementById("dfp");pn.style.transform="";pn.classList.remove("drag","snap")},190)}
  (function(){const pn=document.getElementById("dfp");if(!pn)return;let y0=null,dy=0;
   pn.addEventListener("touchstart",e=>{if(pn.scrollTop<=0&&e.touches.length===1){y0=e.touches[0].clientY;dy=0}else y0=null},{passive:true});
   pn.addEventListener("touchmove",e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy>0){pn.classList.add("drag");pn.classList.remove("snap");pn.style.transform="translateY("+dy*.9+"px)"}else if(pn.classList.contains("drag")){pn.style.transform=""}},{passive:true});
