@@ -1403,5 +1403,473 @@
 11
 ]
 }
+},
+"06C01231": {
+"m": 1,
+"id": 275,
+"n": "CK be",
+"y": 1996,
+"p": [
+"René Morgenthaler"
+],
+"g": "for women and men",
+"f": "Floral Woody Musk",
+"a": [
+[
+"green",
+100,
+"#0E8C1D"
+],
+[
+"aromatic",
+80.5,
+"#37a089"
+],
+[
+"woody",
+76.2,
+"#774414"
+],
+[
+"powdery",
+71.2,
+"#EEDDCC"
+],
+[
+"fresh spicy",
+70.9,
+"#83C928"
+],
+[
+"lavender",
+70.6,
+"#9B7DB8"
+],
+[
+"musky",
+65.6,
+"#E7D8EA"
+],
+[
+"citrus",
+62.7,
+"#F9FF52"
+],
+[
+"floral",
+62.0,
+"#FF5F8D"
+],
+[
+"sweet",
+48.5,
+"#ee363b"
+]
+],
+"t": [
+"Lavender",
+"Green Notes",
+"Bergamot",
+"Mint",
+"Juniper",
+"Mandarin Orange"
+],
+"h": [
+"Green Grass",
+"Jasmine",
+"Peach",
+"Freesia",
+"Magnolia",
+"Orchid"
+],
+"b": [
+"Musk",
+"Sandalwood",
+"Cedar",
+"Amber",
+"Vanilla",
+"Opoponax"
+],
+"o": [],
+"s": 3.8218,
+"r": 5,
+"c": 7268,
+"u": "https://www.fragrantica.com/perfume/Calvin-Klein/CK-be-275.html",
+"ap": 0,
+"se": {
+"winter": 906,
+"spring": 3049,
+"summer": 3156,
+"autumn": 1600,
+"day": 3483,
+"night": 1237
+},
+"lg": {
+"avg": 2.3659,
+"n": 4026,
+"v": [
+746,
+1427,
+1554,
+232,
+67
+]
+},
+"sl": {
+"avg": 1.5189,
+"n": 4080,
+"v": [
+2408,
+1347,
+205,
+120
+]
+}
+},
+"06A09846": {
+"m": 0
+},
+"06A10530": {
+"m": 1,
+"id": 8187,
+"n": "Bronze Goddess Eau Fraiche 2010",
+"y": 2010,
+"p": [],
+"g": "for women",
+"f": "Floral",
+"a": [
+[
+"white floral",
+100,
+"#edf2fb"
+],
+[
+"coconut",
+95.2,
+"#f1e8d4"
+],
+[
+"citrus",
+87.3,
+"#F9FF52"
+],
+[
+"sweet",
+82.0,
+"#ee363b"
+],
+[
+"woody",
+69.6,
+"#774414"
+],
+[
+"amber",
+68.1,
+"#bc4d10"
+],
+[
+"lactonic",
+67.5,
+"#fbf9f2"
+],
+[
+"caramel",
+61.3,
+"#DDA356"
+],
+[
+"aromatic",
+58.4,
+"#37a089"
+],
+[
+"floral",
+51.6,
+"#FF5F8D"
+]
+],
+"t": [
+"Mandarin Orange",
+"Bergamot"
+],
+"h": [
+"Coconut",
+"Gardenia",
+"Myrhh",
+"Jasmine",
+"African Orange Flower",
+"Magnolia"
+],
+"b": [
+"Caramel",
+"Vetyver",
+"Sandalwood",
+"Amber"
+],
+"o": [],
+"s": 4.1991,
+"r": 5,
+"c": 231,
+"u": "https://www.fragrantica.com/perfume/Estee-Lauder/Bronze-Goddess-Eau-Fraiche-2010-8187.html",
+"ap": 1,
+"se": {
+"winter": 9,
+"spring": 27,
+"summer": 83,
+"autumn": 16,
+"day": 80,
+"night": 21
+},
+"lg": {
+"avg": 2.75,
+"n": 36,
+"v": [
+2,
+13,
+16,
+2,
+3
+]
+},
+"sl": {
+"avg": 2.3673,
+"n": 49,
+"v": [
+7,
+23,
+13,
+6
+]
+}
+},
+"06A11332": {
+"m": 1,
+"id": 56324,
+"n": "Sauvage Parfum",
+"y": 2019,
+"p": [
+"François Demachy"
+],
+"g": "for men",
+"f": "Oriental Fougere",
+"a": [
+[
+"citrus",
+100,
+"#F9FF52"
+],
+[
+"woody",
+82.0,
+"#774414"
+],
+[
+"amber",
+74.2,
+"#bc4d10"
+],
+[
+"aromatic",
+74.0,
+"#37a089"
+],
+[
+"vanilla",
+70.3,
+"#FFFEC0"
+],
+[
+"fresh spicy",
+66.8,
+"#83C928"
+],
+[
+"warm spicy",
+61.6,
+"#CC3300"
+],
+[
+"powdery",
+60.9,
+"#EEDDCC"
+],
+[
+"balsamic",
+59.6,
+"#ad8359"
+],
+[
+"sweet",
+48.6,
+"#ee363b"
+]
+],
+"t": [
+"Bergamot",
+"Mandarin Orange",
+"elemi"
+],
+"h": [
+"Sandalwood"
+],
+"b": [
+"Olibanum",
+"Tonka Bean",
+"Vanilla"
+],
+"o": [],
+"s": 4.11,
+"r": 5,
+"c": 6318,
+"u": "https://www.fragrantica.com/perfume/Dior/Sauvage-Parfum-56324.html",
+"ap": 0,
+"se": {
+"winter": 3211,
+"spring": 2975,
+"summer": 1861,
+"autumn": 3372,
+"day": 2774,
+"night": 3298
+},
+"lg": {
+"avg": 3.7613,
+"n": 4282,
+"v": [
+88,
+131,
+1068,
+2423,
+572
+]
+},
+"sl": {
+"avg": 2.3967,
+"n": 4386,
+"v": [
+387,
+2262,
+1347,
+390
+]
+}
+},
+"06A11225": {
+"m": 0
+},
+"06A10469": {
+"m": 1,
+"id": 52002,
+"n": "Explorer",
+"y": 2019,
+"p": [
+"Antoine Maisondieu",
+"Jordi Fernández",
+"Olivier Pescheux"
+],
+"g": "for men",
+"f": "Woody Aromatic",
+"a": [
+[
+"woody",
+100,
+"#774414"
+],
+[
+"citrus",
+97.0,
+"#F9FF52"
+],
+[
+"aromatic",
+87.0,
+"#37a089"
+],
+[
+"amber",
+78.4,
+"#bc4d10"
+],
+[
+"musky",
+68.4,
+"#E7D8EA"
+],
+[
+"fresh spicy",
+63.5,
+"#83C928"
+],
+[
+"soft spicy",
+62.5,
+"#E27752"
+],
+[
+"oud",
+62.4,
+"#544136"
+],
+[
+"warm spicy",
+58.2,
+"#CC3300"
+],
+[
+"earthy",
+57.0,
+"#544838"
+]
+],
+"t": [
+"Bergamot",
+"Pink Pepper",
+"Clary Sage"
+],
+"h": [
+"Haitian Vetiver",
+"Leather"
+],
+"b": [
+"Ambroxan",
+"Akigalawood",
+"Indonesian Patchouli Leaf",
+"Cacao Pod"
+],
+"o": [],
+"s": 4.2327,
+"r": 5,
+"c": 17883,
+"u": "https://www.fragrantica.com/perfume/Montblanc/Explorer-52002.html",
+"ap": 0,
+"se": {
+"winter": 4827,
+"spring": 10317,
+"summer": 10012,
+"autumn": 8869,
+"day": 10328,
+"night": 6439
+},
+"lg": {
+"avg": 3.1335,
+"n": 12908,
+"v": [
+432,
+1338,
+7544,
+3263,
+331
+]
+},
+"sl": {
+"avg": 2.075,
+"n": 12753,
+"v": [
+1739,
+8701,
+1931,
+382
+]
+}
 }
 }
