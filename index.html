@@ -348,10 +348,10 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 #dfv .more{display:block;margin:14px auto;font:inherit;font-size:13px;color:var(--ink);background:none;border:1px solid var(--brass);border-radius:99px;padding:8px 20px;cursor:pointer}
 .ddm .sep{height:1px;background:var(--line);margin:6px 8px}
 
-#dfd{position:fixed;inset:0;z-index:75;display:none;align-items:flex-end;background:rgba(20,10,6,.55);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+#dfd{position:fixed;inset:0;z-index:75;display:none;align-items:flex-end;background:rgba(20,10,6,.6)}
 #dfd.on{display:flex}
 #dfd .pn{width:100%;max-height:92vh;overflow-y:auto;background:var(--page);color:var(--ink);border-radius:24px 24px 0 0;border-top:1px solid var(--brass);padding:16px 18px calc(24px + env(safe-area-inset-bottom,0px));font-family:var(--body);animation:dfUp .26s cubic-bezier(.2,.9,.3,1)}
-@keyframes dfUp{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@keyframes dfUp{from{transform:translate3d(0,40px,0)}to{transform:none}}
 @keyframes dfFade{from{opacity:0}to{opacity:1}}
 @keyframes dfOut{to{transform:translateY(60px);opacity:0}}
 @keyframes dfBg{to{opacity:0}}
@@ -497,6 +497,11 @@ img.ld{animation:dfFade .4s ease}
 #dfd button.nn{font:inherit;font-size:13px;color:inherit;background:none;border:0;padding:0;cursor:pointer;text-align:center}
 #dfd button.nn:active,#dfd .tr button:active{opacity:.6}
 #dfd .tr button{font:inherit;font-size:13px;color:inherit;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 10px;cursor:pointer;width:auto;display:inline-block}
+
+#dfd .pn{will-change:transform;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+#dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld){animation:none!important;background:var(--chip)}
+#dfd .nn img,#dfd .smi img,#dfd .cph img{content-visibility:auto}
+#dfd .hd .im img{transition:opacity .25s ease}
 </style>
 </head>
 <body>
@@ -926,7 +931,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  let DFTH=null;
  function dfFlyIn(th){if(flyRM()||!th||!th.isConnected||!th.complete||!th.naturalWidth)return;const im=document.querySelector("#dfp .hd .im img");if(!im)return;const r0=th.getBoundingClientRect();if(r0.bottom<0||r0.top>innerHeight)return;const dr=im.getBoundingClientRect();const dy=-40;
   const a=fitBox(th,r0),b=fitBox(im,{left:dr.left,top:dr.top+dy,width:dr.width,height:dr.height,right:0,bottom:0});im.style.opacity="0";th.style.visibility="hidden";DFTH=th;
-  flyClone(im.src,a,b,460,()=>{im.style.opacity="";th.style.visibility=""})}
+  flyClone(im.src,a,b,460,()=>{const rv=()=>{im.style.opacity="";th.style.visibility=""};try{im.decode?im.decode().then(rv,rv):rv()}catch(e){rv()}})}
  function dfFlyOut(){const th=DFTH;DFTH=null;if(!th||!th.isConnected||flyRM())return;const im=document.querySelector("#dfp .hd .im img");if(!im||!im.naturalWidth)return;const r=im.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const t=th.getBoundingClientRect();if(t.bottom<0||t.top>innerHeight)return;
   const a=fitBox(im,r),b=fitBox(th,t);im.style.opacity="0";th.style.visibility="hidden";flyClone(im.src,a,b,340,()=>{th.style.visibility=""})}
  function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
