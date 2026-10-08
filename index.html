@@ -459,13 +459,14 @@ img.ld{animation:dfFade .4s ease}
 #dfv #dfq{flex:1 1 0;width:auto;min-width:0}
 #dfv .dfr1 .dd{flex:none}
 #dfv .ddm .mhd{position:sticky;top:0;z-index:2;background:var(--card);padding:2px 2px 6px;display:flex;flex-direction:column;gap:6px}
-#dfv .ddm .mrow{display:flex;gap:6px;flex-wrap:wrap}
-#dfv .ddm .mbt{width:auto;display:inline-flex;font-size:12.5px;padding:6px 12px;border:1px solid var(--line);border-radius:99px;color:var(--ink);gap:6px;margin:0}
+#dfv .ddm .mrow{display:flex;gap:6px;flex-wrap:nowrap}
+#dfv .ddm .mbt{width:auto;display:inline-flex;white-space:nowrap;font-size:12.5px;padding:6px 11px;border:1px solid var(--line);border-radius:99px;color:var(--ink);gap:6px;margin:0}
 #dfv .ddm .mbt.on{background:var(--brass);border-color:var(--brass);color:#2a1b16}
 #dfv .ddm .mbt.go{border-color:var(--brass);color:var(--brass)}
 #dfv .ddm input.mnq{width:100%;box-sizing:border-box;font:inherit;font-size:14px;padding:7px 12px;border-radius:99px}
 #dfv .ddm .mft{position:sticky;bottom:0;background:var(--card);padding:6px 2px 2px;display:flex;gap:6px;justify-content:flex-end;border-top:1px solid var(--line);margin-top:4px}
 #dfv .ddm .mo button[aria-selected="true"]{background:var(--chip)}
+#dfv .dd[data-k=note] .ddm,#dfv .dd[data-k=gen] .ddm,#dfv .dd[data-k=brand] .ddm,#dfv .dd[data-k=show] .ddm{min-width:min(280px,86vw)}
 #dfv .ddm .mn{font-size:12.5px;color:var(--ink-soft);padding:8px 12px}
 </style>
 </head>
@@ -947,7 +948,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  function optHtml(k){const S=selSet(k),L=opts(k);if(!L.length)return '<div class="mn">'+(k==="note"?(Object.keys(DFI).length?"No notes match.":"Perfume details are still loading."):"Nothing here.")+'</div>';
   return L.map(([v,l,c])=>'<button type="button" role="option" data-v="'+esc(v)+'"'+(c===0&&!S.has(v)?' class="z"':'')+' aria-selected="'+S.has(v)+'"><span>'+esc(l)+(c!=null?'<em>'+c+'</em>':'')+'</span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>').join("")}
  function renderMenu(d,fresh){const k=d.dataset.k,m=d.querySelector(".ddm");let h="";const multi=HASM.has(k)&&st.multi[k];
-  if(HASM.has(k)){h+='<div class="mhd"><div class="mrow"><button type="button" class="mbt'+(multi?' on':'')+'" data-multi="1" aria-pressed="'+!!multi+'">'+(multi?'\u2713 ':'')+'Select multiple</button>'+(k==="note"&&multi?'<button type="button" class="mbt" data-mode="1">'+(st.nall?'Has all of them':'Has any of them')+'</button>':'')+'</div>'+(k==="note"?'<input class="mnq" type="search" placeholder="Find a note" autocomplete="off" value="'+esc(st.nq)+'">':'')+'</div>'}
+  if(HASM.has(k)){h+='<div class="mhd"><div class="mrow"><button type="button" class="mbt'+(multi?' on':'')+'" data-multi="1" aria-pressed="'+!!multi+'">'+(multi?'\u2713 ':'')+'Select multiple</button>'+(k==="note"&&multi?'<button type="button" class="mbt" data-mode="1">'+(st.nall?'Has all':'Has any')+'</button>':'')+'</div>'+(k==="note"?'<input class="mnq" type="search" placeholder="Find a note" autocomplete="off" value="'+esc(st.nq)+'">':'')+'</div>'}
   h+='<div class="mo">'+optHtml(k)+'</div>';
   if(multi)h+='<div class="mft"><button type="button" class="mbt" data-clear="1">Clear</button><button type="button" class="mbt go" data-done="1">Done</button></div>';
   const keep=m.scrollTop;m.innerHTML=h;if(!fresh)m.scrollTop=keep}
