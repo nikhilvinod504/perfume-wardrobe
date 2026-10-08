@@ -422,6 +422,30 @@ img.ld{animation:dfFade .4s ease}
 #shov .shf a{color:var(--ink);border:1px solid var(--brass);border-radius:99px;padding:8px 16px;text-decoration:none;font-size:13.5px}
 .shr button{font:inherit;font-size:13.5px;color:var(--ink);background:none;border:1px solid var(--brass);border-radius:99px;padding:9px 18px;cursor:pointer}
 .shr button:disabled{opacity:.6}
+
+/* phase 5 */
+#dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld),.fnr .fi img:not(.ld){background:linear-gradient(100deg,var(--chip) 30%,var(--card) 50%,var(--chip) 70%) 0 0/240px 100%;animation:dfShim 1.2s linear infinite;border-radius:10px}
+#cabinet{transition:opacity .16s ease,transform .2s cubic-bezier(.2,.8,.2,1)}
+#cabinet.swo{opacity:0;transition:opacity .13s ease,transform .13s ease}
+#dfl.fx{animation:dfFade .2s ease both}
+#dfp.swp>*{animation:dfRise .26s ease both}
+.fnh{display:flex;flex-direction:column;gap:12px}
+.fnh h3{margin:0;font:400 22px var(--display)}
+.fnh input[type=search],.bkt textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:14px;padding:11px 14px;width:100%;box-sizing:border-box}
+.fnc{display:flex;flex-wrap:wrap;gap:8px}
+.fnc button,.bkb button,.bkb label{font:inherit;font-size:13.5px;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:99px;padding:7px 14px;cursor:pointer}
+.fnc button.on,.bkb button.go{border-color:var(--brass);color:var(--brass)}
+.fnr{display:flex;flex-direction:column;gap:8px}
+.fnr h4{margin:10px 0 0;font:500 12px var(--body,inherit);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.fnr .fr{display:flex;align-items:center;gap:12px;text-align:left;font:inherit;color:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;cursor:pointer;animation:dfRise .25s ease both}
+.fnr .fi{flex:none;width:44px;height:56px;display:flex;align-items:center;justify-content:center}
+.fnr .fi img{max-width:44px;max-height:56px;object-fit:contain}
+.fnr .ft{min-width:0;flex:1}.fnr .ft b{display:block;font-weight:500;font-size:14.5px}.fnr .ft small{display:block;color:var(--ink-soft);font-size:12px;margin-top:2px}
+.fnr .fp{flex:none;font-size:13px;color:var(--ink-soft)}
+.fnr .nb2{font-size:12.5px;color:var(--ink-soft)}
+.bkt{display:flex;flex-direction:column;gap:12px}.bkt h3{margin:0;font:400 22px var(--display)}.bkt p{margin:0;font-size:14px;color:var(--ink-soft);line-height:1.45}
+.bkb{display:flex;flex-wrap:wrap;gap:10px}.bkb input[type=file]{display:none}
+.bkt .msg{font-size:13.5px;color:var(--brass)}
 </style>
 </head>
 <body>
@@ -467,10 +491,10 @@ if(document.readyState!=='loading'){apply(get())}
     <button type="button" id="themebtn" aria-label="Colour theme"><svg data-m="auto" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5v17a8.5 8.5 0 0 0 0-17z" fill="currentColor" stroke="none"/></svg><svg data-m="light" viewBox="0 0 24 24" hidden><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg><svg data-m="dark" viewBox="0 0 24 24" hidden><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4 8.5 8.5 0 1 0 20 14.5z"/></svg><small></small></button>
     <div class="eyebrow"><span id="cname"></span> · <span id="count"></span></div>
     <h1>Perfume Wardrobe</h1>
-    <div class="tools"><div class="sel"><span>Select wardrobe</span><div class="dd"><button type="button" id="wsel" aria-haspopup="listbox" aria-expanded="false"><b id="wcur">Mannu's</b><svg viewBox="0 0 12 8"><path d="M1 1.5l5 5 5-5"/></svg></button><div class="ddm" id="wmenu" role="listbox" aria-label="Select wardrobe" hidden><button type="button" role="option" data-c="mannu"><span>Mannu's<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button type="button" role="option" data-c="nix"><span>Nix's<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button type="button" role="option" data-c="wishlist"><span>Wishlist<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><div class="sep"></div><button type="button" role="menuitem" data-df="1"><span>Duty free list<small>Mumbai airport &middot; all fragrances</small></span><svg viewBox="0 0 24 24" style="opacity:1"><path d="M9 6l6 6-6 6"/></svg></button></div></div></div><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button></div>
+    <div class="tools"><div class="sel"><span>Select wardrobe</span><div class="dd"><button type="button" id="wsel" aria-haspopup="listbox" aria-expanded="false"><b id="wcur">Mannu's</b><svg viewBox="0 0 12 8"><path d="M1 1.5l5 5 5-5"/></svg></button><div class="ddm" id="wmenu" role="listbox" aria-label="Select wardrobe" hidden><button type="button" role="option" data-c="mannu"><span>Mannu's<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button type="button" role="option" data-c="nix"><span>Nix's<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><button type="button" role="option" data-c="wishlist"><span>Wishlist<small></small></span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button><div class="sep"></div><button type="button" role="menuitem" data-df="1"><span>Duty free list<small>Mumbai airport &middot; all fragrances</small></span><svg viewBox="0 0 24 24" style="opacity:1"><path d="M9 6l6 6-6 6"/></svg></button></div></div></div><button class="valbtn" id="aboutbtn" type="button">About wardrobe</button><button class="valbtn" id="findbtn" type="button">Find by note</button></div>
   </header>
   <div class="cabinet" id="cabinet" aria-label="Perfume wardrobe"></div>
-  <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span> <span id="syncst" class="syncst"></span></p>
+  <p class="hint"><span id="hinttxt">Tap a bottle to open its card. Drag a bottle to a new spot to rearrange (on a phone, press and hold first).</span><span id="resetw"></span> <span id="syncst" class="syncst"></span> <button class="reset" id="bkbtn" type="button">Backup &amp; restore</button></p>
 </div>
 <div class="scrim" id="scrim"></div>
 <div class="scrim nscrim" id="nscrim"></div>
@@ -840,6 +864,12 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   const ac=i=>i&&Array.isArray(i.a&&i.a[0])?i.a.slice(0,5).map(x=>[capW(x[0]),/^#[0-9a-f]{3,8}$/i.test(x[2]||"")?x[2]:"#b08a4a"]):[];
   let notes=null;if(ia&&ib){const na=nl(ia),nb=new Set(nl(ib)),nm=new Set(na),lab={};[].concat(ia.t||[],ia.h||[],ia.b||[],ia.o||[],ib.t||[],ib.h||[],ib.b||[],ib.o||[]).forEach(n=>{lab[String(n).trim().toLowerCase()]=n});const L=n=>lab[n]||n;notes={both:na.filter((n,k)=>nb.has(n)&&na.indexOf(n)===k).map(L),a:na.filter((n,k)=>!nb.has(n)&&na.indexOf(n)===k).map(L),b:[...nb].filter(n=>!nm.has(n)).map(L)}}
   return{kind:"compare",brandline:"Mumbai Duty Free",cols:[{title:ra[1],sub:ra[2],img:iu(a)},{title:rb[1],sub:rb[2],img:iu(b)}],rows:rows,accords:(ia||ib)?[ac(ia),ac(ib)]:null,notes:notes,footer:"Mumbai Duty Free · as of "+(DFALL.asOf||"")}}
+ let DFTH=null;
+ function dfFlyIn(th){if(flyRM()||!th||!th.isConnected||!th.complete||!th.naturalWidth)return;const im=document.querySelector("#dfp .hd .im img");if(!im)return;const r0=th.getBoundingClientRect();if(r0.bottom<0||r0.top>innerHeight)return;const dr=im.getBoundingClientRect();const dy=-40;
+  const a=fitBox(th,r0),b=fitBox(im,{left:dr.left,top:dr.top+dy,width:dr.width,height:dr.height,right:0,bottom:0});im.style.opacity="0";th.style.visibility="hidden";DFTH=th;
+  flyClone(im.src,a,b,460,()=>{im.style.opacity="";th.style.visibility=""})}
+ function dfFlyOut(){const th=DFTH;DFTH=null;if(!th||!th.isConnected||flyRM())return;const im=document.querySelector("#dfp .hd .im img");if(!im||!im.naturalWidth)return;const r=im.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const t=th.getBoundingClientRect();if(t.bottom<0||t.top>innerHeight)return;
+  const a=fitBox(im,r),b=fitBox(th,t);im.style.opacity="0";th.style.visibility="hidden";flyClone(im.src,a,b,340,()=>{th.style.visibility=""})}
  function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
   const where=r[6]==="AD"?"Arrivals and departure":r[6]==="A"?"Arrivals only":"Departure only";
   const rt=has&&i.s!=null?Number(i.s):null,rmax=has&&i.r?i.r:10,stars5=rt==null?"":(()=>{const k=Math.round(rt/rmax*5);return "★".repeat(k)+"☆".repeat(5-k)})();
@@ -865,13 +895,13 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   else h+='<div class="nb">'+(Object.keys(DFI).length?'No Fragrantica match for this one (sets, minis and some variants are not listed there).':'Perfume details (notes, accords, ratings) load in the app once connected to the internet.')+'</div>';
   h+=simHtml(c);try{h+=ownHtml(c)}catch(e){}
   h+='<div class="ac"><button id="dfwt" type="button" class="'+(isW(r)?'on':'')+'">'+(isW(r)?'\u2605 Watching price':'\u2606 Watch price')+'</button><button id="dfcmp" type="button">Compare\u2026</button><button id="dfshare" type="button">Share picture</button>'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(has&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div><div class="nb" id="dfwn">'+(isW(r)&&WCH[c]>r[5]?'Down '+inr(WCH[c]-r[5])+' since you started watching.':isW(r)?'You\'ll see a note on the list if this price drops below '+inr(WCH[c])+'.':'')+'</div>';
-  document.getElementById("dfp").innerHTML=h;const pb=document.getElementById("dfph"),pp=document.getElementById("dfphp");if(pb&&pp){pp.innerHTML=phH;if(!phH)pb.remove();else pb.onclick=()=>{const o=pp.hidden;pp.hidden=!o;pb.setAttribute("aria-expanded",o?"true":"false");pb.classList.toggle("on",o)}}
+  const __was=document.getElementById("dfd").classList.contains("on");document.getElementById("dfp").innerHTML=h;if(__was){const pn0=document.getElementById("dfp");pn0.classList.remove("swp");void pn0.offsetWidth;pn0.classList.add("swp")}else document.getElementById("dfp").classList.remove("swp");const pb=document.getElementById("dfph"),pp=document.getElementById("dfphp");if(pb&&pp){pp.innerHTML=phH;if(!phH)pb.remove();else pb.onclick=()=>{const o=pp.hidden;pp.hidden=!o;pb.setAttribute("aria-expanded",o?"true":"false");pb.classList.toggle("on",o)}}
   document.getElementById("dfd").classList.add("on");document.getElementById("dfpx").onclick=closeD;document.getElementById("dfp").scrollTop=0;
   const wb=document.getElementById("dfwt");if(wb)wb.onclick=()=>{const on=!isW(r);setW(c,on);wb.className=on?"on":"";wb.textContent=on?"\u2605 Watching price":"\u2606 Watch price";const wn=document.getElementById("dfwn");if(wn)wn.textContent=on?"You'll see a note on the list if this price drops below "+inr(r[5])+".":"";try{draw()}catch(e){}};
   const shb=document.getElementById("dfshare");if(shb)shb.onclick=()=>{const sp=dfSpec(c);if(sp)window.pwShareCard(sp,"duty-free-"+c,shb)};const cb=document.getElementById("dfcmp");if(cb)cb.onclick=()=>{CMP=c;closeD();cmpBar()};
   document.querySelectorAll("#dfp .smr").forEach(b=>b.onclick=()=>showD(b.dataset.c));
   const ob=document.getElementById("dfown");if(ob)ob.onclick=()=>{closeD();close();try{const p=PERFUMES.find(x=>x.id===r[7]);if(p)window.open(p)}catch(e){}}}
- function closeD(){window.__dfCur=null;const d=document.getElementById("dfd");if(!d.classList.contains("on")||d.classList.contains("out"))return;d.classList.add("out");setTimeout(()=>{d.classList.remove("on","out");const pn=document.getElementById("dfp");pn.style.transform="";pn.classList.remove("drag","snap")},190)}
+ function closeD(){window.__dfCur=null;const d=document.getElementById("dfd");if(!d.classList.contains("on")||d.classList.contains("out"))return;try{dfFlyOut()}catch(e){}d.classList.add("out");setTimeout(()=>{d.classList.remove("on","out");const pn=document.getElementById("dfp");pn.style.transform="";pn.classList.remove("drag","snap")},190)}
  (function(){const pn=document.getElementById("dfp");if(!pn)return;let y0=null,dy=0;
   pn.addEventListener("touchstart",e=>{if(pn.scrollTop<=0&&e.touches.length===1){y0=e.touches[0].clientY;dy=0}else y0=null},{passive:true});
   pn.addEventListener("touchmove",e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy>0){pn.classList.add("drag");pn.classList.remove("snap");pn.style.transform="translateY("+dy*.9+"px)"}else if(pn.classList.contains("drag")){pn.style.transform=""}},{passive:true});
@@ -879,7 +909,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   document.addEventListener("load",e=>{const t=e.target;if(t&&t.tagName==="IMG"){t.classList.add("ld");const q=t.parentNode;if(q&&q.classList&&(q.classList.contains("ph")||q.classList.contains("im")))q.classList.add("ld")}},true)})();
  function badges(r){if(isW(r)&&!isGone(r))return '<i class="nw">\u2605 Watching</i>'+(isNew(r)?'<i class="nw">New</i>':'');if(isGone(r))return '<i class="gone">Delisted \u00b7 seen '+dmy(r[8])+'</i>';let h='';if(isNew(r))h+='<i class="nw">New</i>';return h}
  function chgTxt(r){const w=isW(r)&&WCH[r[0]]>r[5]?'<div class="cg dn">\u25bc '+inr(WCH[r[0]]-r[5])+' since you started watching</div>':'';const c=chg(r);if(!c)return w;if(w)return w;const d=r[5]-c[0];return '<div class="cg '+(d<0?'dn':'upp')+'">'+(d<0?'\u25bc ':'\u25b2 ')+inr(Math.abs(d))+' since '+dmy(c[1])+'</div>'}
- function draw(){const L=rows(),box=document.getElementById("dfl");labels();
+ function draw(){const L=rows(),box=document.getElementById("dfl");labels();box.classList.remove("fx");void box.offsetWidth;box.classList.add("fx");
   document.getElementById("dfcnt").textContent=L.length+" of "+DFALL.rows.length+" listed"+(goneRows().length?" · "+goneRows().length+" delisted":"");
   box.innerHTML=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6],u=iu(r[0]);
    return '<div class="dfc'+(r[7]?' own':'')+(isGone(r)?' gn':'')+'" data-c="'+r[0]+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="imgFail(this,\'p\')">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+badges(r)+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+chgTxt(r)+'</div></div>'}).join("")+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');
@@ -890,8 +920,12 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  function open(){document.getElementById("dfsub").textContent="Mumbai airport · as of "+DFALL.asOf+(window.__offTxt?" · "+window.__offTxt:"");draw();document.getElementById("dfv").classList.add("on");document.body.style.overflow="hidden"}
  function close(){CMP=null;try{cmpBar()}catch(e){}closeAll();document.getElementById("dfv").classList.remove("on");document.body.style.overflow=""}
  document.getElementById("wmenu").addEventListener("click",e=>{const o=e.target.closest("button[data-df]");if(!o)return;e.stopPropagation();document.getElementById("wmenu").hidden=true;document.getElementById("wsel").setAttribute("aria-expanded","false");open()});
+ window.__dfShow=c=>showD(c);
+ window.__dfNote=function(term,max){term=String(term||"").trim().toLowerCase();if(!term)return[];const out=[];DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m)return;const hit=nl(i).some(n=>n.indexOf(term)>=0);if(hit&&!isGone(r))out.push({c:r[0],name:r[1],brand:r[2],price:r[5],img:iu(r[0]),pm:(()=>{const f=facts(r[1]);return f.sz?r[5]/f.sz:0})(),s:i.s})});out.sort((x,y)=>(y.s||0)-(x.s||0));return out.slice(0,max||40)};
+ window.__dfNoteNames=function(){const m={};DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m)return;nl(i).forEach(n=>{m[n]=(m[n]||0)+1})});return m};
+ window.__dfInr=inr;
  document.getElementById("dfx").onclick=close;
- document.getElementById("dfl").addEventListener("click",e=>{const c=e.target.closest(".dfc");if(c&&!e.target.closest("a")){if(CMP&&c.dataset.c!==CMP){const a=CMP;CMP=null;cmpBar();showCmp(a,c.dataset.c)}else showD(c.dataset.c)}});
+ document.getElementById("dfl").addEventListener("click",e=>{const c=e.target.closest(".dfc");if(c&&!e.target.closest("a")){if(CMP&&c.dataset.c!==CMP){const a=CMP;CMP=null;cmpBar();showCmp(a,c.dataset.c)}else{const th=c.querySelector(".ph img");showD(c.dataset.c);try{dfFlyIn(th)}catch(er){}}}});
  document.getElementById("dfd").addEventListener("click",e=>{if(e.target.id==="dfd")closeD()});
  document.getElementById("dfq").oninput=e=>{st.q=e.target.value;st.n=60;draw()};
  document.getElementById("dfdd").addEventListener("click",e=>{e.stopPropagation();const d=e.target.closest(".dd");if(!d)return;const o=e.target.closest("button[data-v]");
@@ -1429,7 +1463,7 @@ function syncDD(){const c=document.getElementById("wcur");if(!c)return;c.textCon
 (function(){const btn=$("#wsel"),m=$("#wmenu");
  const close=()=>{m.hidden=true;btn.setAttribute("aria-expanded","false")};
  btn.onclick=e=>{e.stopPropagation();if(m.hidden){syncDD();m.hidden=false;btn.setAttribute("aria-expanded","true")}else close()};
- m.onclick=e=>{const o=e.target.closest("button[data-c]");if(!o)return;e.stopPropagation();close();if(o.dataset.c===active)return;active=o.dataset.c;try{localStorage.setItem("wardrobe",active)}catch(er){}shut();window.__intro=true;build();window.scrollTo(0,0)};
+ m.onclick=e=>{const o=e.target.closest("button[data-c]");if(!o)return;e.stopPropagation();close();if(o.dataset.c===active)return;const ks=["mannu","nix","wishlist"],dir=ks.indexOf(o.dataset.c)>ks.indexOf(active)?1:-1;active=o.dataset.c;try{localStorage.setItem("wardrobe",active)}catch(er){}shut();window.__intro=true;const cb=document.getElementById("cabinet");cb.classList.add("swo");cb.style.transform="translateX("+(-dir*22)+"px)";setTimeout(()=>{build();window.scrollTo(0,0);cb.style.transition="none";cb.style.transform="translateX("+(dir*22)+"px)";void cb.offsetWidth;cb.style.transition="";cb.classList.remove("swo");cb.style.transform=""},140)};
  document.addEventListener("click",e=>{if(!m.hidden&&!e.target.closest(".dd"))close()});
  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!m.hidden)close()});
 })();
@@ -1516,6 +1550,56 @@ window.pwShareCard=async function(spec,name,btn){const old=btn&&btn.textContent;
  overlay(blob,name)}catch(e){try{alert("Could not make the card.")}catch(x){}}finally{if(btn){btn.disabled=false;btn.textContent=old}}};
 })();
 
+</script>
+<script>
+/* Find by note + Backup and restore */
+(function(){
+const $=s=>document.querySelector(s),E=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function sheetOpen(h){$("#sheetIn").innerHTML='<button class="close" id="close" aria-label="Close">\u2715</button>'+h;$("#sheet").classList.add("on");$("#scrim").classList.add("on");$("#close").onclick=shut;$("#sheet").scrollTop=0}
+function plug(n){try{const C=window.Capacitor;if(!C)return null;if(C.registerPlugin)return C.registerPlugin(n);if(C.Plugins&&C.Plugins[n])return C.Plugins[n]}catch(e){}return null}
+/* ---- Find by note ---- */
+function allNotes(){const m={};lyPool().forEach(o=>{const seen=new Set();o.p.notes.concat((PYR[o.p.id]&&[].concat(PYR[o.p.id].top||[],PYR[o.p.id].mid||[],PYR[o.p.id].base||[]))||[]).forEach(n=>{const k=String(n).trim().toLowerCase();if(k&&!seen.has(k)){seen.add(k);m[k]=(m[k]||0)+1}})});return m}
+function mine(term){const t=term.toLowerCase();return lyPool().map(o=>{const ns=o.p.notes.concat((PYR[o.p.id]&&[].concat(PYR[o.p.id].top||[],PYR[o.p.id].mid||[],PYR[o.p.id].base||[]))||[]);const hit=[...new Set(ns.filter(n=>String(n).toLowerCase().indexOf(t)>=0))];return hit.length?{o,hit}:null}).filter(Boolean)}
+function openFind(q0){
+ sheetOpen('<div class="fnh"><h3>Find by note</h3><input type="search" id="fnq" placeholder="Try oud, vanilla, bergamot\u2026" autocomplete="off" autocapitalize="none"><div class="fnc" id="fnc"></div></div><div class="fnr" id="fnr"></div>');
+ const q=$("#fnq"),chips=$("#fnc"),res=$("#fnr");
+ let own=allNotes();try{const d=window.__dfNoteNames&&window.__dfNoteNames();if(d)for(const k in d)own[k]=(own[k]||0)}catch(e){}
+ function sugg(t){const base=t?Object.keys(own).filter(k=>k.indexOf(t)>=0):Object.keys(own);return base.sort((a,b)=>(own[b]-own[a])||a.localeCompare(b)).slice(0,t?10:14)}
+ function paint(){const t=q.value.trim().toLowerCase();chips.innerHTML=sugg(t).map(k=>'<button type="button" data-n="'+E(k)+'"'+(k===t?' class="on"':'')+'>'+E(k)+'</button>').join("");
+  if(!t){res.innerHTML='<div class="nb2">Type a note, or tap one above. You\u2019ll see which of your perfumes have it, and what the duty free list has.</div>';return}
+  const m=mine(t);let h='<h4>In your wardrobes ('+m.length+')</h4>';
+  h+=m.length?m.map(({o,hit},i)=>'<button type="button" class="fr" data-id="'+o.p.id+'" style="animation-delay:'+Math.min(i,10)*30+'ms"><span class="fi"><img alt="" src="'+o.p.img+'"></span><span class="ft"><b>'+E(sname(o.p))+'</b><small>'+E(o.who)+' \u00b7 '+E(hit.slice(0,3).join(", "))+'</small></span></button>').join(""):'<div class="nb2">None of your perfumes list this note.</div>';
+  let d=[];try{d=window.__dfNote?window.__dfNote(t,30):[]}catch(e){}
+  if(d.length||window.__dfNote){h+='<h4>In the duty free list ('+d.length+(d.length>=30?'+':'')+')</h4>';
+   h+=d.length?d.map((x,i)=>'<button type="button" class="fr" data-c="'+E(x.c)+'" style="animation-delay:'+Math.min(i,10)*30+'ms"><span class="fi">'+(x.img?'<img alt="" loading="lazy" referrerpolicy="no-referrer" src="'+E(x.img)+'" onerror="imgFail(this,\'e\')">':'')+'</span><span class="ft"><b>'+E(x.name)+'</b><small>'+E(x.brand)+(x.pm?' \u00b7 '+window.__dfInr(Math.round(x.pm))+'/ml':'')+(x.s!=null?' \u00b7 '+Number(x.s).toFixed(1)+'\u2605':'')+'</small></span><span class="fp">'+window.__dfInr(x.price)+'</span></button>').join(""):'<div class="nb2">No duty free match (details load once the app is online).</div>'}
+  res.innerHTML=h}
+ q.oninput=paint;chips.onclick=e=>{const b=e.target.closest("button[data-n]");if(!b)return;q.value=b.dataset.n;paint()};
+ res.onclick=e=>{const b=e.target.closest("button.fr");if(!b)return;if(b.dataset.id){const p=PERFUMES.find(x=>x.id===b.dataset.id);if(p)open(p)}else if(b.dataset.c&&window.__dfShow)window.__dfShow(b.dataset.c)};
+ if(q0)q.value=q0;paint();if(!q0)setTimeout(()=>{try{q.focus()}catch(e){}},350)}
+$("#findbtn").onclick=()=>openFind();
+/* tapping a note on a card can also look it up: long-press not needed, exposed for later */
+window.openFind=openFind;
+/* ---- Backup and restore ---- */
+const SKIP=/^(wardrobe-page-cache|pw-)/;
+function snapshot(){const d={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(SKIP.test(k))continue;const v=localStorage.getItem(k);if(v!=null&&v.length<400000)d[k]=v}}catch(e){}return{app:"perfume-wardrobe",v:1,at:new Date().toISOString(),data:d}}
+function openBackup(){
+ const snap=snapshot(),n=Object.keys(snap.data).length;
+ sheetOpen('<div class="bkt"><h3>Backup &amp; restore</h3><p>Saves your wear log, moves, shared bottles, bottle order, watched prices and settings in one small file ('+n+' items now). Keep it in Drive or WhatsApp. Restoring puts everything back, for example on a new phone.</p><div class="bkb"><button type="button" class="go" id="bkx">Save a backup</button><label for="bkf">Restore from file</label><input type="file" id="bkf" accept=".json,application/json,text/plain"></div><p>Or paste a backup here to restore it:</p><textarea id="bkp" rows="4" placeholder="Paste backup text"></textarea><div class="bkb"><button type="button" id="bkr">Restore pasted text</button></div><div class="msg" id="bkm"></div></div>');
+ const msg=t=>{const m=$("#bkm");if(m)m.textContent=t};
+ $("#bkx").onclick=async()=>{const sn=snapshot(),txt=JSON.stringify(sn),name="perfume-wardrobe-backup-"+sn.at.slice(0,10)+".json";
+  try{const Sh=plug("Share"),Fs=plug("Filesystem");if(Sh&&Fs){const w=await Fs.writeFile({path:name,data:txt,directory:"CACHE",encoding:"utf8"});await Sh.share({title:"Perfume Wardrobe backup",files:[w.uri],dialogTitle:"Save backup"});msg("Backup ready.");return}}catch(e){if(/cancel|dismiss/i.test(String(e&&e.message||e)))return}
+  try{if(navigator.share&&navigator.canShare){const f=new File([txt],name,{type:"application/json"});if(navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return}}}catch(e){if(e&&e.name==="AbortError")return}
+  $("#bkp").value=txt;$("#bkp").select();try{await navigator.clipboard.writeText(txt);msg("Backup text copied. Paste it into a note or message to keep it.")}catch(e){msg("Select all the text in the box and copy it to keep it.")}};
+ function restore(txt){let o;try{o=JSON.parse(txt)}catch(e){msg("That doesn\u2019t look like a backup.");return}
+  if(!o||o.app!=="perfume-wardrobe"||!o.data||typeof o.data!=="object"){msg("That doesn\u2019t look like a Perfume Wardrobe backup.");return}
+  const ks=Object.keys(o.data).filter(k=>!SKIP.test(k));if(!ks.length){msg("The backup is empty.");return}
+  const b=$("#bkr");if(b&&!b.dataset.sure){b.dataset.sure="1";b.textContent="Tap again to replace "+ks.length+" saved items";msg("This replaces what is saved on this phone.");return}
+  try{ks.forEach(k=>localStorage.setItem(k,String(o.data[k])))}catch(e){msg("Could not write: "+e.message);return}
+  msg("Restored. Reloading\u2026");try{if(typeof syncPush==="function")syncPush()}catch(e){}setTimeout(()=>location.reload(),900)}
+ $("#bkr").onclick=()=>{const t=$("#bkp").value.trim();if(!t){msg("Paste the backup text first.");return}restore(t)};
+ $("#bkf").onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{$("#bkp").value=String(r.result);const b=$("#bkr");b.dataset.sure="";b.textContent="Restore pasted text";restore(String(r.result))};r.readAsText(f)}}
+$("#bkbtn").onclick=openBackup;
+})();
 </script>
 <script>
 /* Android back button closes the open sheet instead of exiting the app */
