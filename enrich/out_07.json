@@ -3763,5 +3763,521 @@
 1315
 ]
 }
+},
+"06A11191": {
+"m": 1,
+"id": 58624,
+"n": "Flower by Kenzo Poppy Bouquet Eau de Parfum",
+"y": 2020,
+"p": [
+"Alberto Morillas",
+"Dora Baghriche"
+],
+"g": "for women",
+"f": "Floral",
+"a": [
+[
+"white floral",
+100,
+"#edf2fb"
+],
+[
+"fruity",
+74.8,
+"#FC4B29"
+],
+[
+"rose",
+71.8,
+"#FE016B"
+],
+[
+"woody",
+68.6,
+"#774414"
+],
+[
+"nutty",
+59.0,
+"#b4955f"
+],
+[
+"lactonic",
+58,
+"#fbf9f2"
+],
+[
+"aquatic",
+55.6,
+"#63cce2"
+],
+[
+"green",
+51.5,
+"#0E8C1D"
+]
+],
+"t": [
+"Nashi Pear"
+],
+"h": [
+"Gardenia",
+"Bulgarian Rose"
+],
+"b": [
+"Almond Tree"
+],
+"o": [],
+"s": 3.7398,
+"r": 5,
+"c": 1176,
+"u": "https://www.fragrantica.com/perfume/Kenzo/Flower-by-Kenzo-Poppy-Bouquet-Eau-de-Parfum-58624.html",
+"ap": 0,
+"se": {
+"winter": 114,
+"spring": 471,
+"summer": 306,
+"autumn": 206,
+"day": 435,
+"night": 105
+},
+"lg": {
+"avg": 2.834,
+"n": 512,
+"v": [
+35,
+117,
+274,
+70,
+16
+]
+},
+"sl": {
+"avg": 2.0411,
+"n": 559,
+"v": [
+130,
+314,
+77,
+38
+]
+}
+},
+"06A13441": {
+"m": 1,
+"id": 88938,
+"n": "My Way Nectar",
+"y": 2024,
+"p": [],
+"g": "for women",
+"f": "Floral Fruity",
+"a": [
+[
+"white floral",
+100,
+"#edf2fb"
+],
+[
+"citrus",
+59.0,
+"#F9FF52"
+],
+[
+"sweet",
+58.4,
+"#ee363b"
+],
+[
+"tuberose",
+57.9,
+"#ebfaf3"
+],
+[
+"fruity",
+56.3,
+"#FC4B29"
+],
+[
+"aquatic",
+55.7,
+"#63cce2"
+],
+[
+"animalic",
+46.5,
+"#8E4B13"
+],
+[
+"ozonic",
+45.8,
+"#C9FDFB"
+],
+[
+"green",
+45.8,
+"#0E8C1D"
+]
+],
+"t": [
+"Pear",
+"Orange Blossom",
+"Bergamot"
+],
+"h": [
+"Tuberose",
+"Jasmine",
+"Violet Leaf"
+],
+"b": [
+"White Musk",
+"Bourbon Vanilla",
+"Cedarwood"
+],
+"o": [],
+"s": 4.0322,
+"r": 5,
+"c": 1706,
+"u": "https://www.fragrantica.com/perfume/Giorgio-Armani/My-Way-Nectar-88938.html",
+"ap": 0,
+"se": {
+"winter": 112,
+"spring": 750,
+"summer": 688,
+"autumn": 200,
+"day": 719,
+"night": 155
+},
+"lg": {
+"avg": 2.9398,
+"n": 698,
+"v": [
+34,
+124,
+412,
+106,
+22
+]
+},
+"sl": {
+"avg": 1.9805,
+"n": 668,
+"v": [
+139,
+415,
+102,
+12
+]
+}
+},
+"06A19939": {
+"m": 1,
+"id": 109311,
+"n": "La Vie Est Belle Vanille Nude",
+"y": 2025,
+"p": [
+"Anne Flipo",
+"Dominique Ropion"
+],
+"g": "for women",
+"f": "Oriental Floral",
+"a": [
+[
+"vanilla",
+100,
+"#FFFEC0"
+],
+[
+"powdery",
+88.0,
+"#EEDDCC"
+],
+[
+"musky",
+73.2,
+"#E7D8EA"
+],
+[
+"woody",
+60.9,
+"#774414"
+],
+[
+"white floral",
+53.6,
+"#edf2fb"
+],
+[
+"sweet",
+48.3,
+"#ee363b"
+],
+[
+"balsamic",
+46.7,
+"#ad8359"
+],
+[
+"aldehydic",
+46.1,
+"#d8e9f6"
+]
+],
+"t": [
+"Solar Notes",
+"Jasmine"
+],
+"h": [
+"Bourbon Vanilla"
+],
+"b": [
+"White Musk",
+"Sandalwood"
+],
+"o": [],
+"s": 4.105,
+"r": 5,
+"c": 2467,
+"u": "https://www.fragrantica.com/perfume/Lancome/La-Vie-Est-Belle-Vanille-Nude-109311.html",
+"ap": 0,
+"se": {
+"winter": 830,
+"spring": 800,
+"summer": 431,
+"autumn": 879,
+"day": 911,
+"night": 537
+},
+"lg": {
+"avg": 3.2133,
+"n": 914,
+"v": [
+36,
+92,
+472,
+269,
+45
+]
+},
+"sl": {
+"avg": 1.9711,
+"n": 899,
+"v": [
+210,
+524,
+146,
+19
+]
+}
+},
+"06A12310": {
+"m": 1,
+"id": 73075,
+"n": "Narciso Eau de Parfum Cristal",
+"y": 2022,
+"p": [
+"Natalie Gracia-Cetto"
+],
+"g": "for women",
+"f": "Floral Woody Musk",
+"a": [
+[
+"white floral",
+100,
+"#edf2fb"
+],
+[
+"musky",
+96.4,
+"#E7D8EA"
+],
+[
+"floral",
+82.0,
+"#FF5F8D"
+],
+[
+"powdery",
+76.4,
+"#EEDDCC"
+],
+[
+"amber",
+66.8,
+"#bc4d10"
+],
+[
+"woody",
+66.2,
+"#774414"
+],
+[
+"rose",
+58.7,
+"#FE016B"
+],
+[
+"citrus",
+58.1,
+"#F9FF52"
+],
+[
+"animalic",
+50.4,
+"#8E4B13"
+]
+],
+"t": [
+"Freesia",
+"Orange Blossom",
+"Bergamot"
+],
+"h": [
+"Musk",
+"Rose",
+"White Flowers",
+"Jasmine"
+],
+"b": [
+"Cashmeran",
+"Amber",
+"Cedar",
+"Benzoin"
+],
+"o": [],
+"s": 3.8921,
+"r": 5,
+"c": 1603,
+"u": "https://www.fragrantica.com/perfume/Narciso-Rodriguez/Narciso-Eau-de-Parfum-Cristal-73075.html",
+"ap": 0,
+"se": {
+"winter": 214,
+"spring": 657,
+"summer": 470,
+"autumn": 355,
+"day": 625,
+"night": 168
+},
+"lg": {
+"avg": 3.0539,
+"n": 687,
+"v": [
+37,
+98,
+367,
+161,
+24
+]
+},
+"sl": {
+"avg": 1.9109,
+"n": 651,
+"v": [
+165,
+394,
+77,
+15
+]
+}
+},
+"06A11597": {
+"m": 1,
+"id": 60795,
+"n": "Burberry Her London Dream",
+"y": 2020,
+"p": [
+"Jérôme di Marino",
+"Maïa Lernout"
+],
+"g": "for women",
+"f": "Floral",
+"a": [
+[
+"fresh",
+100,
+"#9be5ed"
+],
+[
+"rose",
+92.8,
+"#FE016B"
+],
+[
+"floral",
+90.3,
+"#FF5F8D"
+],
+[
+"citrus",
+85.9,
+"#F9FF52"
+],
+[
+"musky",
+79.3,
+"#E7D8EA"
+],
+[
+"fresh spicy",
+65.1,
+"#83C928"
+],
+[
+"amber",
+60.0,
+"#bc4d10"
+],
+[
+"powdery",
+59.2,
+"#EEDDCC"
+]
+],
+"t": [
+"Lemon",
+"Ginger"
+],
+"h": [
+"Peony",
+"Rose"
+],
+"b": [
+"Musk",
+"Amber"
+],
+"o": [],
+"s": 3.7456,
+"r": 5,
+"c": 1148,
+"u": "https://www.fragrantica.com/perfume/Burberry/Burberry-Her-London-Dream-60795.html",
+"ap": 0,
+"se": {
+"winter": 137,
+"spring": 452,
+"summer": 317,
+"autumn": 250,
+"day": 444,
+"night": 118
+},
+"lg": {
+"avg": 2.8062,
+"n": 449,
+"v": [
+34,
+90,
+261,
+57,
+7
+]
+},
+"sl": {
+"avg": 1.967,
+"n": 455,
+"v": [
+120,
+254,
+57,
+24
+]
+}
 }
 }
