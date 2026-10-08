@@ -49,14 +49,11 @@ chg={k:v for k,v in chg.items() if not cut(v[1]) and k in scr}
 first={k:v for k,v in first.items() if k in scr and not cut(v)}
 D['rows']=rows;D['gone']=list(gone.values());D['arch']=list(arch.values());D['first']=first;D['chg']=chg
 D['asOf']=today.strftime('%-d %b %Y');D['asOfD']=date
-json.dump(D,open(fn,'w'),ensure_ascii=False,separators=(',',':'))
-# price history: dutyfree_hist.json {code:[[date,price],...]}; a point is added on first sight and whenever the price changes
-hf=os.path.join(os.path.dirname(os.path.abspath(fn)),'dutyfree_hist.json')
-H=json.load(open(hf)) if os.path.exists(hf) else {}
+# price history kept inside the file: hist={code:[[date,price],...]}; a point is added on first sight and whenever the price changes
+H=D.get('hist',{})
 for r in rows:
     h=H.setdefault(r[0],[])
     if not h or h[-1][1]!=r[5]:h.append([date,r[5]])
-for r in D['gone']+D['arch']:
-    H.setdefault(r[0],[])
-json.dump(H,open(hf,'w'),separators=(',',':'))
+D['hist']=H
+json.dump(D,open(fn,'w'),ensure_ascii=False,separators=(',',':'))
 print(stats,'listed',len(rows),'gone',len(gone),'arch',len(arch))
