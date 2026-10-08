@@ -1,0 +1,14 @@
+# Enrichment worker (one shard NN)
+Enrich perfumes with Fragrantica data through the Apify MCP, ONE perfume at a time. Work in the repo clone. Run `python3 tools/enrich_status.py` first.
+
+Input enrich/q_NN.tsv (code, brand, duty-free title). Output enrich/out_NN.json (dict code -> entry). A code is done once it has ANY entry (even {"m":0}); load the file on start and skip done codes (resumable).
+Load tools with ONE ToolSearch: select:mcp__remote-devices__apify__call-actor,mcp__remote-devices__apify__get-actor-run,mcp__remote-devices__apify__get-dataset-items
+
+Per perfume, strictly sequential (the Apify account allows 5 concurrent runs, shared with other workers):
+1. Skip (write {"m":0}) sets, kits, minis, travel/pre-pack/coffret/duo/trio, body mists/sprays, after shave, hair mist, deodorant. Otherwise ONE search query = brand + product name, cleaned: drop sizes, commas, 'for men/women', and EDP/EDT wording unless ambiguous; keep Intense/Elixir/Parfum/Absolu/Extreme. Fragrantica lists Paco Rabanne as 'Rabanne'.
+2. call-actor "unfenced-group/fragrantica-perfume-scraper", input {"searchQueries":[query],"maxResults":1,"scrapeDetails":true,"includeCommunityVotes":true,"includeReviews":false}, callOptions {"memory":1024}, waitSecs 45. Runs take 35-70 s: poll get-actor-run (waitSecs 45) until SUCCEEDED (max 5 polls). On memory/concurrency errors retry after a minute (up to 6 tries) then skip the code WITHOUT writing it.
+3. get-dataset-items (datasetId = storages.datasets.default.id), limit 1, fields exactly: name,brand,year,url,perfumeId,genderLabel,fragranceFamily,ratingValue,ratingCount,mainAccords,notesTop,notesMiddle,notesBase,notesUnsorted,perfumers,seasonVotes,longevity,sillage,voteDataAvailable (top-level names only).
+4. Match check: brand agrees (Rabanne = Paco Rabanne) and same perfume/variant as the title. Clearly different -> retry ONCE with a refined query, else {"m":0}. Base perfume or close sibling -> accept with "ap":1. 0 items -> {"m":0}.
+5. Entry (Python read-modify-write; never hand-paste JSON): {"m":1,"id":perfumeId,"n":name,"y":year,"p":[perfumer names],"g":genderLabel,"f":fragranceFamily,"a":[[accord, strength (1 dp), color hex] for ALL mainAccords in order],"t":[top],"h":[middle],"b":[base],"o":[unsorted],"s":ratingValue,"r":5,"c":ratingCount,"u":url,"ap":0|1}; when voteDataAvailable also "se":{winter,spring,summer,autumn,day,night} (from seasonVotes), "lg":{"avg":longevity.average,"n":longevity.total,"v":[veryWeak,weak,moderate,longLasting,eternal]}, "sl":{"avg":sillage.average,"n":sillage.total,"v":[intimate,moderate,strong,enormous]} (omit missing keys).
+6. Every 8 perfumes and at the end run `sh tools/push_shard.sh NN`.
+Minimal messages; never print dataset contents. Final report only: shard, done/total, matched, ap, m:0, problems.
