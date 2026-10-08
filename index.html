@@ -334,7 +334,7 @@ html.wd-lock,html.wd-lock body{overflow:hidden}
 #dfv .tg i{font-style:normal;font-size:10px;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);border-radius:99px;padding:2px 8px;color:var(--ink-soft)}
 #dfv .tg i.dep{border-color:var(--brass);color:var(--brass)}
 #dfv .tg i.arr{border-color:#5aa0e0;color:#5aa0e0}
-#dfv .tg i.nw{background:#3f8f5a;border-color:#3f8f5a;color:#fff}
+#dfv .tg i.nw{white-space:nowrap;background:#3f8f5a;border-color:#3f8f5a;color:#fff}
 #dfv .tg i.gone{border-color:#b0603f;color:#b0603f}
 #dfv .dfc.gn{opacity:.62}
 #dfv .cg{font-size:11px;margin-top:3px;white-space:nowrap}
@@ -397,6 +397,7 @@ img.ld{animation:dfFade .4s ease}
 #dfd .nt b{font-weight:500;color:var(--brass)}
 #dfd .ac{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
 #dfd .ac a,#dfd .ac button{font:inherit;font-size:13.5px;text-decoration:none;color:var(--ink);background:none;border:1px solid var(--brass);border-radius:99px;padding:9px 16px;cursor:pointer}
+#dfd .ac button.on{background:var(--chip);border-color:var(--brass);color:var(--brass)}
 #dfd .ac .go{background:linear-gradient(180deg,var(--brass-soft),var(--brass));color:#2a1b16}
 #dfd .nb{font-size:12px;color:var(--ink-soft);margin-top:14px}
 #dfv .dfc{cursor:pointer}
@@ -693,7 +694,10 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  const st={q:"",term:"all",gen:"all",brand:"",show:"live",sort:"disc",n:60};
  const OPT={term:[["all","All terminals"],["both","Both"],["A","Arrivals only"],["D","Departure only"]],gen:[["all","Everyone"],["Men","Men"],["Women","Women"],["Unisex","Unisex"]],sort:[["disc","Biggest discount"],["lo","Price: low to high"],["hi","Price: high to low"],["az","A to Z"]]};
  const LAB={term:"Where",gen:"For",brand:"Brand",show:"Show",sort:"Sort"},DEF={term:"all",gen:"all",brand:"",show:"live",sort:"disc"};
- const SHOWL={live:"Listed now",new:"New",drop:"Price drops",up:"Price rises",gone:"No longer listed",all:"Everything"};
+ let WCH={};try{WCH=JSON.parse(localStorage.getItem("dfwatch")||"{}")||{}}catch(e){}
+ const isW=r=>Object.prototype.hasOwnProperty.call(WCH,r[0]);
+ function setW(c,on){try{if(on){const r=rowOf(c);WCH[c]=r?r[5]:0}else delete WCH[c];localStorage.setItem("dfwatch",JSON.stringify(WCH))}catch(e){}}
+ const SHOWL={live:"Listed now",watch:"Watching",new:"New",drop:"Price drops",up:"Price rises",gone:"No longer listed",all:"Everything"};
  const DAY=864e5,asD=()=>Date.parse(DFALL.asOfD||"2000-01-01");
  const goneRows=()=>DFALL.gone||[];
  const ALL=()=>DFALL.rows.concat(goneRows());
@@ -704,21 +708,21 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  const off=r=>r[4]>r[5]?(r[4]-r[5])/r[4]:0;
  function iu(c){return DFALL.img&&DFALL.img[c]?(DFALL.imgBase||"")+c+".webp":""}
  function showOk(r,v){v=v||st.show;const g=isGone(r);
-  if(v==="live")return !g;if(v==="gone")return g;if(v==="all")return true;
+  if(v==="watch")return isW(r);if(v==="live")return !g;if(v==="gone")return g;if(v==="all")return true;
   if(v==="new")return isNew(r);const c=chg(r);if(v==="drop")return !!c&&r[5]<c[0];if(v==="up")return !!c&&r[5]>c[0];return true}
  function ok(r,skip){const q=st.q.trim().toLowerCase();
   if(q&&!(r[1]+" "+r[2]).toLowerCase().includes(q))return false;
   if(skip!=="term"){if(st.term==="both"&&r[6]!=="AD")return false;if(st.term==="A"&&r[6]!=="A")return false;if(st.term==="D"&&r[6]!=="D")return false}
   if(skip!=="show"&&!showOk(r))return false;if(skip!=="gen"&&st.gen!=="all"&&r[3]!==st.gen)return false;if(skip!=="brand"&&st.brand&&r[2]!==st.brand)return false;return true}
  function opts(k){if(k==="sort")return OPT.sort;const P=ALL().filter(r=>ok(r,k));
-  if(k==="show"){const n=v=>P.filter(r=>showOk(r,v)).length;return [["live",SHOWL.live,n("live")],["new",SHOWL.new,n("new")],["drop",SHOWL.drop,n("drop")],["up",SHOWL.up,n("up")],["gone",SHOWL.gone,n("gone")],["all",SHOWL.all,P.length]]}
+  if(k==="show"){const n=v=>P.filter(r=>showOk(r,v)).length;return [["live",SHOWL.live,n("live")],["watch",SHOWL.watch,n("watch")],["new",SHOWL.new,n("new")],["drop",SHOWL.drop,n("drop")],["up",SHOWL.up,n("up")],["gone",SHOWL.gone,n("gone")],["all",SHOWL.all,P.length]]}
   if(k==="term")return [["all","All terminals",P.length],["both","Both",P.filter(r=>r[6]==="AD").length],["A","Arrivals only",P.filter(r=>r[6]==="A").length],["D","Departure only",P.filter(r=>r[6]==="D").length]];
   if(k==="gen")return [["all","Everyone",P.length]].concat(["Men","Women","Unisex"].map(g=>[g,g,P.filter(r=>r[3]===g).length]));
   const c={};P.forEach(r=>c[r[2]]=(c[r[2]]||0)+1);if(st.brand&&!c[st.brand])c[st.brand]=0;
   return [["","All brands",P.length]].concat(Object.entries(c).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0])).map(([n,v])=>[n,n,v]))}
  const CARET='<svg viewBox="0 0 12 8"><path d="M1 1.5l5 5 5-5"/></svg>';
  function labels(){document.querySelectorAll("#dfdd .dd").forEach(d=>{const k=d.dataset.k,b=d.querySelector(".dsel"),isDef=st[k]===DEF[k];
-  let t=LAB[k];if(k==="sort"){t=st.sort==="disc"?"Sort":({lo:"Low to high",hi:"High to low",az:"A to Z"})[st.sort]}else if(!isDef)t=k==="brand"?st.brand:k==="show"?({new:"New",drop:"Drops",up:"Rises",gone:"Delisted",all:"All"})[st.show]:({both:"Both",A:"Arrivals",D:"Departure"}[st[k]]||st[k]);
+  let t=LAB[k];if(k==="sort"){t=st.sort==="disc"?"Sort":({lo:"Low to high",hi:"High to low",az:"A to Z"})[st.sort]}else if(!isDef)t=k==="brand"?st.brand:k==="show"?({watch:"Watching",new:"New",drop:"Drops",up:"Rises",gone:"Delisted",all:"All"})[st.show]:({both:"Both",A:"Arrivals",D:"Departure"}[st[k]]||st[k]);
   b.innerHTML=esc(t)+CARET;b.classList.toggle("off",isDef)})}
  function closeAll(){document.querySelectorAll("#dfdd .ddm").forEach(m=>m.hidden=true);document.querySelectorAll("#dfdd .dsel").forEach(b=>b.setAttribute("aria-expanded","false"))}
  function rows(){let L=ALL().filter(r=>ok(r,null));
@@ -760,8 +764,9 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
    if(se&&(se.winter||se.spring||se.summer||se.autumn)){const S=[["Winter",se.winter],["Spring",se.spring],["Summer",se.summer],["Autumn",se.autumn]],mx=Math.max.apply(null,S.map(x=>x[1]||0))||1;h+='<h4>Seasons</h4><div class="sea">'+S.map(x=>{const v=Math.round(100*(x[1]||0)/mx);return '<div class="m2"><span>'+x[0]+'</span><div class="tk"><div style="width:'+v+'%;background:'+SCOL[x[0]]+'"></div></div><span class="pc">'+v+'%</span></div>'}).join("")+'</div>'}
    h+='<div class="nb">'+(i.ap?'Closest match: details are for the base perfume or a nearby variant, not this exact bottle. ':'')+'Notes, accords and ratings from Fragrantica community data.</div>'}
   else h+='<div class="nb">'+(Object.keys(DFI).length?'No Fragrantica match for this one (sets, minis and some variants are not listed there).':'Perfume details (notes, accords, ratings) load in the app once connected to the internet.')+'</div>';
-  h+='<div class="ac">'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(has&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div>';
+  h+='<div class="ac"><button id="dfwt" type="button" class="'+(isW(r)?'on':'')+'">'+(isW(r)?'\u2605 Watching price':'\u2606 Watch price')+'</button>'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(has&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div><div class="nb" id="dfwn">'+(isW(r)&&WCH[c]>r[5]?'Down '+inr(WCH[c]-r[5])+' since you started watching.':isW(r)?'You\'ll see a note on the list if this price drops below '+inr(WCH[c])+'.':'')+'</div>';
   document.getElementById("dfp").innerHTML=h;document.getElementById("dfd").classList.add("on");document.getElementById("dfpx").onclick=closeD;document.getElementById("dfp").scrollTop=0;
+  const wb=document.getElementById("dfwt");if(wb)wb.onclick=()=>{const on=!isW(r);setW(c,on);wb.className=on?"on":"";wb.textContent=on?"\u2605 Watching price":"\u2606 Watch price";const wn=document.getElementById("dfwn");if(wn)wn.textContent=on?"You'll see a note on the list if this price drops below "+inr(r[5])+".":"";try{draw()}catch(e){}};
   const ob=document.getElementById("dfown");if(ob)ob.onclick=()=>{closeD();close();try{const p=PERFUMES.find(x=>x.id===r[7]);if(p)window.open(p)}catch(e){}}}
  function closeD(){window.__dfCur=null;const d=document.getElementById("dfd");if(!d.classList.contains("on")||d.classList.contains("out"))return;d.classList.add("out");setTimeout(()=>{d.classList.remove("on","out");const pn=document.getElementById("dfp");pn.style.transform="";pn.classList.remove("drag","snap")},190)}
  (function(){const pn=document.getElementById("dfp");if(!pn)return;let y0=null,dy=0;
@@ -769,8 +774,8 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   pn.addEventListener("touchmove",e=>{if(y0==null)return;dy=e.touches[0].clientY-y0;if(dy>0){pn.classList.add("drag");pn.classList.remove("snap");pn.style.transform="translateY("+dy*.9+"px)"}else if(pn.classList.contains("drag")){pn.style.transform=""}},{passive:true});
   pn.addEventListener("touchend",()=>{if(y0==null)return;y0=null;if(!pn.classList.contains("drag"))return;pn.classList.remove("drag");if(dy>110){pn.style.transform="";closeD()}else{pn.classList.add("snap");pn.style.transform="";setTimeout(()=>pn.classList.remove("snap"),260)}dy=0});
   document.addEventListener("load",e=>{const t=e.target;if(t&&t.tagName==="IMG"){t.classList.add("ld");const q=t.parentNode;if(q&&q.classList&&(q.classList.contains("ph")||q.classList.contains("im")))q.classList.add("ld")}},true)})();
- function badges(r){if(isGone(r))return '<i class="gone">Delisted \u00b7 seen '+dmy(r[8])+'</i>';let h='';if(isNew(r))h+='<i class="nw">New</i>';return h}
- function chgTxt(r){const c=chg(r);if(!c)return '';const d=r[5]-c[0];return '<div class="cg '+(d<0?'dn':'upp')+'">'+(d<0?'\u25bc ':'\u25b2 ')+inr(Math.abs(d))+' since '+dmy(c[1])+'</div>'}
+ function badges(r){if(isW(r)&&!isGone(r))return '<i class="nw">\u2605 Watching</i>'+(isNew(r)?'<i class="nw">New</i>':'');if(isGone(r))return '<i class="gone">Delisted \u00b7 seen '+dmy(r[8])+'</i>';let h='';if(isNew(r))h+='<i class="nw">New</i>';return h}
+ function chgTxt(r){const w=isW(r)&&WCH[r[0]]>r[5]?'<div class="cg dn">\u25bc '+inr(WCH[r[0]]-r[5])+' since you started watching</div>':'';const c=chg(r);if(!c)return w;if(w)return w;const d=r[5]-c[0];return '<div class="cg '+(d<0?'dn':'upp')+'">'+(d<0?'\u25bc ':'\u25b2 ')+inr(Math.abs(d))+' since '+dmy(c[1])+'</div>'}
  function draw(){const L=rows(),box=document.getElementById("dfl");labels();
   document.getElementById("dfcnt").textContent=L.length+" of "+DFALL.rows.length+" listed"+(goneRows().length?" · "+goneRows().length+" delisted":"");
   box.innerHTML=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6],u=iu(r[0]);
