@@ -1117,11 +1117,13 @@ const COLLECTIONS={
 let MOVES={};try{MOVES=JSON.parse(localStorage.getItem("wardrobe-moves")||"{}")||{}}catch(e){MOVES={}}
 function saveMoves(){try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES))}catch(e){}if(typeof syncPush==="function")syncPush()}
 let WEAR={};try{WEAR=JSON.parse(localStorage.getItem("wardrobe-wear")||"{}")||{}}catch(e){WEAR={}}
+let WDIRTY={};try{WDIRTY=JSON.parse(localStorage.getItem("wardrobe-wdirty")||"{}")||{}}catch(e){WDIRTY={}}
+function saveWd(){try{localStorage.setItem("wardrobe-wdirty",JSON.stringify(WDIRTY))}catch(e){}}
 function saveWear(){try{localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR))}catch(e){}if(typeof syncPush==="function")syncPush()}
 const todayS=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const dAgo=s=>Math.round((Date.parse(todayS()+"T00:00:00")-Date.parse(s+"T00:00:00"))/864e5);
 const lastWorn=id=>{const a=WEAR[id];return a&&a.length?a[a.length-1]:null};
-function toggleWear(id){const t=todayS(),a=(WEAR[id]||[]).slice();const i=a.indexOf(t);if(i>=0)a.splice(i,1);else{a.push(t);a.sort()}if(a.length)WEAR[id]=a.slice(-400);else delete WEAR[id];saveWear()}
+function toggleWear(id){const t=todayS(),a=(WEAR[id]||[]).slice();const i=a.indexOf(t);if(i>=0)a.splice(i,1);else{a.push(t);a.sort()}if(a.length)WEAR[id]=a.slice(-400);else delete WEAR[id];WDIRTY[id]=1;saveWd();saveWear()}
 function wearHtml(p){if(active==="wishlist"||MOVES[p.id]&&active==="wishlist")return '';const a=WEAR[p.id]||[],t=todayS(),on=a.indexOf(t)>=0,lw=lastWorn(p.id);const meta=a.length?('Worn '+a.length+(a.length===1?' time':' times')+' \u00b7 last '+(dAgo(lw)===0?'today':dAgo(lw)===1?'yesterday':dAgo(lw)+' days ago')):'Not logged yet';
  return '<section class="wear"><div class="wr"><button type="button" class="wbtn'+(on?' on':'')+'" data-wear="'+p.id+'">'+(on?'\u2713 Worn today':'Wore it today')+'</button><span class="wm">'+meta+'</span></div></section>'}
 let WLXDEL={};let WLX={};try{WLX=JSON.parse(localStorage.getItem("wardrobe-wlx")||"{}")||{}}catch(e){WLX={}}
@@ -1229,6 +1231,7 @@ async function syncPull(first){
    Object.keys(SHARE).forEach(id=>{if(!("share:"+id in R))sh[id]=SHARE[id]});
    Object.keys(ORDER).forEach(c=>{if(!("order:"+c in R))o[c]=ORDER[c]});
    Object.keys(WEAR).forEach(id=>{if(!("wear:"+id in R))wr[id]=WEAR[id];else wr[id]=Array.from(new Set((wr[id]||[]).concat(WEAR[id]))).sort()})}
+  Object.keys(WDIRTY).forEach(id=>{const k="wear:"+id,l=WEAR[id]||[],r=R[k];if(r&&JSON.stringify(r)===JSON.stringify(l)||(!r&&!l.length)){delete WDIRTY[id]}else{if(l.length)wr[id]=l;else delete wr[id]}});saveWd();
   const changed=JSON.stringify([m,sh,o,wr,wx])!==JSON.stringify([MOVES,SHARE,ORDER,WEAR,WLX]);
   MOVES=m;SHARE=sh;ORDER=o;WEAR=wr;WLX=wx;
   try{localStorage.setItem("wardrobe-wlx",JSON.stringify(WLX))}catch(e){}
