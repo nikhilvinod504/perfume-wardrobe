@@ -475,7 +475,7 @@ img.ld{animation:dfFade .4s ease}
 .tools .valbtn{padding:6px 8px!important;font-size:11px!important}
 .tools #wsel{padding-left:9px!important;padding-right:7px!important}
 #findbtn svg{margin-left:1px!important}
-@media (max-width:380px){.tools .aw{display:none}}
+
 #nfdd .ddm{min-width:250px;max-width:calc(100vw - 24px);max-height:58vh;overflow:auto;z-index:70}
 #nfdd .ddm button span{font-family:var(--body);font-size:15px;flex:1;flex-direction:row;justify-content:space-between;gap:14px;white-space:nowrap}
 #nfdd .ddm button em{font-style:normal;font-size:12px;color:var(--ink-soft)}
@@ -529,6 +529,16 @@ img[data-cutp="1"]{visibility:hidden}
 @keyframes wlBtn{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
 #dfd .ac #dfwl:disabled{opacity:.6;cursor:default}
 #dfv .dfc .tg i.wlt{color:#c2477a;border-color:#c2477a}
+
+/* toolbar pills: one height, one baseline */
+.tools{align-items:center!important}
+.tools #wsel,.tools .valbtn{box-sizing:border-box!important;height:34px!important;display:inline-flex!important;align-items:center!important;justify-content:center;margin:0!important;line-height:1!important;font-size:12.5px!important;padding:0 11px!important;gap:6px}
+.tools .valbtn svg,.tools #wsel svg{flex:none}
+.tools #wsel{padding:0 10px 0 12px!important}.tools #wsel b{font-weight:600}
+.tools.q1 #wsel,.tools.q1 .valbtn{height:32px!important;font-size:12px!important;padding:0 9px!important}.tools.q1 #wsel{padding:0 8px 0 10px!important}.tools.q1 .sel>span{width:48px!important;font-size:8.5px!important}
+.tools.q2 #wsel,.tools.q2 .valbtn{height:30px!important;font-size:11px!important;padding:0 8px!important}.tools.q2 #wsel{padding:0 7px 0 9px!important}.tools.q2 .sel>span{width:42px!important;font-size:8px!important}
+#aboutbtn{gap:0!important}.tools .aw{margin-left:.28em}
+.tools.q3 .aw{display:none}
 </style>
 </head>
 <body>
@@ -1902,6 +1912,10 @@ new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(sc
 document.querySelectorAll("img").forEach(take);
 window.pwCut=cut;window.pwCutGet=function(u){return CUT.get(u)||null};
 })();
+</script>
+<script>
+(function(){function fit(){var t=document.querySelector(".tools");if(!t||!t.clientWidth)return;t.classList.remove("q1","q2","q3");var ks=["q1","q2","q3"];for(var i=0;i<ks.length;i++){if(t.scrollWidth<=t.clientWidth+1)break;t.classList.add(ks[i])}}
+window.__fitTools=fit;fit();addEventListener("resize",fit);addEventListener("load",fit);setTimeout(fit,300);setTimeout(fit,1200);try{document.fonts&&document.fonts.ready.then(fit)}catch(e){}})();
 </script>
 <script>
 /* Android back button closes the open sheet instead of exiting the app */
