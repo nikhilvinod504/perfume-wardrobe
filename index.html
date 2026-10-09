@@ -501,7 +501,7 @@ img.ld{animation:dfFade .4s ease}
 #dfd .pn{will-change:transform;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 #dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld){animation:none!important;background:var(--chip)}
 #dfd .nn img,#dfd .smi img,#dfd .cph img{content-visibility:auto}
-#dfd .hd .im img{transition:opacity .25s ease}
+#dfd .hd .im img{transition:none!important}
 
 #dfp .hd .im img,#dfp .hd .im img.ld,#dfv .dfc .ph img.ld{animation:none!important}
 
@@ -961,7 +961,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   flyClone(th.src||im.src,a,b,460,()=>{im.style.opacity="";th.style.visibility=""})}
  function dfFlyOut(){const th=DFTH;DFTH=null;if(!th||!th.isConnected||flyRM())return;const im=document.querySelector("#dfp .hd .im img");if(!im||!im.naturalWidth)return;const r=im.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const t=th.getBoundingClientRect();if(t.bottom<0||t.top>innerHeight)return;
   const a=fitBox(im,r),b=fitBox(th,t);im.style.opacity="0";th.style.visibility="hidden";flyClone(im.src,a,b,340,()=>{th.style.visibility=""})}
- function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
+ function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u0=iu(c),u=(u0&&window.pwCutGet&&window.pwCutGet(u0))||u0,has=!!(i&&i.m);
   const where=r[6]==="AD"?"Arrivals and departure":r[6]==="A"?"Arrivals only":"Departure only";
   const rt=has&&i.s!=null?Number(i.s):null,rmax=has&&i.r?i.r:10,stars5=rt==null?"":(()=>{const k=Math.round(rt/rmax*5);return "★".repeat(k)+"☆".repeat(5-k)})();
   let h='<button class="px" id="dfpx" type="button" aria-label="Close">✕</button><div class="gr"></div><div class="hd"><div class="im">'+(u?'<img alt="" referrerpolicy="no-referrer" src="'+u+'" onerror="imgFail(this,\'p\')">':'')+'</div><div><h3>'+esc(r[1])+'</h3><div class="sb">'+esc(r[2])+' · '+esc(r[3])+(has&&i.y?' · '+i.y:'')+'</div>'+(rt!=null?'<div class="rt"><b>'+rt.toFixed(1)+'</b><span class="st">'+stars5+'</span>'+(i.c?'<span class="vt">('+Number(i.c).toLocaleString("en-IN")+')</span>':'')+'</div>':'')+'</div></div>';
@@ -1900,7 +1900,7 @@ function take(img){if(img.tagName!=="IMG"||img.hasAttribute("data-cutp"))return;
 function scan(n){if(n.nodeType!==1)return;if(n.tagName==="IMG")take(n);else if(n.querySelectorAll)n.querySelectorAll("img").forEach(take)}
 new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(scan);if(m.type==="attributes"&&m.target.tagName==="IMG")take(m.target)})}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});
 document.querySelectorAll("img").forEach(take);
-window.pwCut=cut;
+window.pwCut=cut;window.pwCutGet=function(u){return CUT.get(u)||null};
 })();
 </script>
 <script>
