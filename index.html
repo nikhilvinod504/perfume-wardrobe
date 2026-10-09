@@ -1124,7 +1124,7 @@ const lastWorn=id=>{const a=WEAR[id];return a&&a.length?a[a.length-1]:null};
 function toggleWear(id){const t=todayS(),a=(WEAR[id]||[]).slice();const i=a.indexOf(t);if(i>=0)a.splice(i,1);else{a.push(t);a.sort()}if(a.length)WEAR[id]=a.slice(-400);else delete WEAR[id];saveWear()}
 function wearHtml(p){if(active==="wishlist"||MOVES[p.id]&&active==="wishlist")return '';const a=WEAR[p.id]||[],t=todayS(),on=a.indexOf(t)>=0,lw=lastWorn(p.id);const meta=a.length?('Worn '+a.length+(a.length===1?' time':' times')+' \u00b7 last '+(dAgo(lw)===0?'today':dAgo(lw)===1?'yesterday':dAgo(lw)+' days ago')):'Not logged yet';
  return '<section class="wear"><div class="wr"><button type="button" class="wbtn'+(on?' on':'')+'" data-wear="'+p.id+'">'+(on?'\u2713 Worn today':'Wore it today')+'</button><span class="wm">'+meta+'</span></div></section>'}
-let WLX={};try{WLX=JSON.parse(localStorage.getItem("wardrobe-wlx")||"{}")||{}}catch(e){WLX={}}
+let WLXDEL={};let WLX={};try{WLX=JSON.parse(localStorage.getItem("wardrobe-wlx")||"{}")||{}}catch(e){WLX={}}
 let SHARE={};try{SHARE=JSON.parse(localStorage.getItem("wardrobe-share")||"{}")||{}}catch(e){SHARE={}}
 function saveShare(){try{localStorage.setItem("wardrobe-share",JSON.stringify(SHARE))}catch(e){}if(typeof syncPush==="function")syncPush()}
 const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
@@ -1221,6 +1221,8 @@ async function syncPull(first){
   const m={},sh={},o={},wr={},wx={};
   Object.keys(R).forEach(k=>{const v=R[k];if(v===null)return;const i=k.indexOf(":"),t=k.slice(0,i),id=k.slice(i+1);
    if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v;else if(t==="wear"&&Array.isArray(v))wr[id]=v;else if(t==="wlx"&&v&&v.name)wx[id]=v});
+  Object.keys(WLX).forEach(id=>{const k="wlx:"+id;if(!(k in R)||R[k]===null){if(first||!prev||!prev[k])wx[id]=WLX[id]}});
+  Object.keys(WLXDEL).forEach(id=>{const k="wlx:"+id;if(R[k]&&R[k].name){delete wx[id]}else delete WLXDEL[id]});
   if(first){/* keep local-only entries (they get pushed) */
    Object.keys(WLX).forEach(id=>{if(!("wlx:"+id in R))wx[id]=WLX[id]});
    Object.keys(MOVES).forEach(id=>{if(!("move:"+id in R))m[id]=MOVES[id]});
@@ -1241,8 +1243,8 @@ function applyWlx(){Object.keys(WLX).forEach(function(id){var o=WLX[id];if(!o||!
  if(!p){p=Object.assign({},o);delete p.pyr;delete p.price;delete p.accCol;PERFUMES.push(p)}
  if(o.pyr)PYR[id]=o.pyr;if(o.price)PRICES[id]=o.price;if(o.accCol)Object.keys(o.accCol).forEach(function(k){if(!ACC[k])ACC[k]=o.accCol[k]});
  if(COLLECTIONS.wishlist.ids.indexOf(id)<0)COLLECTIONS.wishlist.ids.push(id)})}
-function wlxAdd(o){WLX[o.id]=o;applyWlx();saveWlx()}
-function wlxDrop(id){var o=WLX[id];delete WLX[id];delete MOVES[id];var i=PERFUMES.findIndex(function(x){return x.id===id});if(i>=0)PERFUMES.splice(i,1);var j=COLLECTIONS.wishlist.ids.indexOf(id);if(j>=0)COLLECTIONS.wishlist.ids.splice(j,1);delete PYR[id];delete PRICES[id];saveMoves();saveWlx();return o}
+function wlxAdd(o){delete WLXDEL[o.id];WLX[o.id]=o;applyWlx();saveWlx()}
+function wlxDrop(id){WLXDEL[id]=1;var o=WLX[id];delete WLX[id];delete MOVES[id];var i=PERFUMES.findIndex(function(x){return x.id===id});if(i>=0)PERFUMES.splice(i,1);var j=COLLECTIONS.wishlist.ids.indexOf(id);if(j>=0)COLLECTIONS.wishlist.ids.splice(j,1);delete PYR[id];delete PRICES[id];saveMoves();saveWlx();return o}
 function wlxState(id){return WLX[id]?(MOVES[id]?"own":"wish"):""}
 function wlxCount(){return Object.keys(WLX).filter(function(id){return !MOVES[id]}).length}
 applyWlx();try{window.__dfWlSync&&window.__dfWlSync()}catch(e){}
