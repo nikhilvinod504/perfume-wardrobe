@@ -507,6 +507,11 @@ img.ld{animation:dfFade .4s ease}
 
 
 #cabinet img.ld,#cabinet .gs.ld,.sheet img.ld,.nsheet img.ld{animation:none}
+
+#dfv img.ld,#dfd img.ld,.fnr img.ld{animation:none!important}
+@keyframes dfShim2{from{background:linear-gradient(100deg,var(--chip) 30%,var(--card) 50%,var(--chip) 70%) -120px 0/240px 100%}to{background:linear-gradient(100deg,var(--chip) 30%,var(--card) 50%,var(--chip) 70%) 240px 0/240px 100%}}
+#dfv .dfc .ph:not(.ld),#dfd .im:not(.ld){background:none;animation:dfShim2 1.2s linear .35s infinite}
+#dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld),.fnr .fi img:not(.ld){background:none;animation:dfShim2 1.2s linear .35s infinite}
 </style>
 </head>
 <body>
@@ -978,11 +983,11 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
   document.addEventListener("load",e=>{const t=e.target;if(t&&t.tagName==="IMG"){t.classList.add("ld");const q=t.parentNode;if(q&&q.classList&&(q.classList.contains("ph")||q.classList.contains("im")))q.classList.add("ld")}},true)})();
  function badges(r){if(isW(r)&&!isGone(r))return '<i class="nw">\u2605 Watching</i>'+(isNew(r)?'<i class="nw">New</i>':'');if(isGone(r))return '<i class="gone">Delisted \u00b7 seen '+dmy(r[8])+'</i>';let h='';if(isNew(r))h+='<i class="nw">New</i>';return h}
  function chgTxt(r){const w=isW(r)&&WCH[r[0]]>r[5]?'<div class="cg dn">\u25bc '+inr(WCH[r[0]]-r[5])+' since you started watching</div>':'';const c=chg(r);if(!c)return w;if(w)return w;const d=r[5]-c[0];return '<div class="cg '+(d<0?'dn':'upp')+'">'+(d<0?'\u25bc ':'\u25b2 ')+inr(Math.abs(d))+' since '+dmy(c[1])+'</div>'}
- function draw(){const L=rows(),box=document.getElementById("dfl");labels();box.classList.remove("fx");void box.offsetWidth;box.classList.add("fx");
+ function draw(keep){const L=rows(),box=document.getElementById("dfl");labels();if(!keep){box.classList.remove("fx");void box.offsetWidth;box.classList.add("fx")}
   document.getElementById("dfcnt").textContent=L.length+" of "+DFALL.rows.length+" listed"+(goneRows().length?" · "+goneRows().length+" delisted":"");
-  box.innerHTML=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6],u=iu(r[0]);
-   return '<div class="dfc'+(r[7]?' own':'')+(isGone(r)?' gn':'')+'" data-c="'+r[0]+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="imgFail(this,\'p\')">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+badges(r)+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+chgTxt(r)+'</div></div>'}).join("")+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');
-  const m=document.getElementById("dfmore");if(m)m.onclick=()=>{st.n+=80;draw()}}
+  {const rowsH=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6],u=iu(r[0]);
+   return '<div class="dfc'+(r[7]?' own':'')+(isGone(r)?' gn':'')+'" data-c="'+r[0]+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="imgFail(this,\'p\')">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+badges(r)+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+chgTxt(r)+'</div></div>'});const tailH=""+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');const prev=new Map();box.querySelectorAll(".dfc").forEach(n=>prev.set(n.dataset.c,n));Array.from(box.children).forEach(n=>{if(!n.classList.contains("dfc"))n.remove()});const tmp=document.createElement("div");const nodes=rowsH.map(h=>{const m=h.match(/data-c="([^"]*)"/),c=m&&m[1],o=prev.get(c);if(o&&o._h===h){prev.delete(c);return o}tmp.innerHTML=h;const n=tmp.firstChild;n._h=h;return n});nodes.forEach((n,ix)=>{if(box.children[ix]!==n)box.insertBefore(n,box.children[ix]||null)});while(box.children.length>nodes.length)box.removeChild(box.lastChild);tmp.innerHTML=tailH;while(tmp.firstChild)box.appendChild(tmp.firstChild)}
+  const m=document.getElementById("dfmore");if(m)m.onclick=()=>{st.n+=80;draw(1)}}
  function selSet(k){if(st.multi[k])return new Set(st.ms[k]);if(k==="note")return new Set([st.note]);return new Set([st[k]])}
  function optHtml(k){const S=selSet(k),L=opts(k);if(!L.length)return '<div class="mn">'+(k==="note"?(Object.keys(DFI).length?"No notes match.":"Perfume details are still loading."):"Nothing here.")+'</div>';
   return L.map(([v,l,c])=>'<button type="button" role="option" data-v="'+esc(v)+'"'+(c===0&&!S.has(v)?' class="z"':'')+' aria-selected="'+S.has(v)+'"><span>'+esc(l)+(c!=null?'<em>'+c+'</em>':'')+'</span><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></button>').join("")}
