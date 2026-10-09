@@ -512,6 +512,8 @@ img.ld{animation:dfFade .4s ease}
 @keyframes dfShim2{from{background:linear-gradient(100deg,var(--chip) 30%,var(--card) 50%,var(--chip) 70%) -120px 0/240px 100%}to{background:linear-gradient(100deg,var(--chip) 30%,var(--card) 50%,var(--chip) 70%) 240px 0/240px 100%}}
 #dfv .dfc .ph:not(.ld),#dfd .im:not(.ld){background:none;animation:dfShim2 1.2s linear .35s infinite}
 #dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld),.fnr .fi img:not(.ld){background:none;animation:dfShim2 1.2s linear .35s infinite}
+
+img[data-cutp="1"]{visibility:hidden}
 </style>
 </head>
 <body>
@@ -941,7 +943,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  let DFTH=null;
  function dfFlyIn(th){if(flyRM()||!th||!th.isConnected||!th.complete||!th.naturalWidth)return;const im=document.querySelector("#dfp .hd .im img");if(!im)return;const r0=th.getBoundingClientRect();if(r0.bottom<0||r0.top>innerHeight)return;const dr=im.getBoundingClientRect();const dy=-40;
   const a=fitBox(th,r0),b=fitBox(im,{left:dr.left,top:dr.top+dy,width:dr.width,height:dr.height,right:0,bottom:0});im.style.opacity="0";th.style.visibility="hidden";DFTH=th;
-  flyClone(im.src,a,b,460,()=>{im.style.opacity="";th.style.visibility=""})}
+  flyClone(th.src||im.src,a,b,460,()=>{im.style.opacity="";th.style.visibility=""})}
  function dfFlyOut(){const th=DFTH;DFTH=null;if(!th||!th.isConnected||flyRM())return;const im=document.querySelector("#dfp .hd .im img");if(!im||!im.naturalWidth)return;const r=im.getBoundingClientRect();if(r.bottom<0||r.top>innerHeight)return;const t=th.getBoundingClientRect();if(t.bottom<0||t.top>innerHeight)return;
   const a=fitBox(im,r),b=fitBox(th,t);im.style.opacity="0";th.style.visibility="hidden";flyClone(im.src,a,b,340,()=>{th.style.visibility=""})}
  function showD(c){const r=rowOf(c);if(!r)return;window.__dfCur=c;const f=facts(r[1]),i=DFI[c],o=off(r),u=iu(c),has=!!(i&&i.m);
@@ -1746,6 +1748,62 @@ menu.addEventListener("click",e=>{e.stopPropagation();
  else{NF.sel=i>=0?[]:[v];apply();shut()}});
 window.__nfReset=function(){NF.sel=[];apply()};
 apply();
+})();
+</script>
+
+<script>
+/* Duty free photos: cut the white background out so bottles sit on the page like the wardrobe ones */
+(function(){
+var CUT=new Map(),FAIL=new Set(),Q=[],busy=false;
+var PAT=/\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$)/;
+function bgPix(d,i){var o=i*4,r=d[o],g=d[o+1],b=d[o+2];return r>=236&&g>=236&&b>=236&&Math.max(r,g,b)-Math.min(r,g,b)<=14}
+function cutPixels(d,w,h){
+ var n=w*h,mark=new Uint8Array(n),q=new Int32Array(n),qi=0,qe=0;
+ var cs=[0,w-1,(h-1)*w,n-1],ok=0;cs.forEach(function(i){if(bgPix(d,i))ok++});if(ok<3)return null;
+ function push(i){if(!mark[i]&&bgPix(d,i)){mark[i]=1;q[qe++]=i}}
+ for(var x=0;x<w;x++){push(x);push((h-1)*w+x)}for(var y=0;y<h;y++){push(y*w);push(y*w+w-1)}
+ while(qi<qe){var i=q[qi++],x=i%w,y=(i-x)/w;if(x>0)push(i-1);if(x<w-1)push(i+1);if(y>0)push(i-w);if(y<h-1)push(i+w)}
+ if(qe<n*0.12||qe>n*0.97)return null;
+ var x0=w,y0=h,x1=-1,y1=-1;
+ for(var i=0;i<n;i++){var o=i*4;
+  if(mark[i]){d[o+3]=0;continue}
+  var x=i%w,y=(i-x)/w;
+  if((x>0&&mark[i-1])||(x<w-1&&mark[i+1])||(y>0&&mark[i-w])||(y<h-1&&mark[i+w])){
+   var m=Math.min(d[o],d[o+1],d[o+2]),a=Math.max(.35,Math.min(1,(255-m)/55));
+   if(a<1){for(var k=0;k<3;k++){var c=(d[o+k]-255*(1-a))/a;d[o+k]=c<0?0:c>255?255:c}}
+   d[o+3]=Math.round(a*255)}
+  if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+ if(x1<0)return null;return [x0,y0,x1,y1]}
+async function getBlob(url){
+ try{if(window.caches){var c=await caches.open("pw-img-v1"),m=await c.match(url);if(m){var b=await m.blob();if(b&&b.size>200)return b}}}catch(e){}
+ var r=await fetch(url,{mode:"cors"});if(!r.ok)throw 0;return await r.blob()}
+async function cut(url){
+ if(CUT.has(url))return CUT.get(url);if(FAIL.has(url))return null;
+ try{
+  var bm=await createImageBitmap(await getBlob(url)),w=bm.width,h=bm.height,c=document.createElement("canvas");c.width=w;c.height=h;
+  var x=c.getContext("2d",{willReadFrequently:true});x.drawImage(bm,0,0);
+  var im=x.getImageData(0,0,w,h),bb=cutPixels(im.data,w,h);
+  if(!bb){FAIL.add(url);return null}
+  x.putImageData(im,0,0);
+  var pad=Math.round(Math.max(w,h)*.03),sx=Math.max(0,bb[0]-pad),sy=Math.max(0,bb[1]-pad),ex=Math.min(w,bb[2]+pad+1),ey=Math.min(h,bb[3]+pad+1);
+  var o=document.createElement("canvas");o.width=ex-sx;o.height=ey-sy;o.getContext("2d").drawImage(c,sx,sy,ex-sx,ey-sy,0,0,ex-sx,ey-sy);
+  var blob=await new Promise(function(ok){o.toBlob(ok,"image/webp",.92)});if(!blob)throw 0;
+  var u=URL.createObjectURL(blob);CUT.set(url,u);return u
+ }catch(e){FAIL.add(url);return null}}
+function done(img){img.removeAttribute("data-cutp")}
+function job(img){var src=img.getAttribute("src")||"";
+ return cut(src).then(function(u){
+  if(!u||(img.getAttribute("src")||"")!==src){done(img);return}
+  var t=new Image();t.onload=t.onerror=function(){if((img.getAttribute("src")||"")===src){img.src=u}done(img)};t.src=u})}
+function pump(){if(busy)return;busy=true;(function nx(){var j=Q.shift();if(!j){busy=false;return}j().then(function(){setTimeout(nx,0)},function(){setTimeout(nx,0)})})()}
+function take(img){if(img.tagName!=="IMG"||img.hasAttribute("data-cutp"))return;var s=img.getAttribute("src")||"";if(s.indexOf("blob:")===0||!PAT.test(s)||s.indexOf("/notes/")>=0)return;
+ if(CUT.has(s)){var t=CUT.get(s);img.src=t;return}
+ if(FAIL.has(s))return;
+ img.setAttribute("data-cutp","1");var j=function(){return job(img)};if(img.closest&&img.closest("#dfp"))Q.unshift(j);else Q.push(j);pump()}
+function scan(n){if(n.nodeType!==1)return;if(n.tagName==="IMG")take(n);else if(n.querySelectorAll)n.querySelectorAll("img").forEach(take)}
+new MutationObserver(function(ms){ms.forEach(function(m){m.addedNodes.forEach(scan);if(m.type==="attributes"&&m.target.tagName==="IMG")take(m.target)})}).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:["src"]});
+document.querySelectorAll("img").forEach(take);
+window.pwCut=cut;
 })();
 </script>
 <script>
