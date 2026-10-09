@@ -1068,7 +1068,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
    toast("Added to your wishlist",()=>{window.wlxDrop(id);wlCount();draw(1)});
    const tt=document.querySelector(".toast:last-of-type");if(tt){const v=document.createElement("button");v.type="button";v.textContent="View";v.onclick=()=>{tt.remove();wlGo()};tt.insertBefore(v,tt.querySelector("button"))}
   }finally{WLBUSY=false}}
- function wlGo(){try{closeD()}catch(e){}close();setTimeout(()=>{const b=document.querySelector('#wmenu button[data-c="wishlist"]');if(b)b.click()},260)}
+ function wlGo(){try{closeD()}catch(e){}close();setTimeout(()=>{const b=document.querySelector('#wmenu button[data-c="wishlist"]');if(active==='wishlist'){try{build()}catch(e){}}else if(b)b.click()},260)}
  document.getElementById("dfp").addEventListener("click",e=>{const b=e.target.closest("#dfwl");if(b)wlToggle(window.__dfCur,b)});
  document.getElementById("dfwlb").addEventListener("click",()=>{if(window.wlxCount())wlGo();else toast("Open a perfume and tap Move to wishlist")});
  wlCount();
