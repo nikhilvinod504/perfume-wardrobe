@@ -1686,8 +1686,8 @@ const C={page:"#efe7e1",card:"#fbf6f1",ink:"#2a1b16",soft:"#6f5a52",brass:"#b98a
 const SER='"DM Serif Display",Georgia,serif',SANS='Jost,system-ui,sans-serif';
 const font=(w,s,f)=>w+" "+s+"px "+(f||SANS);
 async function loadFonts(){try{await Promise.all([document.fonts.load('40px "DM Serif Display"'),document.fonts.load('400 24px Jost'),document.fonts.load('500 24px Jost')]);await document.fonts.ready}catch(e){}}
-function loadImg(src){return new Promise(async res=>{if(!src)return res(null);const fin=b=>res(b);
- try{if(/\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$)/.test(src)&&window.pwCut){try{const cu=await window.pwCut(src);if(cu)src=cu}catch(e){}}
+function loadImg(src){return new Promise(async res=>{if(!src)return res(null);let cutFlag=false;const fin=b=>{if(b&&cutFlag)b._cut=true;res(b)};
+ try{if(/\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$)/.test(src)&&window.pwCut){try{const cu=await window.pwCut(src);if(cu){src=cu;cutFlag=true}}catch(e){}}
  if(/^data:|^blob:/.test(src)){const i=new Image();i.onload=()=>fin(i);i.onerror=()=>fin(null);i.src=src;return}
   let blob=null;try{const r=await fetch(src,{mode:"cors"});if(r.ok)blob=await r.blob()}catch(e){}
   if(!blob&&window.caches){try{const c=await caches.open("pw-img-v1"),r=await c.match(src);if(r)blob=await r.blob()}catch(e){}}
@@ -1705,7 +1705,7 @@ function chipsColored(c,items,X,Y,maxW,draw,sz){sz=sz||24;const h=sz+22,gap=10;c
 async function layoutSingle(c,s,I,draw){let y=PAD;
  caps(c,s.brandline||"Perfume Wardrobe",PAD,y+16,C.brass,22);y+=34;if(draw){c.strokeStyle=C.line;c.lineWidth=2;c.beginPath();c.moveTo(PAD,y);c.lineTo(W-PAD,y);c.stroke()}y+=36;
  const iw=300,ih=380,tx=PAD+iw+44,tw=W-PAD-tx;
- if(draw){rr(0,c,PAD,y,iw,ih,28);c.fillStyle="#fff";c.fill();c.strokeStyle=C.line;c.lineWidth=2;c.stroke();fitImg(c,I.main,PAD+14,y+14,iw-28,ih-28,14)}
+ if(draw){if(I.main&&I.main._cut){fitImg(c,I.main,PAD+6,y+6,iw-12,ih-12,0)}else{rr(0,c,PAD,y,iw,ih,28);c.fillStyle="#fff";c.fill();c.strokeStyle=C.line;c.lineWidth=2;c.stroke();fitImg(c,I.main,PAD+14,y+14,iw-28,ih-28,14)}}
  let ty=y+12;c.font=font(400,62,SER);const tl=wrap(c,s.title,tw).slice(0,3);tl.forEach(l=>{ty+=64;if(draw){c.fillStyle=C.ink;c.fillText(l,tx,ty)}});
  c.font=font(400,28);ty+=44;if(draw){c.fillStyle=C.soft;c.fillText(s.sub||"",tx,ty)}
  if(s.rating){ty+=26;const ry=ty+62;if(draw){c.font=font(400,66,SER);c.fillStyle=C.ink;c.fillText(Number(s.rating.v).toFixed(1),tx,ry);const nw=c.measureText(Number(s.rating.v).toFixed(1)).width;const k=Math.round(s.rating.v);c.font=font(400,34);c.fillStyle=C.brass;c.fillText("★".repeat(k)+"☆".repeat(5-k),tx+nw+16,ry-8);if(s.rating.n){c.font=font(400,24);c.fillStyle=C.soft;c.fillText("("+s.rating.n.toLocaleString("en-IN")+")",tx,ry+34)}}ty=ry+(s.rating.n?40:6)}
@@ -1721,7 +1721,7 @@ async function layoutSingle(c,s,I,draw){let y=PAD;
  return y+44+PAD}
 async function layoutCompare(c,s,I,draw){let y=PAD;caps(c,s.brandline||"Perfume Wardrobe",PAD,y+16,C.brass,22);y+=34;if(draw){c.strokeStyle=C.line;c.lineWidth=2;c.beginPath();c.moveTo(PAD,y);c.lineTo(W-PAD,y);c.stroke()}y+=34;
  caps(c,"Compare",PAD,y+16);y+=40;const gap=40,colW=(CW-gap)/2;let hh=0;
- s.cols.forEach((col,k)=>{const x=PAD+k*(colW+gap);let yy=y;if(draw){rr(0,c,x+(colW-230)/2,yy,230,290,24);c.fillStyle="#fff";c.fill();c.strokeStyle=C.line;c.lineWidth=2;c.stroke();fitImg(c,I.cols[k],x+(colW-230)/2+12,yy+12,206,266,12)}yy+=290+34;c.font=font(400,36,SER);const ls=wrap(c,col.title,colW).slice(0,3);ls.forEach(l=>{if(draw){c.fillStyle=C.ink;c.textAlign="left";c.fillText(l,x,yy)}yy+=40});if(draw){c.font=font(400,24);c.fillStyle=C.soft;c.textAlign="left";c.fillText(col.sub||"",x,yy+4)}yy+=24;hh=Math.max(hh,yy-y)});y+=hh+30;
+ s.cols.forEach((col,k)=>{const x=PAD+k*(colW+gap);let yy=y;if(draw){if(I.cols[k]&&I.cols[k]._cut){fitImg(c,I.cols[k],x+(colW-230)/2+6,yy+6,218,278,0)}else{rr(0,c,x+(colW-230)/2,yy,230,290,24);c.fillStyle="#fff";c.fill();c.strokeStyle=C.line;c.lineWidth=2;c.stroke();fitImg(c,I.cols[k],x+(colW-230)/2+12,yy+12,206,266,12)}}yy+=290+34;c.font=font(400,36,SER);const ls=wrap(c,col.title,colW).slice(0,3);ls.forEach(l=>{if(draw){c.fillStyle=C.ink;c.textAlign="left";c.fillText(l,x,yy)}yy+=40});if(draw){c.font=font(400,24);c.fillStyle=C.soft;c.textAlign="left";c.fillText(col.sub||"",x,yy+4)}yy+=24;hh=Math.max(hh,yy-y)});y+=hh+30;
  const LW=190,VG=20,VW=(CW-LW-VG)/2,XS=[PAD+LW,PAD+LW+VW+VG];
  s.rows.forEach(r=>{if(!r[1]&&!r[2])return;if(draw){c.strokeStyle=C.line;c.lineWidth=2;c.beginPath();c.moveTo(PAD,y);c.lineTo(W-PAD,y);c.stroke()}
   let n=1;const big=!!r.big;[r[1],r[2]].forEach((v,k)=>{c.font=font(400,big?40:28,big?SER:SANS);const ls=wrap(c,v||"\u2014",VW).slice(0,2);n=Math.max(n,ls.length);if(draw)ls.forEach((l,j)=>{c.fillStyle=C.ink;c.textAlign="left";c.fillText(l,XS[k],y+(big?54:48)+j*34)})});
