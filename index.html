@@ -390,7 +390,7 @@ img.ld{animation:dfFade .4s ease}
 #dfd .stt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}#dfd .stt>div{background:var(--chip);border-radius:8px;padding:10px 12px}#dfd .stt b{display:block;font:400 20px var(--display)}#dfd .stt span{font-size:12px;color:var(--ink-soft);letter-spacing:.06em;text-transform:uppercase}
 #dfd .dnb{display:flex;height:30px;border-radius:6px;overflow:hidden;font-size:13px;font-weight:500}#dfd .dnb div{display:flex;align-items:center;justify-content:center}
 #dfd .sea{display:flex;flex-direction:column;gap:8px}#dfd .m2{display:grid;grid-template-columns:62px 1fr 40px;gap:10px;align-items:center;font-size:13px}#dfd .tk{height:10px;border-radius:99px;background:var(--line);overflow:hidden}#dfd .tk div{height:100%;border-radius:99px}#dfd .pc{color:var(--ink-soft);text-align:right;font-variant-numeric:tabular-nums}
-.wear{margin:10px 0 2px}.wear .wr{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.wear .wbtn{font:inherit;font-size:14px;color:var(--ink);background:none;border:1px solid var(--brass);border-radius:99px;padding:8px 16px;cursor:pointer}.wear .wbtn.on{background:var(--chip);color:var(--brass)}.wear .wm{font-size:13px;color:var(--ink-soft)}
+.wear{margin:10px 0 2px}.wear .wr{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.wear .wbtn{font:inherit;font-size:14px;color:var(--ink);background:none;border:1px solid var(--brass);border-radius:99px;padding:8px 16px;cursor:pointer}.wear .wlnk{border-color:transparent;color:var(--brass);text-decoration:underline;padding:8px 6px}.wpast{margin-top:10px}.wpr{display:flex;gap:10px;align-items:center}.wpr input{font:inherit;font-size:14px;padding:7px 10px;border:1px solid var(--brass);border-radius:10px;background:var(--paper,#fff);color:var(--ink)}.wchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.wch{font:inherit;font-size:12px;color:var(--ink);background:var(--chip);border:0;border-radius:99px;padding:5px 10px;cursor:pointer}.wear .wbtn.on{background:var(--chip);color:var(--brass)}.wear .wm{font-size:13px;color:var(--ink-soft)}
 #dfd .smr.own{cursor:default}#dfd .smt small.why{white-space:normal;line-height:1.35}.pt{display:flex;align-items:center;gap:8px}.pt i{font-style:normal;color:var(--ink-soft)}.ptb{flex:1;min-width:0;display:flex;align-items:center;gap:8px;font:inherit;font-size:13.5px;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:12px;padding:8px 10px;cursor:pointer;text-align:left}.ptb.on{border-color:var(--brass)}.ptb img{width:26px;height:34px;object-fit:contain;flex:none}.ptb span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ptb .ph{color:var(--ink-soft)}.ptb svg{width:11px;height:8px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:.7}
 #ptP{margin-top:10px;border:1px solid var(--line);border-radius:14px;background:var(--card);max-height:320px;overflow-y:auto;padding:10px 10px 4px}.ptg{margin-bottom:10px}.ptg>b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:6px}.ptgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.ptc{display:flex;flex-direction:column;align-items:center;gap:3px;font:inherit;color:inherit;background:none;border:1px solid transparent;border-radius:10px;padding:6px 4px;cursor:pointer}.ptc img{height:56px;width:auto;max-width:100%;object-fit:contain}.ptc span{font-size:11.5px;line-height:1.2;text-align:center;overflow-wrap:anywhere}.ptc.on{border-color:var(--brass);background:var(--chip)}.ptc.dis{opacity:.35;cursor:default}
 #ptR{margin-top:12px;display:flex;flex-direction:column;gap:10px}
@@ -1117,15 +1117,21 @@ const COLLECTIONS={
 let MOVES={};try{MOVES=JSON.parse(localStorage.getItem("wardrobe-moves")||"{}")||{}}catch(e){MOVES={}}
 function saveMoves(){try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES))}catch(e){}if(typeof syncPush==="function")syncPush()}
 let WEAR={};try{WEAR=JSON.parse(localStorage.getItem("wardrobe-wear")||"{}")||{}}catch(e){WEAR={}}
+let WEARM={};try{WEARM=JSON.parse(localStorage.getItem("wardrobe-wearm")||"{}")||{}}catch(e){WEARM={}}
+const WS=()=>active==="mannu"?WEARM:WEAR,WK=()=>active==="mannu"?"wearm:":"wear:";let WOPEN={};
 let WDIRTY={};try{WDIRTY=JSON.parse(localStorage.getItem("wardrobe-wdirty")||"{}")||{}}catch(e){WDIRTY={}}
 function saveWd(){try{localStorage.setItem("wardrobe-wdirty",JSON.stringify(WDIRTY))}catch(e){}}
-function saveWear(){try{localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR))}catch(e){}if(typeof syncPush==="function")syncPush()}
+function saveWear(){try{localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR));localStorage.setItem("wardrobe-wearm",JSON.stringify(WEARM))}catch(e){}if(typeof syncPush==="function")syncPush()}
 const todayS=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const dAgo=s=>Math.round((Date.parse(todayS()+"T00:00:00")-Date.parse(s+"T00:00:00"))/864e5);
-const lastWorn=id=>{const a=WEAR[id];return a&&a.length?a[a.length-1]:null};
-function toggleWear(id){const t=todayS(),a=(WEAR[id]||[]).slice();const i=a.indexOf(t);if(i>=0)a.splice(i,1);else{a.push(t);a.sort()}if(a.length)WEAR[id]=a.slice(-400);else delete WEAR[id];WDIRTY[id]=1;saveWd();saveWear()}
-function wearHtml(p){if(active==="wishlist"||MOVES[p.id]&&active==="wishlist")return '';const a=WEAR[p.id]||[],t=todayS(),on=a.indexOf(t)>=0,lw=lastWorn(p.id);const meta=a.length?('Worn '+a.length+(a.length===1?' time':' times')+' \u00b7 last '+(dAgo(lw)===0?'today':dAgo(lw)===1?'yesterday':dAgo(lw)+' days ago')):'Not logged yet';
- return '<section class="wear"><div class="wr"><button type="button" class="wbtn'+(on?' on':'')+'" data-wear="'+p.id+'">'+(on?'\u2713 Worn today':'Wore it today')+'</button><span class="wm">'+meta+'</span></div></section>'}
+const lastWorn=id=>{const a=WS()[id];return a&&a.length?a[a.length-1]:null};
+function wearEdit(id,date,add){const S=WS(),a=(S[id]||[]).slice(),i=a.indexOf(date);if(add&&i<0){a.push(date);a.sort()}else if(!add&&i>=0)a.splice(i,1);else return;if(a.length)S[id]=a.slice(-400);else delete S[id];WDIRTY[WK()+id]=1;saveWd();saveWear()}
+function toggleWear(id){const t=todayS();wearEdit(id,t,(WS()[id]||[]).indexOf(t)<0)}
+const dFmt=s=>{const d=new Date(s+"T00:00:00");return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:d.getFullYear()===new Date().getFullYear()?undefined:"numeric"})}
+function wearHtml(p){if(active==="wishlist")return '';const a=WS()[p.id]||[],t=todayS(),on=a.indexOf(t)>=0,lw=lastWorn(p.id),who=active==="mannu"?"Mannu":"Nix";const meta=a.length?(who+' worn '+a.length+(a.length===1?' time':' times')+' \u00b7 last '+(dAgo(lw)===0?'today':dAgo(lw)===1?'yesterday':dAgo(lw)+' days ago')):'Not logged yet';
+ const op=WOPEN[p.id];
+ const past=op?'<div class="wpast"><div class="wpr"><input type="date" id="wpd" max="'+t+'" value="'+t+'"><button type="button" class="wbtn" data-wadd="'+p.id+'">Add</button></div>'+(a.length?'<div class="wchips">'+a.slice(-12).reverse().map(d=>'<button type="button" class="wch" data-wdel="'+p.id+'" data-d="'+d+'" aria-label="Remove '+d+'">'+dFmt(d)+' \u00d7</button>').join('')+'</div>':'')+'</div>':'';
+ return '<section class="wear"><div class="wr"><button type="button" class="wbtn'+(on?' on':'')+'" data-wear="'+p.id+'">'+(on?'\u2713 Worn today':'Wore it today')+'</button><button type="button" class="wbtn wlnk" data-wopen="'+p.id+'">'+(op?'Done':'Log another day')+'</button><span class="wm">'+meta+'</span></div>'+past+'</section>'}
 let WLXDEL={};let WLX={};try{WLX=JSON.parse(localStorage.getItem("wardrobe-wlx")||"{}")||{}}catch(e){WLX={}}
 let SHARE={};try{SHARE=JSON.parse(localStorage.getItem("wardrobe-share")||"{}")||{}}catch(e){SHARE={}}
 function saveShare(){try{localStorage.setItem("wardrobe-share",JSON.stringify(SHARE))}catch(e){}if(typeof syncPush==="function")syncPush()}
@@ -1209,6 +1215,7 @@ function desired(){const d={};
  Object.keys(SHARE).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["share:"+id]=SHARE[id]});
  Object.keys(ORDER).forEach(c=>{d["order:"+c]=ORDER[c]});
  Object.keys(WEAR).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id)&&WEAR[id].length)d["wear:"+id]=WEAR[id]});
+ Object.keys(WEARM).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id)&&WEARM[id].length)d["wearm:"+id]=WEARM[id]});
  Object.keys(WLX).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["wlx:"+id]=WLX[id]});return d}
 function syncPush(){if(REMOTE===null)return;clearTimeout(pushT);pushT=setTimeout(async()=>{
  const d=desired(),rows=[];
@@ -1220,9 +1227,9 @@ function setSt(t){const e=document.getElementById('syncst');if(e)e.textContent=t
 async function syncPull(first){
  try{const rows=await remoteGet(),R={};rows.forEach(x=>{R[x.key]=x.value});
   const prev=REMOTE;REMOTE=R;
-  const m={},sh={},o={},wr={},wx={};
+  const m={},sh={},o={},wr={},wrm={},wx={};
   Object.keys(R).forEach(k=>{const v=R[k];if(v===null)return;const i=k.indexOf(":"),t=k.slice(0,i),id=k.slice(i+1);
-   if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v;else if(t==="wear"&&Array.isArray(v))wr[id]=v;else if(t==="wlx"&&v&&v.name)wx[id]=v});
+   if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v;else if(t==="wear"&&Array.isArray(v))wr[id]=v;else if(t==="wearm"&&Array.isArray(v))wrm[id]=v;else if(t==="wlx"&&v&&v.name)wx[id]=v});
   Object.keys(WLX).forEach(id=>{const k="wlx:"+id;if(!(k in R)||R[k]===null){if(first||!prev||!prev[k])wx[id]=WLX[id]}});
   Object.keys(WLXDEL).forEach(id=>{const k="wlx:"+id;if(R[k]&&R[k].name){delete wx[id]}else delete WLXDEL[id]});
   if(first){/* keep local-only entries (they get pushed) */
@@ -1230,14 +1237,15 @@ async function syncPull(first){
    Object.keys(MOVES).forEach(id=>{if(!("move:"+id in R))m[id]=MOVES[id]});
    Object.keys(SHARE).forEach(id=>{if(!("share:"+id in R))sh[id]=SHARE[id]});
    Object.keys(ORDER).forEach(c=>{if(!("order:"+c in R))o[c]=ORDER[c]});
-   Object.keys(WEAR).forEach(id=>{if(!("wear:"+id in R))wr[id]=WEAR[id];else wr[id]=Array.from(new Set((wr[id]||[]).concat(WEAR[id]))).sort()})}
-  Object.keys(WDIRTY).forEach(id=>{const k="wear:"+id,l=WEAR[id]||[],r=R[k];if(r&&JSON.stringify(r)===JSON.stringify(l)||(!r&&!l.length)){delete WDIRTY[id]}else{if(l.length)wr[id]=l;else delete wr[id]}});saveWd();
-  const changed=JSON.stringify([m,sh,o,wr,wx])!==JSON.stringify([MOVES,SHARE,ORDER,WEAR,WLX]);
-  MOVES=m;SHARE=sh;ORDER=o;WEAR=wr;WLX=wx;
+   Object.keys(WEAR).forEach(id=>{if(!("wear:"+id in R))wr[id]=WEAR[id];else wr[id]=Array.from(new Set((wr[id]||[]).concat(WEAR[id]))).sort()});
+   Object.keys(WEARM).forEach(id=>{if(!("wearm:"+id in R))wrm[id]=WEARM[id];else wrm[id]=Array.from(new Set((wrm[id]||[]).concat(WEARM[id]))).sort()})}
+  Object.keys(WDIRTY).forEach(k=>{const mm=k.indexOf("wearm:")===0,id=k.slice(mm?6:5),l=(mm?WEARM:WEAR)[id]||[],r=R[k],T=mm?wrm:wr;if(r&&JSON.stringify(r)===JSON.stringify(l)||(!r&&!l.length)){delete WDIRTY[k]}else{if(l.length)T[id]=l;else delete T[id]}});saveWd();
+  const changed=JSON.stringify([m,sh,o,wr,wrm,wx])!==JSON.stringify([MOVES,SHARE,ORDER,WEAR,WEARM,WLX]);
+  MOVES=m;SHARE=sh;ORDER=o;WEAR=wr;WEARM=wrm;WLX=wx;
   try{localStorage.setItem("wardrobe-wlx",JSON.stringify(WLX))}catch(e){}
   for(let q=PERFUMES.length-1;q>=0;q--){const pid=PERFUMES[q].id;if(/^df-/.test(pid)&&!WLX[pid]){PERFUMES.splice(q,1);const jj=COLLECTIONS.wishlist.ids.indexOf(pid);if(jj>=0)COLLECTIONS.wishlist.ids.splice(jj,1)}}
   applyWlx();try{window.__dfWlSync&&window.__dfWlSync()}catch(e){}
-  try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES));localStorage.setItem("wardrobe-share",JSON.stringify(SHARE));localStorage.setItem("wardrobe-order",JSON.stringify(ORDER));localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR))}catch(e){}
+  try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES));localStorage.setItem("wardrobe-share",JSON.stringify(SHARE));localStorage.setItem("wardrobe-order",JSON.stringify(ORDER));localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR));localStorage.setItem("wardrobe-wearm",JSON.stringify(WEARM))}catch(e){}
   if(changed&&!document.querySelector(".sheet.on"))build();
   setSt('Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(IN_ART()?' (via connector)':''));syncPush()}catch(e){setSt('Sync off: '+((e&&(e.code||e.message))||'error'))}}
 /* ---- Wishlist items added from the duty free list ---- */
@@ -1434,7 +1442,7 @@ function shareSpecP(p){const y=PYR[p.id]||{};const pyr=[["Top",y.top],["Heart",y
  return{brandline:"Perfume Wardrobe",title:p.name,sub:p.brand+" \u00b7 "+p.gender,rating:p.rating==null?null:{v:p.rating,n:p.votes},img:p.img,
   accords:p.accords.map(a=>[a[0],a[1],ACC[a[0]]||"#8a6a4a"]),notes:p.notes.map(n=>({name:n,src:NOTE_IMG[n]?"data:image/webp;base64,"+NOTE_IMG[n]:""})),pyramid:pyr,
   profile:[{l:"Longevity",v:String(p.longevity)},{l:"Sillage",v:String(p.sillage)}],day:p.day,seasons:Object.entries(p.seasons).map(([n,v])=>[n,v,SC[n]]),footer:"Perfume Wardrobe"}}
-function open(p){window.__curId=p.id;
+function open(p){if(window.__curId!==p.id||!document.querySelector(".sheet.on"))WOPEN={};window.__curId=p.id;
   const acc=p.accords.map(([n,w])=>'<div class="'+(LIGHT.includes(n)?'lt':'')+'" style="width:'+w+'%;background:'+(ACC[n]||"#8a6a4a")+'">'+esc(n)+'</div>').join("");
   const notes=p.notes.map(n=>'<button type="button" class="note" data-note="'+esc(n)+'">'+noteTag(n)+esc(n)+'</button>').join("");
   const sc={Winter:"#5aa0e0",Spring:"#7cc552",Summer:"#f0b030",Autumn:"#d9622b"};
@@ -1452,7 +1460,7 @@ function open(p){window.__curId=p.id;
    '<section class="shr"><button type="button" data-share="1">Share as picture</button></section>'+
    '<div class="src">'+(p.est?'This bottle is not on Fragrantica, so there is no community rating. Notes are from its pack; accords, longevity, day and season figures are estimated from the notes.':'Notes and ratings read from the Fragrantica card; percentages are estimated from bar lengths.')+'</div>';
   $("#sheetIn").insertAdjacentHTML("afterbegin",mistHtml(p));tilt.lg=tilt.lb=null;tilt.x=tilt.y=0;
-  $("#sheetIn").onclick=function(e){const sb=e.target.closest("[data-share]");if(sb){window.pwShareCard(shareSpecP(p),"perfume-"+p.id,sb);return}const wb=e.target.closest("[data-wear]");if(wb){toggleWear(wb.dataset.wear);const q=list().find(x=>x.id===wb.dataset.wear);if(q){const y=$("#sheet").scrollTop;open(q);$("#sheet").scrollTop=y}return}const bb=e.target.closest(".ly .ab-b");if(!bb)return;const q=list().find(x=>x.id===bb.dataset.id);if(!q)return;const had=$("#sheetIn .back");open(q);if(had){const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1])}$("#sheet").scrollTop=0};
+  $("#sheetIn").onclick=function(e){const sb=e.target.closest("[data-share]");if(sb){window.pwShareCard(shareSpecP(p),"perfume-"+p.id,sb);return}const wb=e.target.closest("[data-wear],[data-wopen],[data-wadd],[data-wdel]");if(wb){const D=wb.dataset,wid=D.wear||D.wopen||D.wadd||D.wdel;if(D.wear)toggleWear(wid);else if(D.wopen)WOPEN[wid]=!WOPEN[wid];else if(D.wadd){const v=($("#wpd")||{}).value;if(!v||v>todayS()){toast("Pick a day up to today");return}wearEdit(wid,v,true);toast("Logged "+dFmt(v))}else if(D.wdel)wearEdit(wid,D.d,false);const q=list().find(x=>x.id===wid);if(q){const y=$("#sheet").scrollTop;open(q);$("#sheet").scrollTop=y}return}const bb=e.target.closest(".ly .ab-b");if(!bb)return;const q=list().find(x=>x.id===bb.dataset.id);if(!q)return;const had=$("#sheetIn .back");open(q);if(had){const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1])}$("#sheet").scrollTop=0};
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
   $("#close").onclick=shut;$("#close").focus();
 }
@@ -1497,7 +1505,7 @@ function suggest(L){
   res.sort((p,q)=>q.fit-p.fit);
   return{top:res,picks:L.slice(0,5)};
 }
-function wearAbout(L){if(active==="wishlist")return '';const rows=L.map(p=>({p,a:WEAR[p.id]||[]}));const tot=rows.reduce((t,r)=>t+r.a.length,0);const cut=dAgo.bind(null);
+function wearAbout(L){if(active==="wishlist")return '';const rows=L.map(p=>({p,a:WS()[p.id]||[]}));const tot=rows.reduce((t,r)=>t+r.a.length,0);const cut=dAgo.bind(null);
  const nm=p=>esc(p.short.join(" ").trim());
  if(!tot)return '<section><h3>Wear log</h3><p class="ab-sub">Open a bottle and tap <b>Wore it today</b> to start tracking. This shows your most-worn bottles and the ones gathering dust.</p></section>';
  const top=rows.filter(r=>r.a.length).sort((x,y)=>y.a.length-x.a.length).slice(0,5),mx=top[0].a.length;
