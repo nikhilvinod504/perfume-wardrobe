@@ -514,6 +514,21 @@ img.ld{animation:dfFade .4s ease}
 #dfd .nn img:not(.ld),#dfd .smi img:not(.ld),#dfd .cph img:not(.ld),.fnr .fi img:not(.ld){background:none;animation:dfShim2 1.2s linear .35s infinite}
 
 img[data-cutp="1"]{visibility:hidden}
+
+.toast{z-index:120!important;width:max-content;white-space:nowrap}
+#dfv .dfxs{display:flex;gap:8px}
+#dfv #dfwlb{position:relative;display:inline-flex;align-items:center;justify-content:center;padding:0;margin-left:auto;margin-right:8px;flex:none}
+#dfv #dfwlb svg{width:19px;height:19px;fill:none;stroke:var(--brass);stroke-width:2;stroke-linejoin:round;transition:fill .3s,transform .3s}
+#dfv #dfwlb.has svg{fill:var(--brass)}
+#dfv #dfwlb b{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:var(--brass);color:#2a1b16;font:600 10.5px/17px var(--body);padding:0 4px;text-align:center;box-sizing:border-box}
+#dfv #dfwlb.pop{animation:wlPop .55s cubic-bezier(.2,1.5,.4,1)}
+@keyframes wlPop{0%{transform:scale(1)}30%{transform:scale(1.35)}60%{transform:scale(.92)}100%{transform:scale(1)}}
+#dfv #dfwlb .wsp{position:absolute;left:50%;top:50%;width:6px;height:6px;margin:-3px;border-radius:50%;background:var(--brass-soft,#e6c57a);pointer-events:none;animation:wlSp .7s ease-out forwards}
+@keyframes wlSp{from{transform:rotate(var(--a)) translateY(0) scale(1);opacity:1}to{transform:rotate(var(--a)) translateY(calc(var(--d)*-1)) scale(.2);opacity:0}}
+#dfd .ac #dfwl.burst{animation:wlBtn .5s cubic-bezier(.2,1.5,.4,1)}
+@keyframes wlBtn{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
+#dfd .ac #dfwl:disabled{opacity:.6;cursor:default}
+#dfv .dfc .tg i.wlt{color:#c2477a;border-color:#c2477a}
 </style>
 </head>
 <body>
@@ -525,7 +540,7 @@ img[data-cutp="1"]{visibility:hidden}
   <rect x="50" y="40" width="20" height="22" rx="3" fill="#d9b46a"/><rect x="44" y="18" width="32" height="24" rx="6" fill="#2a1b16" stroke="#e6c57a" stroke-width="2"/>
   <g class="puff"><circle cx="82" cy="24" r="5" style="--dx:18px"/><circle cx="84" cy="30" r="4" style="--dx:26px"/><circle cx="80" cy="20" r="4" style="--dx:12px"/></g></svg><span>Perfume Wardrobe</span></div></div>
 <div id="dfd" role="dialog" aria-label="Perfume details"><div class="pn" id="dfp"></div></div>
-<div id="dfv" role="dialog" aria-label="Duty free list"><div class="dfh"><div class="dft"><div><h2>Duty free list</h2><div class="dfs" id="dfsub"></div></div><button class="dfx" id="dfx" aria-label="Close">&#10005;</button></div><div id="dfdd"><div class="dfr1"><input type="search" id="dfq" placeholder="Search brand or name" autocomplete="off"><div class="dd" data-k="term"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div></div><div class="dfr"><div class="dd" data-k="note"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm " role="listbox" hidden></div></div><div class="dd" data-k="gen"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm " role="listbox" hidden></div></div><div class="dd" data-k="brand"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div><div class="dd" data-k="show"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div><div class="dd" data-k="sort"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div></div></div></div><div class="dfn" id="dfcnt"></div><div class="dfp" id="dfprog" hidden></div><div class="dfl" id="dfl"></div></div>
+<div id="dfv" role="dialog" aria-label="Duty free list"><div class="dfh"><div class="dft"><div><h2>Duty free list</h2><div class="dfs" id="dfsub"></div></div><button class="dfx" id="dfwlb" type="button" aria-label="Your wishlist"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-7.5-10.1A4.4 4.4 0 0 1 12 7.6a4.4 4.4 0 0 1 7.5 2.8c0 5.5-7.5 10.1-7.5 10.1z"/></svg><b id="dfwlc" hidden></b></button><button class="dfx" id="dfx" aria-label="Close">&#10005;</button></div><div id="dfdd"><div class="dfr1"><input type="search" id="dfq" placeholder="Search brand or name" autocomplete="off"><div class="dd" data-k="term"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div></div><div class="dfr"><div class="dd" data-k="note"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm " role="listbox" hidden></div></div><div class="dd" data-k="gen"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm " role="listbox" hidden></div></div><div class="dd" data-k="brand"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div><div class="dd" data-k="show"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div><div class="dd" data-k="sort"><button type="button" class="dsel" aria-haspopup="listbox" aria-expanded="false"></button><div class="ddm r" role="listbox" hidden></div></div></div></div></div><div class="dfn" id="dfcnt"></div><div class="dfp" id="dfprog" hidden></div><div class="dfl" id="dfl"></div></div>
 <script>
 (function(){var w=document.getElementById("wd"),h=document.documentElement,t0=Date.now(),done=false;
  if(!w)return;if(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches){w.remove();return}
@@ -970,7 +985,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
    h+='<div class="nb">'+(i.ap?'Closest match: details are for the base perfume or a nearby variant, not this exact bottle. ':'')+'Notes, accords and ratings from Fragrantica community data.</div>'}
   else h+='<div class="nb">'+(Object.keys(DFI).length?'No Fragrantica match for this one (sets, minis and some variants are not listed there).':'Perfume details (notes, accords, ratings) load in the app once connected to the internet.')+'</div>';
   h+=simHtml(c);try{h+=ownHtml(c)}catch(e){}
-  h+='<div class="ac"><button id="dfwt" type="button" class="'+(isW(r)?'on':'')+'">'+(isW(r)?'\u2605 Watching price':'\u2606 Watch price')+'</button><button id="dfcmp" type="button">Compare\u2026</button><button id="dfshare" type="button">Share picture</button>'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(has&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div><div class="nb" id="dfwn">'+(isW(r)&&WCH[c]>r[5]?'Down '+inr(WCH[c]-r[5])+' since you started watching.':isW(r)?'You\'ll see a note on the list if this price drops below '+inr(WCH[c])+'.':'')+'</div>';
+  h+='<div class="ac"><button id="dfwt" type="button" class="'+(isW(r)?'on':'')+'">'+(isW(r)?'\u2605 Watching price':'\u2606 Watch price')+'</button>'+wlBtn(r,c)+'<button id="dfcmp" type="button">Compare\u2026</button><button id="dfshare" type="button">Share picture</button>'+(r[7]?'<button class="go" id="dfown" type="button">Open in your wardrobe</button>':'')+'<a href="'+(has&&i.u?esc(i.u):'https://www.fragrantica.com/search/?query='+encodeURIComponent(r[2]+" "+r[1].replace(/\b\d+(\.\d+)?\s*ml\b/ig,"").replace(/[,()]/g," ")))+'" target="_blank" rel="noopener">Fragrantica</a></div><div class="nb" id="dfwn">'+(isW(r)&&WCH[c]>r[5]?'Down '+inr(WCH[c]-r[5])+' since you started watching.':isW(r)?'You\'ll see a note on the list if this price drops below '+inr(WCH[c])+'.':'')+'</div>';
   const __was=document.getElementById("dfd").classList.contains("on");document.getElementById("dfp").innerHTML=h;if(__was){const pn0=document.getElementById("dfp");pn0.classList.remove("swp");void pn0.offsetWidth;pn0.classList.add("swp")}else document.getElementById("dfp").classList.remove("swp");const pb=document.getElementById("dfph"),pp=document.getElementById("dfphp");if(pb&&pp){pp.innerHTML=phH;if(!phH)pb.remove();else pb.onclick=()=>{const o=pp.hidden;pp.hidden=!o;pb.setAttribute("aria-expanded",o?"true":"false");pb.classList.toggle("on",o)}}
   document.getElementById("dfd").classList.add("on");document.getElementById("dfpx").onclick=closeD;document.getElementById("dfp").scrollTop=0;
   const wb=document.getElementById("dfwt");if(wb)wb.onclick=()=>{const on=!isW(r);setW(c,on);wb.className=on?"on":"";wb.textContent=on?"\u2605 Watching price":"\u2606 Watch price";const wn=document.getElementById("dfwn");if(wn)wn.textContent=on?"You'll see a note on the list if this price drops below "+inr(r[5])+".":"";try{draw()}catch(e){}};
@@ -988,7 +1003,7 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  function draw(keep){const L=rows(),box=document.getElementById("dfl");labels();if(!keep){box.classList.remove("fx");void box.offsetWidth;box.classList.add("fx")}
   document.getElementById("dfcnt").textContent=L.length+" of "+DFALL.rows.length+" listed"+(goneRows().length?" · "+goneRows().length+" delisted":"");
   {const rowsH=L.slice(0,st.n).map(r=>{const o=off(r),t=r[6],u=iu(r[0]);
-   return '<div class="dfc'+(r[7]?' own':'')+(isGone(r)?' gn':'')+'" data-c="'+r[0]+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="imgFail(this,\'p\')">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+badges(r)+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+chgTxt(r)+'</div></div>'});const tailH=""+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');const prev=new Map();box.querySelectorAll(".dfc").forEach(n=>prev.set(n.dataset.c,n));Array.from(box.children).forEach(n=>{if(!n.classList.contains("dfc"))n.remove()});const tmp=document.createElement("div");const nodes=rowsH.map(h=>{const m=h.match(/data-c="([^"]*)"/),c=m&&m[1],o=prev.get(c);if(o&&o._h===h){prev.delete(c);return o}tmp.innerHTML=h;const n=tmp.firstChild;n._h=h;return n});nodes.forEach((n,ix)=>{if(box.children[ix]!==n)box.insertBefore(n,box.children[ix]||null)});while(box.children.length>nodes.length)box.removeChild(box.lastChild);tmp.innerHTML=tailH;while(tmp.firstChild)box.appendChild(tmp.firstChild)}
+   return '<div class="dfc'+(r[7]?' own':'')+(isGone(r)?' gn':'')+'" data-c="'+r[0]+'"><div class="ph">'+(u?'<img loading="lazy" decoding="async" referrerpolicy="no-referrer" alt="" src="'+u+'" onerror="imgFail(this,\'p\')">':'')+'</div><div class="l"><b>'+esc(r[1])+'</b><div class="mm">'+esc(r[2])+' · '+esc(r[3])+'</div><div class="tg">'+(t==="AD"?'<i>Arrivals</i><i>Departure</i>':t==="A"?'<i class="arr">Arrivals only</i>':'<i class="dep">Departure only</i>')+(r[7]?'<i class="own">In your wardrobe</i>':'')+(window.wlxState&&window.wlxState('df-'+r[0].toLowerCase())==='wish'?'<i class="wlt">\u2665 Wishlist</i>':'')+badges(r)+'</div></div><div class="r"><div class="p">'+inr(r[5])+'</div>'+(o>0?'<s>'+inr(r[4])+'</s><em>'+Math.round(o*100)+'% off</em>':'')+chgTxt(r)+'</div></div>'});const tailH=""+(L.length>st.n?'<button class="more" id="dfmore">Show more</button>':'')+(L.length?'':'<div class="dfn">Nothing matches those filters.</div>');const prev=new Map();box.querySelectorAll(".dfc").forEach(n=>prev.set(n.dataset.c,n));Array.from(box.children).forEach(n=>{if(!n.classList.contains("dfc"))n.remove()});const tmp=document.createElement("div");const nodes=rowsH.map(h=>{const m=h.match(/data-c="([^"]*)"/),c=m&&m[1],o=prev.get(c);if(o&&o._h===h){prev.delete(c);return o}tmp.innerHTML=h;const n=tmp.firstChild;n._h=h;return n});nodes.forEach((n,ix)=>{if(box.children[ix]!==n)box.insertBefore(n,box.children[ix]||null)});while(box.children.length>nodes.length)box.removeChild(box.lastChild);tmp.innerHTML=tailH;while(tmp.firstChild)box.appendChild(tmp.firstChild)}
   const m=document.getElementById("dfmore");if(m)m.onclick=()=>{st.n+=80;draw(1)}}
  function selSet(k){if(st.multi[k])return new Set(st.ms[k]);if(k==="note")return new Set([st.note]);return new Set([st[k]])}
  function optHtml(k){const S=selSet(k),L=opts(k);if(!L.length)return '<div class="mn">'+(k==="note"?(Object.keys(DFI).length?"No notes match.":"Perfume details are still loading."):"Nothing here.")+'</div>';
@@ -1008,6 +1023,55 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
  window.__dfNotes=function(terms,max){terms=terms.map(t=>String(t).trim().toLowerCase()).filter(Boolean);if(!terms.length)return[];const out=[];DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m||isGone(r))return;const ns=nl(i);const got=terms.filter(t=>ns.some(n=>n.indexOf(t)>=0));if(got.length)out.push({c:r[0],name:r[1],brand:r[2],price:r[5],img:iu(r[0]),pm:(()=>{const f=facts(r[1]);return f.sz?r[5]/f.sz:0})(),s:i.s,n:got.length,got})});out.sort((x,y)=>(y.n-x.n)||((y.s||0)-(x.s||0)));return out.slice(0,max||60)};
  window.__dfNoteImg=function(n){const f=NMAP.map[n]||NMAP.map[String(n).trim()];return f?NMAP.base+f+".webp":""};
  window.__dfNoteNames=function(){const m={};DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m)return;nl(i).forEach(n=>{m[n]=(m[n]||0)+1})});return m};
+
+ /* ---- Move to wishlist ---- */
+ const cap=t=>String(t).replace(/\b\w/g,x=>x.toUpperCase());
+ window.__dfToP=function(c){const r=rowOf(c);if(!r)return null;const i=DFI[c],has=!!(i&&i.m),f=facts(r[1]),brand=r[2]||"";
+  let t=r[1].replace(/\(?\b\d+(\.\d+)?\s*(ml|oz)\b\)?/ig,"").replace(/\(\s*\)/g,"").replace(/\bfor (men|women|him|her)\b/ig,"").replace(/,/g," ").replace(/\s+/g," ").trim();
+  let rest=t;if(brand&&t.toLowerCase().indexOf(brand.toLowerCase())===0)rest=t.slice(brand.length).trim();rest=rest||t;
+  const w=rest.split(" "),s1=w[0],s2=w.slice(1).join(" ")||brand;
+  const gm=has&&i.g?i.g:(/women/i.test(r[3]||"")?"for women":/men/i.test(r[3]||"")?"for men":"for women and men");
+  const acc=has&&Array.isArray(i.a)&&Array.isArray(i.a[0])?i.a:[],accCol={};
+  const accords=acc.map(x=>{const n=cap(x[0]);if(/^#[0-9a-f]{3,8}$/i.test(x[2]||""))accCol[n]=x[2];return [n,Math.max(10,Math.min(100,Math.round(x[1]||0)))]});
+  const all=has?[].concat(i.t||[],i.h||[],i.b||[],i.o||[]).filter((n,k,a)=>a.indexOf(n)===k):[];
+  const se=has&&i.se?i.se:null;let day=50,night=50,seasons={Winter:25,Spring:25,Summer:25,Autumn:25};
+  if(se){const d=se.day||0,n=se.night||0;if(d+n){day=Math.round(100*d/(d+n));night=100-day}const S=[se.winter||0,se.spring||0,se.summer||0,se.autumn||0],tt=S.reduce((a,b)=>a+b,0);if(tt)seasons={Winter:Math.round(100*S[0]/tt),Spring:Math.round(100*S[1]/tt),Summer:Math.round(100*S[2]/tt),Autumn:Math.round(100*S[3]/tt)}}
+  const lg=has&&i.lg&&i.lg.avg!=null?LNG[Math.max(0,Math.min(4,Math.round(i.lg.avg)-1))]:"Not rated",sl=has&&i.sl&&i.sl.avg!=null?SIL[Math.max(0,Math.min(3,Math.round(i.sl.avg)-1))]:"Not rated";
+  const o={id:"df-"+c.toLowerCase(),name:rest,short:[s1,s2],brand:brand,gender:gm,img:iu(c),rating:has&&i.s!=null?Math.round(Number(i.s)/(i.r||5)*5*100)/100:null,votes:has&&i.c?Number(i.c):0,longevity:lg,sillage:sl,accords:accords,notes:all,day:day,night:night,seasons:seasons,est:!has};
+  if(has)o.pyr={top:i.t||[],mid:i.h||[],base:i.b||[]};
+  if(Object.keys(accCol).length)o.accCol=accCol;
+  o.price={p:r[5],mrp:r[4]&&r[4]!==r[5]?r[4]:null,size:f.sz?f.sz+" ml":"",shop:"Mumbai duty free",url:"",df:1};
+  return o};
+ function wlBtn(r,c){if(r[7])return '';const st=window.wlxState("df-"+c.toLowerCase());
+  return '<button id="dfwl" type="button" class="'+(st==="wish"?'on':'')+'"'+(st==="own"?' disabled':'')+'>'+(st==="wish"?'♥ On wishlist':st==="own"?'✓ In your wardrobe':'♡ Move to wishlist')+'</button>'}
+ function wlCount(){let n=0;try{n=wlxCount()}catch(e){}const b=document.getElementById("dfwlc");if(b){b.textContent=n;b.hidden=!n}const h=document.getElementById("dfwlb");if(h)h.classList.toggle("has",n>0)}
+ window.__dfWlSync=function(){try{wlCount();if(document.getElementById("dfv").classList.contains("on"))draw(1)}catch(e){}};
+ function wlBurst(){const h=document.getElementById("dfwlb");if(!h)return;h.classList.remove("pop");void h.offsetWidth;h.classList.add("pop");
+  for(let k=0;k<9;k++){const sp=document.createElement("i");sp.className="wsp";sp.style.setProperty("--a",(k*40+Math.random()*20)+"deg");sp.style.setProperty("--d",(18+Math.random()*14)+"px");h.appendChild(sp);setTimeout(()=>sp.remove(),800)}}
+ function wlFly(){return new Promise(res=>{const im=document.querySelector("#dfp .hd .im img"),tg=document.getElementById("dfwlb");
+  if(!im||!tg||!im.naturalWidth||flyRM()){res();return}
+  const a=fitBox(im,im.getBoundingClientRect()),t=tg.getBoundingClientRect(),c=document.createElement("img");
+  c.className="flyimg";c.src=im.src;c.style.cssText+=";left:"+a.x+"px;top:"+a.y+"px;width:"+a.w+"px;height:"+a.h+"px;transform-origin:50% 50%";
+  document.body.appendChild(c);im.style.opacity="0";
+  const dx=(t.left+t.width/2)-(a.x+a.w/2),dy=(t.top+t.height/2)-(a.y+a.h/2),sc=Math.max(.12,26/a.h);
+  const an=c.animate([{transform:"translate(0,0) scale(1) rotate(0deg)",opacity:1,offset:0},{transform:"translate("+dx*.25+"px,"+(Math.min(0,dy)*.0-70)+"px) scale(1.18) rotate(-9deg)",opacity:1,offset:.32,easing:"cubic-bezier(.5,0,.7,1)"},{transform:"translate("+dx+"px,"+dy+"px) scale("+sc+") rotate(14deg)",opacity:.95,offset:1}],{duration:820,easing:"cubic-bezier(.3,.7,.3,1)",fill:"forwards"});
+  const fin=()=>{c.remove();res()};an.onfinish=fin;an.oncancel=fin;res.__c=c;setTimeout(()=>res(),1200)})}
+ let WLBUSY=false;
+ async function wlToggle(c,btn){if(WLBUSY||!c)return;const id="df-"+c.toLowerCase(),st=window.wlxState(id);if(st==="own")return;WLBUSY=true;
+  try{
+   if(st==="wish"){const o=window.wlxDrop(id);btn.className="";btn.textContent="♡ Move to wishlist";wlCount();draw(1);
+    toast("Removed from your wishlist",()=>{window.wlxAdd(o);wlCount();draw(1)});return}
+   const o=window.__dfToP(c);if(!o)return;btn.classList.add("on","burst");btn.textContent="♥ Added";
+   window.wlxAdd(o);DFTH=null;
+   const fl=wlFly();setTimeout(closeD,260);await fl;
+   wlCount();wlBurst();draw(1);
+   toast("Added to your wishlist",()=>{window.wlxDrop(id);wlCount();draw(1)});
+   const tt=document.querySelector(".toast:last-of-type");if(tt){const v=document.createElement("button");v.type="button";v.textContent="View";v.onclick=()=>{tt.remove();wlGo()};tt.insertBefore(v,tt.querySelector("button"))}
+  }finally{WLBUSY=false}}
+ function wlGo(){try{closeD()}catch(e){}close();setTimeout(()=>{const b=document.querySelector('#wmenu button[data-c="wishlist"]');if(b)b.click()},260)}
+ document.getElementById("dfp").addEventListener("click",e=>{const b=e.target.closest("#dfwl");if(b)wlToggle(window.__dfCur,b)});
+ document.getElementById("dfwlb").addEventListener("click",()=>{if(window.wlxCount())wlGo();else toast("Open a perfume and tap Move to wishlist")});
+ wlCount();
  window.__dfInr=inr;
  document.getElementById("dfx").onclick=close;
  document.getElementById("dfl").addEventListener("click",e=>{const c=e.target.closest(".dfc");if(c&&!e.target.closest("a")){if(CMP&&c.dataset.c!==CMP){const a=CMP;CMP=null;cmpBar();showCmp(a,c.dataset.c)}else{const th=c.querySelector(".ph img");showD(c.dataset.c);try{dfFlyIn(th)}catch(er){}}}});
@@ -1033,7 +1097,7 @@ function priceHtml(p){
   const x=PRICES[p.id];
   const btn='<button class="valbtn" type="button" data-reveal>See value</button>';
   if(!x)return '<section class="price none">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">Price not found</div><div class="meta">No Indian listing turned up for this one.</div>'+dfHtml(p)+'</div></section>';
-  return '<section class="price">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">'+inr(x.p)+(x.mrp&&x.mrp!==x.p?'<s>'+inr(x.mrp)+'</s>':'')+'</div><div class="meta">'+(x.url?esc(x.size)+' \u00b7 '+esc(x.shop)+(x.mrp&&x.mrp!==x.p?' \u00b7 current price, MRP struck':' \u00b7 MRP incl. taxes'):'Price you shared')+'</div>'+(x.url?'<a href="'+x.url+'" target="_blank" rel="noopener">View listing \u2197</a>':'')+dfHtml(p)+'</div></section>';
+  return '<section class="price">'+btn+'<div hidden><h3>Price in India</h3><div class="amt">'+inr(x.p)+(x.mrp&&x.mrp!==x.p?'<s>'+inr(x.mrp)+'</s>':'')+'</div><div class="meta">'+((x.url||x.df)?esc(x.size)+' \u00b7 '+esc(x.shop)+(x.mrp&&x.mrp!==x.p?' \u00b7 current price, MRP struck':' \u00b7 MRP incl. taxes'):'Price you shared')+'</div>'+(x.url?'<a href="'+x.url+'" target="_blank" rel="noopener">View listing \u2197</a>':'')+dfHtml(p)+'</div></section>';
 }
 function openValue(){
   const rows=list().map(p=>({p,x:PRICES[p.id]})).sort((a,b)=>(b.x?b.x.p:-1)-(a.x?a.x.p:-1));
@@ -1060,6 +1124,7 @@ const lastWorn=id=>{const a=WEAR[id];return a&&a.length?a[a.length-1]:null};
 function toggleWear(id){const t=todayS(),a=(WEAR[id]||[]).slice();const i=a.indexOf(t);if(i>=0)a.splice(i,1);else{a.push(t);a.sort()}if(a.length)WEAR[id]=a.slice(-400);else delete WEAR[id];saveWear()}
 function wearHtml(p){if(active==="wishlist"||MOVES[p.id]&&active==="wishlist")return '';const a=WEAR[p.id]||[],t=todayS(),on=a.indexOf(t)>=0,lw=lastWorn(p.id);const meta=a.length?('Worn '+a.length+(a.length===1?' time':' times')+' \u00b7 last '+(dAgo(lw)===0?'today':dAgo(lw)===1?'yesterday':dAgo(lw)+' days ago')):'Not logged yet';
  return '<section class="wear"><div class="wr"><button type="button" class="wbtn'+(on?' on':'')+'" data-wear="'+p.id+'">'+(on?'\u2713 Worn today':'Wore it today')+'</button><span class="wm">'+meta+'</span></div></section>'}
+let WLX={};try{WLX=JSON.parse(localStorage.getItem("wardrobe-wlx")||"{}")||{}}catch(e){WLX={}}
 let SHARE={};try{SHARE=JSON.parse(localStorage.getItem("wardrobe-share")||"{}")||{}}catch(e){SHARE={}}
 function saveShare(){try{localStorage.setItem("wardrobe-share",JSON.stringify(SHARE))}catch(e){}if(typeof syncPush==="function")syncPush()}
 const baseIds=c=>{const W=COLLECTIONS.wishlist.ids;
@@ -1141,7 +1206,8 @@ function desired(){const d={};
  Object.keys(MOVES).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["move:"+id]=MOVES[id]});
  Object.keys(SHARE).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["share:"+id]=SHARE[id]});
  Object.keys(ORDER).forEach(c=>{d["order:"+c]=ORDER[c]});
- Object.keys(WEAR).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id)&&WEAR[id].length)d["wear:"+id]=WEAR[id]});return d}
+ Object.keys(WEAR).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id)&&WEAR[id].length)d["wear:"+id]=WEAR[id]});
+ Object.keys(WLX).forEach(id=>{if(/^[a-z0-9_-]{1,80}$/.test(id))d["wlx:"+id]=WLX[id]});return d}
 function syncPush(){if(REMOTE===null)return;clearTimeout(pushT);pushT=setTimeout(async()=>{
  const d=desired(),rows=[];
  Object.keys(d).forEach(k=>{if(JSON.stringify(REMOTE[k])!==JSON.stringify(d[k]))rows.push({key:k,value:d[k],updated_at:new Date().toISOString()})});
@@ -1152,19 +1218,35 @@ function setSt(t){const e=document.getElementById('syncst');if(e)e.textContent=t
 async function syncPull(first){
  try{const rows=await remoteGet(),R={};rows.forEach(x=>{R[x.key]=x.value});
   const prev=REMOTE;REMOTE=R;
-  const m={},sh={},o={},wr={};
+  const m={},sh={},o={},wr={},wx={};
   Object.keys(R).forEach(k=>{const v=R[k];if(v===null)return;const i=k.indexOf(":"),t=k.slice(0,i),id=k.slice(i+1);
-   if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v;else if(t==="wear"&&Array.isArray(v))wr[id]=v});
+   if(t==="move")m[id]=v;else if(t==="share")sh[id]=v;else if(t==="order")o[id]=v;else if(t==="wear"&&Array.isArray(v))wr[id]=v;else if(t==="wlx"&&v&&v.name)wx[id]=v});
   if(first){/* keep local-only entries (they get pushed) */
+   Object.keys(WLX).forEach(id=>{if(!("wlx:"+id in R))wx[id]=WLX[id]});
    Object.keys(MOVES).forEach(id=>{if(!("move:"+id in R))m[id]=MOVES[id]});
    Object.keys(SHARE).forEach(id=>{if(!("share:"+id in R))sh[id]=SHARE[id]});
    Object.keys(ORDER).forEach(c=>{if(!("order:"+c in R))o[c]=ORDER[c]});
    Object.keys(WEAR).forEach(id=>{if(!("wear:"+id in R))wr[id]=WEAR[id];else wr[id]=Array.from(new Set((wr[id]||[]).concat(WEAR[id]))).sort()})}
-  const changed=JSON.stringify([m,sh,o,wr])!==JSON.stringify([MOVES,SHARE,ORDER,WEAR]);
-  MOVES=m;SHARE=sh;ORDER=o;WEAR=wr;
+  const changed=JSON.stringify([m,sh,o,wr,wx])!==JSON.stringify([MOVES,SHARE,ORDER,WEAR,WLX]);
+  MOVES=m;SHARE=sh;ORDER=o;WEAR=wr;WLX=wx;
+  try{localStorage.setItem("wardrobe-wlx",JSON.stringify(WLX))}catch(e){}
+  for(let q=PERFUMES.length-1;q>=0;q--){const pid=PERFUMES[q].id;if(/^df-/.test(pid)&&!WLX[pid]){PERFUMES.splice(q,1);const jj=COLLECTIONS.wishlist.ids.indexOf(pid);if(jj>=0)COLLECTIONS.wishlist.ids.splice(jj,1)}}
+  applyWlx();try{window.__dfWlSync&&window.__dfWlSync()}catch(e){}
   try{localStorage.setItem("wardrobe-moves",JSON.stringify(MOVES));localStorage.setItem("wardrobe-share",JSON.stringify(SHARE));localStorage.setItem("wardrobe-order",JSON.stringify(ORDER));localStorage.setItem("wardrobe-wear",JSON.stringify(WEAR))}catch(e){}
   if(changed&&!document.querySelector(".sheet.on"))build();
   setSt('Synced '+new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})+(IN_ART()?' (via connector)':''));syncPush()}catch(e){setSt('Sync off: '+((e&&(e.code||e.message))||'error'))}}
+/* ---- Wishlist items added from the duty free list ---- */
+function saveWlx(){try{localStorage.setItem("wardrobe-wlx",JSON.stringify(WLX))}catch(e){}if(typeof syncPush==="function")syncPush()}
+function applyWlx(){Object.keys(WLX).forEach(function(id){var o=WLX[id];if(!o||!o.name)return;var p=PERFUMES.find(function(x){return x.id===id});
+ if(!p){p=Object.assign({},o);delete p.pyr;delete p.price;delete p.accCol;PERFUMES.push(p)}
+ if(o.pyr)PYR[id]=o.pyr;if(o.price)PRICES[id]=o.price;if(o.accCol)Object.keys(o.accCol).forEach(function(k){if(!ACC[k])ACC[k]=o.accCol[k]});
+ if(COLLECTIONS.wishlist.ids.indexOf(id)<0)COLLECTIONS.wishlist.ids.push(id)})}
+function wlxAdd(o){WLX[o.id]=o;applyWlx();saveWlx()}
+function wlxDrop(id){var o=WLX[id];delete WLX[id];delete MOVES[id];var i=PERFUMES.findIndex(function(x){return x.id===id});if(i>=0)PERFUMES.splice(i,1);var j=COLLECTIONS.wishlist.ids.indexOf(id);if(j>=0)COLLECTIONS.wishlist.ids.splice(j,1);delete PYR[id];delete PRICES[id];saveMoves();saveWlx();return o}
+function wlxState(id){return WLX[id]?(MOVES[id]?"own":"wish"):""}
+function wlxCount(){return Object.keys(WLX).filter(function(id){return !MOVES[id]}).length}
+applyWlx();try{window.__dfWlSync&&window.__dfWlSync()}catch(e){}
+const noteTag=n=>NOTE_IMG[n]?'<img src="data:image/webp;base64,'+NOTE_IMG[n]+'" alt="">':(window.__dfNoteImg&&window.__dfNoteImg(n)?'<img alt="" src="'+window.__dfNoteImg(n)+'">':'<span class="ni"></span>');
 const PER_SHELF=4, MIN_SHELVES=1;
 const $=s=>document.querySelector(s);
 const cab=$("#cabinet");
@@ -1268,7 +1350,7 @@ function mvHtml(p){
    const o=(v,l)=>'<button type="button" class="'+(sh===v?'pri':'ghost')+'" data-share="'+v+'" data-id="'+p.id+'" aria-pressed="'+(sh===v)+'">'+l+'</button>';
    return '<div class="mv" id="sharebox"><p>Unisex \u2014 show this bottle in</p><div class="mvrow">'+o("both","Both")+o("mannu","Mannu\u2019s only")+o("nix","Nix\u2019s only")+'</div></div>'}
   if(active!=="wishlist"||MOVES[p.id])return '';
-  return '<div class="mv" id="mvbox"><button type="button" class="pri" data-mv="'+p.id+'">Move to wardrobe</button></div>';
+  return '<div class="mv" id="mvbox"><button type="button" class="pri" data-mv="'+p.id+'">Move to wardrobe</button>'+(WLX[p.id]?'<button type="button" class="ghost" data-wlrm="'+p.id+'" style="margin-top:8px">Remove from wishlist</button>':'')+'</div>';
 }
 function toast(msg,undo){
   document.querySelectorAll(".toast").forEach(x=>x.remove());
@@ -1278,6 +1360,8 @@ function toast(msg,undo){
   setTimeout(()=>t.remove(),6500);
 }
 document.addEventListener("click",e=>{
+  const rmb=e.target.closest("[data-wlrm]");
+  if(rmb){const id=rmb.dataset.wlrm,o=wlxDrop(id);if(o){shut();build();toast("Removed "+sname(o)+" from your wishlist",()=>{wlxAdd(o);build();try{window.__dfWlSync&&window.__dfWlSync()}catch(e){}});try{window.__dfWlSync&&window.__dfWlSync()}catch(e){}}return}
   const sb=e.target.closest("[data-share]");
   if(sb){const id=sb.dataset.id,v=sb.dataset.share,p=PERFUMES.find(x=>x.id===id);if(!p)return;
    if(v==="both")delete SHARE[id];else SHARE[id]=v;saveShare();
@@ -1347,7 +1431,7 @@ function shareSpecP(p){const y=PYR[p.id]||{};const pyr=[["Top",y.top],["Heart",y
   profile:[{l:"Longevity",v:String(p.longevity)},{l:"Sillage",v:String(p.sillage)}],day:p.day,seasons:Object.entries(p.seasons).map(([n,v])=>[n,v,SC[n]]),footer:"Perfume Wardrobe"}}
 function open(p){window.__curId=p.id;
   const acc=p.accords.map(([n,w])=>'<div class="'+(LIGHT.includes(n)?'lt':'')+'" style="width:'+w+'%;background:'+(ACC[n]||"#8a6a4a")+'">'+esc(n)+'</div>').join("");
-  const notes=p.notes.map(n=>'<button type="button" class="note" data-note="'+esc(n)+'"><img src="data:image/webp;base64,'+NOTE_IMG[n]+'" alt="">'+esc(n)+'</button>').join("");
+  const notes=p.notes.map(n=>'<button type="button" class="note" data-note="'+esc(n)+'">'+noteTag(n)+esc(n)+'</button>').join("");
   const sc={Winter:"#5aa0e0",Spring:"#7cc552",Summer:"#f0b030",Autumn:"#d9622b"};
   const seasons=Object.entries(p.seasons).map(([n,v])=>'<div class="m"><span>'+n+'</span><div class="track"><div class="fill" style="width:'+v+'%;background:'+sc[n]+'"></div></div><span class="pct">'+v+'%</span></div>').join("");
   $("#sheetIn").innerHTML=
