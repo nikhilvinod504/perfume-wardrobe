@@ -1689,7 +1689,7 @@ const font=(w,s,f)=>w+" "+s+"px "+(f||SANS);
 async function loadFonts(){try{await Promise.all([document.fonts.load('40px "DM Serif Display"'),document.fonts.load('400 24px Jost'),document.fonts.load('500 24px Jost')]);await document.fonts.ready}catch(e){}}
 function loadImg(src){return new Promise(async res=>{if(!src)return res(null);let cutFlag=false;const fin=b=>{if(b&&cutFlag)b._cut=true;res(b)};
  try{if(/\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$)/.test(src)&&window.pwCut){try{const cu=await window.pwCut(src);if(cu){src=cu;cutFlag=true}}catch(e){}}
- if(/^data:|^blob:/.test(src)){const i=new Image();i.onload=()=>fin(i);i.onerror=()=>fin(null);i.src=src;return}
+ if(/^data:|^blob:/.test(src)){const i=new Image();i.onload=()=>{try{const k=document.createElement('canvas');k.width=i.width;k.height=i.height;const x=k.getContext('2d',{willReadFrequently:true});x.drawImage(i,0,0);const g=(a,b)=>x.getImageData(a,b,1,1).data[3],w=i.width-1,h=i.height-1;if(g(0,0)<20&&g(w,0)<20&&g(0,h)<20&&g(w,h)<20)cutFlag=true}catch(e){}fin(i)};i.onerror=()=>fin(null);i.src=src;return}
   let blob=null;try{const r=await fetch(src,{mode:"cors"});if(r.ok)blob=await r.blob()}catch(e){}
   if(!blob&&window.caches){try{const c=await caches.open("pw-img-v1"),r=await c.match(src);if(r)blob=await r.blob()}catch(e){}}
   if(!blob)return fin(null);const u=URL.createObjectURL(blob);const i=new Image();i.onload=()=>fin(i);i.onerror=()=>fin(null);i.src=u}catch(e){fin(null)}})}
