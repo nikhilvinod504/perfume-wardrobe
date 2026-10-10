@@ -1615,9 +1615,33 @@ function askMove(a,from,to){
     if(act==="swap"){const t=a[from];a[from]=a[to];a[to]=t}
     else if(act==="slide"){const[m]=a.splice(from,1);a.splice(to,0,m)}
     else return;
-    saveOrder(a);build()};
+    saveOrder(a);flipBuild(act==="swap"?[A,B]:[A])};
   o.addEventListener("click",e=>{const b=e.target.closest("button[data-a]");if(b)done(b.dataset.a);else if(e.target===o)done("no")});
   const k=e=>{if(e.key==="Escape"){document.removeEventListener("keydown",k);done("no")}};document.addEventListener("keydown",k);
+}
+function flipBuild(mv){
+  const RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const SEL="button.bottle[data-id],button.plate[data-id]",key=n=>(n.classList.contains("bottle")?"b":"p")+n.dataset.id;
+  const f=new Map();if(!RM)cab.querySelectorAll(SEL).forEach(n=>f.set(key(n),n.getBoundingClientRect()));
+  build();
+  cab.classList.remove("intro","late");
+  if(RM||!f.size||!cab.animate&&!document.body.animate)return;
+  mv=mv||[];
+  cab.querySelectorAll(SEL).forEach(n=>{
+    const r0=f.get(key(n));if(!r0)return;const r1=n.getBoundingClientRect();
+    const dx=r0.left-r1.left,dy=r0.top-r1.top;if(Math.abs(dx)<1&&Math.abs(dy)<1)return;
+    const isB=n.classList.contains("bottle"),hi=mv.indexOf(n.dataset.id),hero=isB&&hi>=0;
+    const lift=hero?(hi===0?-30:16):0,sc=hero?1.1:1,shadow=hero?"drop-shadow(0 14px 10px rgba(0,0,0,.45))":"none";
+    if(hero)n.style.zIndex=6;else if(mv.length)n.style.zIndex=1;
+    try{
+      const an=n.animate([
+        {transform:"translate("+dx+"px,"+dy+"px)",filter:"none"},
+        {transform:"translate("+dx*.5+"px,"+(dy*.5+lift)+"px) scale("+sc+")",filter:shadow,offset:.5},
+        {transform:"none",filter:"none"}
+      ],{duration:hero?560:480,easing:"cubic-bezier(.33,.7,.25,1)"});
+      an.onfinish=an.oncancel=()=>{n.style.zIndex=""}
+    }catch(e){n.style.zIndex=""}
+  });
 }
 let suppress=false;
 (function(){
@@ -1644,7 +1668,7 @@ let suppress=false;
     if(!st||e.pointerId!==st.pid)return;
     if(st.on){
       const c=cellAt(e.clientX,e.clientY);const a=ids();
-      if(c){const ti=+c.dataset.idx;let to=Math.min(ti,a.length-1);if(to!==st.from){suppress=true;setTimeout(()=>suppress=false,0);if(ti<a.length){const fr=st.from;cancel();askMove(a,fr,to);return}else{const[m]=a.splice(st.from,1);a.push(m);saveOrder(a);cancel();build();return}}}
+      if(c){const ti=+c.dataset.idx;let to=Math.min(ti,a.length-1);if(to!==st.from){suppress=true;setTimeout(()=>suppress=false,0);if(ti<a.length){const fr=st.from;cancel();askMove(a,fr,to);return}else{const[m]=a.splice(st.from,1);a.push(m);saveOrder(a);cancel();flipBuild([m]);return}}}
       suppress=true;setTimeout(()=>suppress=false,0)
     }
     cancel();
