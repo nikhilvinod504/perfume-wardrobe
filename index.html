@@ -1454,7 +1454,7 @@ function shareSpecP(p){const y=PYR[p.id]||{};const pyr=[["Top",y.top],["Heart",y
  return{brandline:"Perfume Wardrobe",title:p.name,sub:p.brand+" \u00b7 "+p.gender,rating:p.rating==null?null:{v:p.rating,n:p.votes},img:p.img,
   accords:p.accords.map(a=>[a[0],a[1],ACC[a[0]]||"#8a6a4a"]),notes:p.notes.map(n=>({name:n,src:NOTE_IMG[n]?"data:image/webp;base64,"+NOTE_IMG[n]:""})),pyramid:pyr,
   profile:[{l:"Longevity",v:String(p.longevity)},{l:"Sillage",v:String(p.sillage)}],day:p.day,seasons:Object.entries(p.seasons).map(([n,v])=>[n,v,SC[n]]),footer:"Perfume Wardrobe"}}
-function open(p){if(window.__curId!==p.id||!document.querySelector(".sheet.on"))WOPEN={};window.__curId=p.id;
+function open(p){if(window.__curId!==p.id||!document.querySelector(".sheet.on")){WOPEN={};try{$("#sheet").scrollTop=0}catch(e){}}window.__curId=p.id;
   const acc=p.accords.map(([n,w])=>'<div class="'+(LIGHT.includes(n)?'lt':'')+'" style="width:'+w+'%;background:'+(ACC[n]||"#8a6a4a")+'">'+esc(n)+'</div>').join("");
   const notes=p.notes.map(n=>'<button type="button" class="note" data-note="'+esc(n)+'">'+noteTag(n)+esc(n)+'</button>').join("");
   const sc={Winter:"#5aa0e0",Spring:"#7cc552",Summer:"#f0b030",Autumn:"#d9622b"};
