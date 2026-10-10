@@ -854,7 +854,10 @@ let DFALL={"asOf":"8 Oct 2026","source":"Adani One - Mumbai Duty Free (CSMIA), a
 const WHERE=t=>t==="AD"?"Mum Arrival and Departure":t==="A"?"Mum Arrival only":t==="S"?"Changi, Singapore":t==="T"?"Dollar & Scent Singapore (shop)":"Mum Departure only";
 const BRL=r=>r&&r[6]==="S"?"Changi Duty Free":r&&r[6]==="T"?"Dollar & Scent Singapore":"Mumbai Duty Free";
 const SGT=r=>{if(!r||(r[6]!=="S"&&r[6]!=="T")||!DFALL.sg||!DFALL.sg[r[0]])return"";const g=DFALL.sg[r[0]];return '<span class="sgp">'+(g[2]?'from ':'')+'S$'+g[0].toFixed(2)+'</span>'};
-let SGD=null,DSD=null,XS=null;function sgMerge(){try{if(!DFALL)return;DFALL.__m=DFALL.__m||{};DFALL.sg=DFALL.sg||{};[["s",SGD],["t",DSD]].forEach(([k,D])=>{if(!D||DFALL.__m[k])return;DFALL.rows=DFALL.rows.concat(D.rows);Object.assign(DFALL.sg,D.sg);DFALL.__m[k]=1})}catch(e){}}
+const BMAP={"YSL":"Yves Saint Laurent","Boss":"Hugo Boss","Chloé":"Chloe","Jean Paul Gautier":"Jean Paul Gaultier","Jo Malone":"Jo Malone London","Lancome":"Lancôme","Mont Blanc":"Montblanc","Salvatore Ferragamo":"Ferragamo","Tom Ford Beauty":"Tom Ford","Valentino Beauty":"Valentino","Viktor&Rolf":"Viktor & Rolf","Tommy Hilfiger Perfume":"Tommy Hilfiger"};
+function brandFix(){try{[DFALL.rows,DFALL.gone||[]].forEach(L=>L.forEach(r=>{const m=BMAP[r[2]];if(m)r[2]=m}))}catch(e){}}
+let SGD=null,DSD=null,XS=null;function sgMerge(){try{if(!DFALL)return;DFALL.__m=DFALL.__m||{};DFALL.sg=DFALL.sg||{};[["s",SGD],["t",DSD]].forEach(([k,D])=>{if(!D||DFALL.__m[k])return;DFALL.rows=DFALL.rows.concat(D.rows);Object.assign(DFALL.sg,D.sg);DFALL.__m[k]=1});brandFix()}catch(e){}}
+brandFix();
 (function(){try{pwJSON("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/dscent_all.json",j=>{if(j&&j.rows&&j.rows.length){DSD=j;sgMerge()}}).catch(()=>{})}catch(e){}})();
 (function(){try{pwJSON("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/xshop.json",j=>{if(j&&j.f){XS=j;try{const d=document.getElementById("dfd");if(d&&d.classList.contains("on")&&window.__dfCur&&window.__dfShow)window.__dfShow(window.__dfCur)}catch(e){}}}).catch(()=>{})}catch(e){}})();
 (function(){try{pwJSON("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/changi_all.json",j=>{if(j&&j.rows&&j.rows.length){SGD=j;sgMerge()}}).catch(()=>{})}catch(e){}})();
