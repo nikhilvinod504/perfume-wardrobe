@@ -2007,6 +2007,7 @@ function leave(){
   var h=d.querySelector(".hint");if(h)h.classList.add("on");
   try{history.back()}catch(e){}
  },1250)}
+window.__pwBack=function(){if(exiting)return 1;var o=top();if(o)o.c();else showExit();return 1};
 try{history.replaceState({pw:0},"");history.pushState({pw:1},"")}catch(e){}
 window.addEventListener("popstate",function(){
  if(exiting)return;
