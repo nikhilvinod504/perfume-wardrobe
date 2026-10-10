@@ -156,6 +156,8 @@ button.ab-row:focus-visible,button.ab-n:focus-visible,button.ab-stat:focus-visib
 .note:active{background:var(--chip)}
 .note:focus-visible,.tier button:focus-visible{outline:2px solid var(--brass);outline-offset:2px}
 .dsim .sml{display:flex;flex-direction:column;gap:6px}.dsim .smr{display:flex;align-items:center;gap:10px;font:inherit;color:inherit;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;cursor:pointer;width:100%}.dsim .smi{flex:none;width:40px;height:50px;display:flex;align-items:center;justify-content:center}.dsim .smi img{max-width:40px;max-height:50px;border-radius:6px}.dsim .smt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.dsim .smt b{font-weight:500;font-size:13.5px}.dsim .smt small{color:var(--ink-soft);font-size:12px}.dsim .smp{font:400 16px var(--display);color:var(--brass)}
+img[src*="scene7.com/is/image"]{mix-blend-mode:multiply}
+.dsim .more{display:block;margin:10px auto 0;font:inherit;font-size:13px;color:var(--brass);background:none;border:1px solid var(--brass);border-radius:999px;padding:7px 18px;cursor:pointer}
 .hint2{margin:-6px 0 12px;font-size:12px;color:var(--ink-soft)}
 .tier button{font:inherit;font-size:13px;color:inherit;cursor:pointer;background:var(--chip);border:1px solid var(--line);border-radius:999px;padding:3px 10px}
 .tier button:active{border-color:var(--brass)}
@@ -1038,14 +1040,14 @@ let SGD=null;function sgMerge(){try{if(!SGD||!DFALL||DFALL.__sg)return;DFALL.row
  function close(){CMP=null;try{cmpBar()}catch(e){}closeAll();document.getElementById("dfv").classList.remove("on");document.body.style.overflow=""}
  document.getElementById("wmenu").addEventListener("click",e=>{const o=e.target.closest("button[data-df]");if(!o)return;e.stopPropagation();document.getElementById("wmenu").hidden=true;document.getElementById("wsel").setAttribute("aria-expanded","false");open()});
  window.__dfShow=c=>showD(c);
- window.__dfSimHtml=function(p){try{
+ window.__dfSimHtml=function(p,n){try{n=n||5;
   const va={};(p.accords||[]).forEach(x=>{va[String(x[0]).toLowerCase()]=x[1]||0});
   const na=new Set((p.notes||[]).map(nn));const y=(typeof PYR!=="undefined"&&PYR[p.id])||null;if(y)["top","mid","base"].forEach(t=>(y[t]||[]).forEach(x=>na.add(nn(x))));
   const nra=Math.sqrt(Object.values(va).reduce((t,x)=>t+x*x,0))||1,seen=new Set(),out=[];
   DFALL.rows.forEach(r=>{if(isGone(r)||r[7]===p.id)return;const b=DFI[r[0]];if(!b||!b.m)return;const vb=simVec(b),nb=new Set(nl(b).map(nn));let dot=0,nrb=0;for(const k in vb){nrb+=vb[k]*vb[k];if(va[k])dot+=va[k]*vb[k]}nrb=Math.sqrt(nrb)||1;const cos=dot/(nra*nrb);let it=0;na.forEach(x=>{if(nb.has(x))it++});const un=na.size+nb.size-it,jac=un?it/un:0;out.push([0.65*cos+0.35*jac,r,b])});
-  out.sort((x,y)=>y[0]-x[0]);const L=[];for(const o of out){if(seen.has(o[2].id))continue;seen.add(o[2].id);L.push(o);if(L.length>=5)break}
-  if(!L.length)return"";
-  return '<section class="dsim"><h3>Similar in the duty free list</h3><div class="sml">'+L.map(([sc,r])=>{const f=facts(r[1]),pm=f.sz?r[5]/f.sz:0,u=iu(r[0]);return '<button type="button" class="smr" data-c="'+r[0]+'"><span class="smi">'+(u?'<img alt="" referrerpolicy="no-referrer" src="'+u+'" onerror="imgFail(this,\'e\')">':'')+'</span><span class="smt"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+' \u00b7 '+inr(r[5])+(pm?' \u00b7 '+inr(Math.round(pm))+'/ml':'')+'</small></span><span class="smp">'+Math.round(sc*100)+'%</span></button>'}).join("")+'</div><p class="hint2" style="margin:10px 0 0">Match is based on accords and notes. Mumbai duty free only for now.</p></section>'}catch(e){return""}};
+  out.sort((x,y)=>y[0]-x[0]);const L=[];for(const o of out){if(seen.has(o[2].id))continue;seen.add(o[2].id);L.push(o);if(L.length>=30)break}
+  if(!L.length)return"";const tot=L.length;L.length=Math.min(n,tot);
+  return '<section class="dsim"><h3>Similar in the duty free list</h3><div class="sml">'+L.map(([sc,r])=>{const f=facts(r[1]),pm=f.sz?r[5]/f.sz:0,u=iu(r[0]);return '<button type="button" class="smr" data-c="'+r[0]+'"><span class="smi">'+(u?'<img alt="" referrerpolicy="no-referrer" src="'+u+'" onerror="imgFail(this,\'e\')">':'')+'</span><span class="smt"><b>'+esc(r[1])+'</b><small>'+esc(r[2])+' \u00b7 '+inr(r[5])+(pm?' \u00b7 '+inr(Math.round(pm))+'/ml':'')+'</small></span><span class="smp">'+Math.round(sc*100)+'%</span></button>'}).join("")+'</div>'+(n<tot?'<button type="button" class="more" data-more="1">Show more</button>':'')+'<p class="hint2" style="margin:10px 0 0">Match is based on accords and notes. Mumbai duty free only for now.</p></section>'}catch(e){return""}};
  window.__dfNote=function(term,max){term=String(term||"").trim().toLowerCase();if(!term)return[];const out=[];DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m)return;const hit=nl(i).some(n=>n.indexOf(term)>=0);if(hit&&!isGone(r))out.push({c:r[0],name:r[1],brand:r[2],price:r[5],img:iu(r[0]),pm:(()=>{const f=facts(r[1]);return f.sz?r[5]/f.sz:0})(),s:i.s})});out.sort((x,y)=>(y.s||0)-(x.s||0));return out.slice(0,max||40)};
  window.__dfNotes=function(terms,max){terms=terms.map(t=>String(t).trim().toLowerCase()).filter(Boolean);if(!terms.length)return[];const out=[];DFALL.rows.forEach(r=>{const i=DFI[r[0]];if(!i||!i.m||isGone(r))return;const ns=nl(i);const got=terms.filter(t=>ns.some(n=>n.indexOf(t)>=0));if(got.length)out.push({c:r[0],name:r[1],brand:r[2],price:r[5],img:iu(r[0]),pm:(()=>{const f=facts(r[1]);return f.sz?r[5]/f.sz:0})(),s:i.s,n:got.length,got})});out.sort((x,y)=>(y.n-x.n)||((y.s||0)-(x.s||0)));return out.slice(0,max||60)};
  window.__dfNoteImg=function(n){const f=NMAP.map[n]||NMAP.map[String(n).trim()];return f?NMAP.base+f+".webp":""};
@@ -1484,11 +1486,11 @@ function open(p){if(window.__curId!==p.id||!document.querySelector(".sheet.on"))
    '<section><h3>Day or night</h3><div class="dn"><div style="width:'+p.day+'%;background:#b3dcfb;color:#1e3a52">Day</div><div style="width:'+p.night+'%;background:#80838d;color:#fff">Night</div></div></section>'+
    '<section><h3>Seasons</h3><div class="meter">'+seasons+'</div></section>'+
    lySection(p)+
-   (window.__dfSimHtml?window.__dfSimHtml(p):"")+'<section class="shr"><button type="button" data-share="1">Share as picture</button></section>'+
+   (window.__dfSimHtml?window.__dfSimHtml(p,window.__dsn=5):"")+'<section class="shr"><button type="button" data-share="1">Share as picture</button></section>'+
    '<div class="src">'+(p.est?'This bottle is not on Fragrantica, so there is no community rating. Notes are from its pack; accords, longevity, day and season figures are estimated from the notes.':'Notes and ratings read from the Fragrantica card; percentages are estimated from bar lengths.')+'</div>';
   $("#sheetIn").insertAdjacentHTML("afterbegin",mistHtml(p));tilt.lg=tilt.lb=null;tilt.x=tilt.y=0;
   $("#sheetIn").onclick=function(e){const sb=e.target.closest("[data-share]");if(sb){window.pwShareCard(shareSpecP(p),"perfume-"+p.id,sb);return}const wb=e.target.closest("[data-wear],[data-wopen],[data-wadd],[data-wdel]");if(wb){const D=wb.dataset,wid=D.wear||D.wopen||D.wadd||D.wdel;if(D.wear)toggleWear(wid);else if(D.wopen)WOPEN[wid]=!WOPEN[wid];else if(D.wadd){const v=($("#wpd")||{}).value;if(!v||v>todayS()){toast("Pick a day up to today");return}wearEdit(wid,v,true);toast("Logged "+dFmt(v))}else if(D.wdel)wearEdit(wid,D.d,false);const q=list().find(x=>x.id===wid);if(q){const y=$("#sheet").scrollTop;open(q);$("#sheet").scrollTop=y}return}const bb=e.target.closest(".ly .ab-b");if(!bb)return;const q=list().find(x=>x.id===bb.dataset.id);if(!q)return;const had=$("#sheetIn .back");open(q);if(had){const b=document.createElement("button");b.className="back";b.type="button";b.textContent="\u2190 Back to About";b.onclick=openAbout;$("#sheetIn").insertBefore(b,$("#sheetIn").children[1])}$("#sheet").scrollTop=0};
-  {const _oc=$("#sheetIn").onclick;$("#sheetIn").onclick=function(e){const sb=e.target.closest(".dsim .smr[data-c]");if(sb&&window.__dfShow){window.__dfShow(sb.dataset.c);return}return _oc&&_oc.call(this,e)}}
+  {const _oc=$("#sheetIn").onclick;$("#sheetIn").onclick=function(e){const mb=e.target.closest(".dsim .more");if(mb){const sc=$("#sheet").scrollTop,sec=mb.closest(".dsim");window.__dsn=(window.__dsn||5)+5;const t=document.createElement("div");t.innerHTML=window.__dfSimHtml(p,window.__dsn);sec.replaceWith(t.firstChild);$("#sheet").scrollTop=sc;return}const sb=e.target.closest(".dsim .smr[data-c]");if(sb&&window.__dfShow){window.__dfShow(sb.dataset.c);return}return _oc&&_oc.call(this,e)}}
   $("#sheet").classList.add("on");$("#scrim").classList.add("on");
   $("#close").onclick=shut;$("#close").focus();
 }
@@ -1738,7 +1740,7 @@ const SER='"DM Serif Display",Georgia,serif',SANS='Jost,system-ui,sans-serif';
 const font=(w,s,f)=>w+" "+s+"px "+(f||SANS);
 async function loadFonts(){try{await Promise.all([document.fonts.load('40px "DM Serif Display"'),document.fonts.load('400 24px Jost'),document.fonts.load('500 24px Jost')]);await document.fonts.ready}catch(e){}}
 function loadImg(src){return new Promise(async res=>{if(!src)return res(null);let cutFlag=false;const fin=b=>{if(b&&cutFlag)b._cut=true;res(b)};
- try{if(/\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$)/.test(src)&&window.pwCut){try{const cu=await window.pwCut(src);if(cu){src=cu;cutFlag=true}}catch(e){}}
+ try{if(/(\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$))|(^https:\/\/changiairport\.scene7\.com\/is\/image\/)/.test(src)&&window.pwCut){try{const cu=await window.pwCut(src);if(cu){src=cu;cutFlag=true}}catch(e){}}
  if(/^data:|^blob:/.test(src)){const i=new Image();i.onload=()=>{try{const k=document.createElement('canvas');k.width=i.width;k.height=i.height;const x=k.getContext('2d',{willReadFrequently:true});x.drawImage(i,0,0);const g=(a,b)=>x.getImageData(a,b,1,1).data[3],w=i.width-1,h=i.height-1;if(g(0,0)<20&&g(w,0)<20&&g(0,h)<20&&g(w,h)<20)cutFlag=true}catch(e){}fin(i)};i.onerror=()=>fin(null);i.src=src;return}
   let blob=null;try{const r=await fetch(src,{mode:"cors"});if(r.ok)blob=await r.blob()}catch(e){}
   if(!blob&&window.caches){try{const c=await caches.open("pw-img-v1"),r=await c.match(src);if(r)blob=await r.blob()}catch(e){}}
@@ -1915,7 +1917,7 @@ apply();
 /* Duty free photos: cut the white background out so bottles sit on the page like the wardrobe ones */
 (function(){
 var CUT=new Map(),FAIL=new Set(),Q=[],busy=false;
-var PAT=/\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$)/;
+var PAT=/(\/storage\/v1\/object\/public\/dutyfree\/[^\/?#]+\.webp(\?|$))|(^https:\/\/changiairport\.scene7\.com\/is\/image\/)/;
 function bgPix(d,i){var o=i*4,r=d[o],g=d[o+1],b=d[o+2];return r>=236&&g>=236&&b>=236&&Math.max(r,g,b)-Math.min(r,g,b)<=14}
 function cutPixels(d,w,h){
  var n=w*h,mark=new Uint8Array(n),q=new Int32Array(n),qi=0,qe=0;
