@@ -867,7 +867,7 @@ brandFix();
 (function(){try{pwJSON("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/dutyfree_all.json",j=>{if(j&&j.rows&&j.rows.length){DFALL=j;sgMerge();try{pwPrefetchSoon()}catch(e){}}}).catch(()=>{})}catch(e){}})();
 (function(){
  const st={q:"",term:"all",gen:"all",brand:"",show:"live",note:"",sort:"disc",n:60,multi:{gen:0,brand:0,show:0,note:0},ms:{gen:[],brand:[],show:[],note:[]},nall:true,nq:""};
- const OPT={term:[["all","All terminals"],["both","Mum Both"],["A","Mum Arrival"],["D","Mum Departure"],["S","Changi (Singapore)"],["T","Dollar & Scent Singapore"]],gen:[["all","Everyone"],["Men","Men"],["Women","Women"],["Unisex","Unisex"]],sort:[["disc","Biggest discount"],["lo","Price: low to high"],["hi","Price: high to low"],["az","A to Z"]]};
+ const OPT={term:[["all","All terminals"],["both","Mum Both"],["A","Mum Arrival"],["D","Mum Departure"],["S","Changi (Singapore)"],["T","Dollar & Scent Singapore"]],gen:[["all","Everyone"],["Men","Men"],["Women","Women"],["Unisex","Unisex"]],sort:[["disc","Biggest discount"],["lo","Price: low to high"],["hi","Price: high to low"],["az","A to Z"],["rt","Rating: high to low"]]};
  const LAB={term:"Where",gen:"For",brand:"Brand",show:"Show",note:"Notes",sort:"Sort"},DEF={term:"all",gen:"all",brand:"",show:"live",note:"",sort:"disc"},HASM=new Set(["gen","brand","show","note"]);
  let WCH={};try{WCH=JSON.parse(localStorage.getItem("dfwatch")||"{}")||{}}catch(e){}
  const isW=r=>Object.prototype.hasOwnProperty.call(WCH,r[0]);
@@ -905,11 +905,11 @@ brandFix();
  const ONE={show:v=>({watch:"Watching",new:"New",drop:"Drops",up:"Rises",gone:"Delisted",all:"All",live:"Listed"})[v]||v,term:v=>({both:"Mum Both",A:"Mum Arrival",D:"Mum Departure",S:"Changi",T:"Dollar & Scent"}[v]||v),gen:v=>v,brand:v=>v,note:v=>capW(v)};
  function cur(k){if(HASM.has(k)&&st.multi[k])return st.ms[k];const v=st[k];return v===DEF[k]?[]:[v]}
  function labels(){document.querySelectorAll("#dfdd .dd").forEach(d=>{const k=d.dataset.k,b=d.querySelector(".dsel");let t=LAB[k],c=k==="sort"?[]:cur(k),isDef=k==="sort"?st.sort==="disc":c.length===0;
-  if(k==="sort"){t=st.sort==="disc"?"Sort":({lo:"Low to high",hi:"High to low",az:"A to Z"})[st.sort]}else if(c.length===1)t=ONE[k](c[0]);else if(c.length>1)t=LAB[k]+" \u00b7 "+c.length;
+  if(k==="sort"){t=st.sort==="disc"?"Sort":({lo:"Low to high",hi:"High to low",az:"A to Z",rt:"Top rated"})[st.sort]}else if(c.length===1)t=ONE[k](c[0]);else if(c.length>1)t=LAB[k]+" \u00b7 "+c.length;
   b.innerHTML=esc(t)+CARET;b.classList.toggle("off",isDef)})}
  function closeAll(){document.querySelectorAll("#dfdd .ddm").forEach(m=>m.hidden=true);document.querySelectorAll("#dfdd .dsel").forEach(b=>b.setAttribute("aria-expanded","false"))}
  function rows(){let L=ALL().filter(r=>ok(r,null));
-  const f={disc:(a,b)=>off(b)-off(a)||a[5]-b[5],lo:(a,b)=>a[5]-b[5],hi:(a,b)=>b[5]-a[5],az:(a,b)=>a[1].localeCompare(b[1])}[st.sort];return L.sort(f)}
+  const f={disc:(a,b)=>off(b)-off(a)||a[5]-b[5],lo:(a,b)=>a[5]-b[5],hi:(a,b)=>b[5]-a[5],az:(a,b)=>a[1].localeCompare(b[1]),rt:(a,b)=>{const x=DFI[a[0]],y=DFI[b[0]],ra=x&&x.m&&x.s?x.s:0,rb=y&&y.m&&y.s?y.s:0;return rb-ra||((y&&y.c)||0)-((x&&x.c)||0)||a[5]-b[5]}}[st.sort];return L.sort(f)}
 
  let DFI={};let NMAP={base:"",map:{}};window.__dfProp=function(){try{if(!XS||!XS.i||!XS.f||!DFI)return;const P={};Object.keys(DFI).forEach(k=>{if(k.slice(0,2)==="BL"&&DFI[k]&&DFI[k].m)P[k.replace(/_\d+$/,"")]=DFI[k]});XS.f.forEach(F=>{let d=null;for(const o of F){const x=DFI[o[1]];if(x&&x.m){d=x;break}}if(!d)return;F.forEach(o=>{const x=DFI[o[1]];if(!x||!x.m)DFI[o[1]]=d})});(DFALL.rows||[]).forEach(r=>{const c=r[0];if(c.slice(0,2)==="BL"&&!(DFI[c]&&DFI[c].m)){const d=P[c.replace(/_\d+$/,"")];if(d)DFI[c]=d}})}catch(e){}};
  try{pwJSON("https://raw.githubusercontent.com/nikhilvinod504/perfume-wardrobe/main/note_map.json",j=>{if(j&&j.map){NMAP=j;window.__NMAP=j;try{pwPrefetchSoon()}catch(e){}try{const d=document.getElementById("dfd");if(d&&d.classList.contains("on")&&window.__dfCur)showD(window.__dfCur)}catch(e){}}}).catch(()=>{})}catch(e){}
