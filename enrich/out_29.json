@@ -1,0 +1,222 @@
+{
+"SG00556668": {
+"m": 0
+},
+"SG00194771": {
+"m": 0
+},
+"SG00943868": {
+"m": 1,
+"id": 99062,
+"n": "Mystic Luna",
+"y": 2024,
+"p": [
+"Jérôme Epinette"
+],
+"g": "for women",
+"f": "Floral Woody Musk",
+"a": [
+[
+"aromatic",
+100.0,
+"#37a089"
+],
+[
+"musky",
+96.0,
+"#E7D8EA"
+],
+[
+"fresh spicy",
+82.8,
+"#83C928"
+],
+[
+"powdery",
+65.3,
+"#EEDDCC"
+],
+[
+"woody",
+64.3,
+"#774414"
+],
+[
+"white floral",
+56.4,
+"#edf2fb"
+],
+[
+"rose",
+56.4,
+"#FE016B"
+],
+[
+"amber",
+56.4,
+"#bc4d10"
+],
+[
+"animalic",
+54.4,
+"#8E4B13"
+],
+[
+"floral",
+45.2,
+"#FF5F8D"
+]
+],
+"t": [
+"Juniper Berries",
+"Bergamot"
+],
+"h": [
+"Grasse Rose",
+"Jasmine"
+],
+"b": [
+"Musk",
+"Ambergris",
+"Amber"
+],
+"o": [],
+"s": 3.9722,
+"r": 5,
+"c": 36,
+"u": "https://www.fragrantica.com/perfume/Anna-Sui/Mystic-Luna-99062.html",
+"ap": 0,
+"se": {
+"winter": 6,
+"spring": 9,
+"summer": 7,
+"autumn": 7,
+"day": 10,
+"night": 4
+},
+"lg": {
+"avg": 2.7273,
+"n": 11,
+"v": [
+0,
+6,
+2,
+3,
+0
+]
+},
+"sl": {
+"avg": 2,
+"n": 10,
+"v": [
+2,
+6,
+2,
+0
+]
+}
+},
+"SG00050930": {
+"m": 1,
+"id": 3962,
+"n": "L'Ombre Dans L'Eau Eau de Toilette",
+"y": 1983,
+"p": [],
+"g": "for women",
+"f": "Floral",
+"a": [
+[
+"fruity",
+100.0,
+"#FC4B29"
+],
+[
+"green",
+81.0,
+"#0E8C1D"
+],
+[
+"aromatic",
+77.3,
+"#37a089"
+],
+[
+"soft spicy",
+61.2,
+"#E27752"
+],
+[
+"rose",
+59.2,
+"#FE016B"
+],
+[
+"fresh spicy",
+50.3,
+"#83C928"
+],
+[
+"woody",
+49.8,
+"#774414"
+],
+[
+"citrus",
+47.6,
+"#F9FF52"
+],
+[
+"floral",
+46.7,
+"#FF5F8D"
+]
+],
+"t": [],
+"h": [],
+"b": [],
+"o": [
+"Cassis",
+"Rose",
+"Black currant leaf",
+"Black Currant",
+"Bergamot",
+"Musk",
+"Ambergris",
+"Mandarin Orange"
+],
+"s": 3.9687,
+"r": 5,
+"c": 4723,
+"u": "https://www.fragrantica.com/perfume/Diptyque/L-Ombre-Dans-L-Eau-Eau-de-Toilette-3962.html",
+"ap": 0,
+"se": {
+"winter": 314,
+"spring": 1529,
+"summer": 1329,
+"autumn": 657,
+"day": 1432,
+"night": 395
+},
+"lg": {
+"avg": 3.1865,
+"n": 1646,
+"v": [
+67,
+195,
+838,
+456,
+90
+]
+},
+"sl": {
+"avg": 2.2342,
+"n": 1793,
+"v": [
+259,
+1007,
+375,
+152
+]
+}
+}
+}
