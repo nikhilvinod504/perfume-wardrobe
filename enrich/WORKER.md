@@ -12,3 +12,8 @@ Per perfume, strictly sequential (the Apify account allows 5 concurrent runs, sh
 5. Entry (Python read-modify-write; never hand-paste JSON): {"m":1,"id":perfumeId,"n":name,"y":year,"p":[perfumer names],"g":genderLabel,"f":fragranceFamily,"a":[[accord, strength (1 dp), color hex] for ALL mainAccords in order],"t":[top],"h":[middle],"b":[base],"o":[unsorted],"s":ratingValue,"r":5,"c":ratingCount,"u":url,"ap":0|1}; when voteDataAvailable also "se":{winter,spring,summer,autumn,day,night} (from seasonVotes), "lg":{"avg":longevity.average,"n":longevity.total,"v":[veryWeak,weak,moderate,longLasting,eternal]}, "sl":{"avg":sillage.average,"n":sillage.total,"v":[intimate,moderate,strong,enormous]} (omit missing keys).
 6. Every 8 perfumes and at the end run `sh tools/push_shard.sh NN`.
 Minimal messages; never print dataset contents. Final report only: shard, done/total, matched, ap, m:0, problems.
+
+## Added after the Changi run
+- Use ONLY your own scratch folder for helper scripts (for example /tmp/claude-0/wNN/), never a shared script path: two workers once overwrote each other's helper and wrote into the wrong out file.
+- Rows with an empty brand column are Dollar & Scent items: infer the brand from the title. Codes starting SG are Changi, DS are Dollar & Scent.
+- Before the final report, check that every code of your q file is in YOUR out file only.
