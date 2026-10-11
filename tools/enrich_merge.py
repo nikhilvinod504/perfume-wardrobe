@@ -39,3 +39,16 @@ if os.path.exists('bali_all.json'):
         if r[0].startswith('BL') and par(r[0]) in lead:share(lead[par(r[0])],r[0])
 json.dump({"asOf":datetime.date.today().strftime('%-d %b %Y'),"source":"Fragrantica via Apify","p":P,"c":C},open('dutyfree_info.json','w'),ensure_ascii=False,separators=(',',':'))
 print(len(P),'perfumes stored once;',len(C),'codes (',n0,'own lookups )')
+
+# progress banner in the app (enrich/progress.json): every listed code counts as done once it has details,
+# was looked up (even with no match), or is another size of a Bali perfume that was looked up
+allout=set()
+for f in glob.glob('enrich/out_*.json'):allout|=set(json.load(open(f)))
+codes=set()
+for f in ('dutyfree_all.json','changi_all.json','dscent_all.json','bali_all.json'):
+    if os.path.exists(f):codes|={r[0] for r in json.load(open(f))['rows']}
+par=lambda c:re.sub(r'_\d+$','',c)
+lp={par(c) for c in allout if c.startswith('BL')}
+done={c for c in codes if c in C or c in allout or (c.startswith('BL') and par(c) in lp)}
+json.dump({"done":len(done),"total":len(codes),"matched":len([c for c in codes if c in C]),"at":datetime.datetime.utcnow().isoformat()+"Z"},open('enrich/progress.json','w'))
+print('progress',len(done),'/',len(codes))
