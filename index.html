@@ -1059,15 +1059,15 @@ brandFix();
  window.__xsTags=xsTags;
  function xsHtml(c){try{if(!XS||!XS.i||XS.i[c]==null)return"";const F=XS.f[XS.i[c]];if(!F||F.length<2)return"";
   const r0=rowOf(c),sz0=r0?(facts(r0[1]).sz||0):0,me=o=>o[1]===c&&(o[0]==='M'||(o[0]==='C'?(r0&&o[3]===r0[5]):(!sz0||o[2]===sz0)));
-  const lab=o=>o[0]==="M"?(o[4]==="AD"?"Mum Arrival & Departure":o[4]==="A"?"Mum Arrival":"Mum Departure"):o[0]==="C"?"Changi (Singapore)":"Dollar & Scent (shop)";
+  const lab=o=>o[0]==="M"?(o[4]==="AD"?"Mum Arrival & Departure":o[4]==="A"?"Mum Arrival":"Mum Departure"):o[0]==="C"?"Changi (Singapore)":o[0]==="B"?"Bali (Ngurah Rai)":"Dollar & Scent (shop)";
   const by={};F.forEach(o=>{const k=o[2]||0;(by[k]=by[k]||[]).push(o)});
   const ks=Object.keys(by).map(Number).sort((a,b)=>(a||9e9)-(b||9e9));
   let bestPm=null;F.forEach(o=>{if(o[2]>0){const pm=o[3]/o[2];if(!bestPm||pm<bestPm.pm)bestPm={pm,o}}});
   let h='<h4>Price at other shops</h4>';
   if(bestPm)h+='<div class="nb xsb">Best value per ml: <b>'+esc(lab(bestPm.o))+'</b> at '+inr(Math.round(bestPm.pm))+'/ml ('+bestPm.o[2]+' ml).</div>';
   ks.forEach(k=>{const L=by[k].slice().sort((a,b)=>a[3]-b[3]);const mn=L.length>1?L[0][3]:-1;
-   h+='<div class="xsz">'+(k?k+' ml':'Size not listed')+'</div><div class="sml">'+L.map(o=>{const best=o[3]===mn;const sgd=o[0]!=="M"&&o[5]!=null?' \u00b7 S$'+Number(o[5]).toFixed(2):'';return '<button type="button" class="smr xr'+(best?' best':'')+(me(o)?' own':'')+'" data-c="'+esc(o[1])+'"><span class="smt"><b>'+esc(lab(o))+(me(o)?' (this one)':'')+'</b><small>'+(k?inr(Math.round(o[3]/k))+'/ml':'')+sgd+'</small>'+(best?'<em>Best price for this size</em>':'')+'</span><span class="smp">'+inr(o[3])+'</span></button>'}).join("")+'</div>'});
-  return h+'<div class="nb">Singapore prices are converted at about \u20b975.6 per S$. Dollar &amp; Scent is a regular shop with GST included, not duty free. Matches are by name and size, so check the pack before you buy.</div>'}catch(e){return""}}
+   h+='<div class="xsz">'+(k?k+' ml':'Size not listed')+'</div><div class="sml">'+L.map(o=>{const best=o[3]===mn;const sgd=o[0]!=="M"&&o[0]!=="B"&&o[5]!=null?' \u00b7 S$'+Number(o[5]).toFixed(2):'';return '<button type="button" class="smr xr'+(best?' best':'')+(me(o)?' own':'')+'" data-c="'+esc(o[1])+'"><span class="smt"><b>'+esc(lab(o))+(me(o)?' (this one)':'')+'</b><small>'+(k?inr(Math.round(o[3]/k))+'/ml':'')+sgd+'</small>'+(best?'<em>Best price for this size</em>':'')+'</span><span class="smp">'+inr(o[3])+'</span></button>'}).join("")+'</div>'});
+  return h+'<div class="nb">Singapore prices are converted at about \u20b975.6 per S$ and Bali prices at about \u20b90.0054 per rupiah. Dollar &amp; Scent is a regular shop with GST included, not duty free. Matches are by name and size, so check the pack before you buy.</div>'}catch(e){return""}}
  window.__dfSimHtml=function(p,n){try{n=n||5;
   const va={};(p.accords||[]).forEach(x=>{va[String(x[0]).toLowerCase()]=x[1]||0});
   const na=new Set((p.notes||[]).map(nn));const y=(typeof PYR!=="undefined"&&PYR[p.id])||null;if(y)["top","mid","base"].forEach(t=>(y[t]||[]).forEach(x=>na.add(nn(x))));
