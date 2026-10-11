@@ -836,8 +836,8 @@ window.pwPrefetchSoon=function(){if(window.__pfT)return;window.__pfT=setTimeout(
 window.__offTxt="";
 function pwOffSet(t){window.__offTxt=t;const e=document.getElementById("dfsub");if(e&&typeof DFALL!=="undefined")e.textContent="Mumbai, Changi and Dollar & Scent · as of "+DFALL.asOf+(t?" · "+t:"")}
 async function pwPrefetch(){try{if(!window.caches||navigator.onLine===false)return;const NMAP=window.__NMAP;if(typeof DFALL==="undefined"||!NMAP||!NMAP.base||!DFALL.img)return;
- const c=await caches.open("pw-img-v1"),urls=[];Object.keys(DFALL.img).forEach(k=>urls.push((DFALL.imgBase||"")+k+".webp"));[...new Set(Object.values(NMAP.map))].forEach(id=>urls.push(NMAP.base+id+".webp"));
- const have=new Set((await c.keys()).map(r=>r.url));const todo=urls.filter(u=>!have.has(u));const total=urls.length;let done=total-todo.length;
+ const c=await caches.open("pw-img-v1");let urls=[];(DFALL.rows||[]).forEach(r=>{const k=r[0];let u="";if(window.IMGFIX&&window.IMGFIX[k])u=window.IMGFIX[k];else if(k.slice(0,2)==="DS"){u=(DFALL.sg&&DFALL.sg[k]&&DFALL.sg[k][3])||"";if(/cdn\.shopify\.com/.test(u)&&u.indexOf("width=")<0)u+=(u.indexOf("?")<0?"?":"&")+"width=500"}else if(k.slice(0,2)==="SG"){const s=DFALL.sg&&DFALL.sg[k]&&DFALL.sg[k][3];if(s)u="https://changiairport.scene7.com/is/image/changiairport/"+s+"?wid=400&fmt=webp"}else if(DFALL.img[k])u=(DFALL.imgBase||"")+k+".webp";if(u&&u.indexOf("sa.adanione.com")<0)urls.push(u)});[...new Set(Object.values(NMAP.map))].forEach(id=>urls.push(NMAP.base+id+".webp"));
+ const have=new Set((await c.keys()).map(r=>r.url));urls=[...new Set(urls)];const todo=urls.filter(u=>!have.has(u));const total=urls.length;let done=total-todo.length;
  if(!todo.length){pwOffSet("saved for offline use");return}
  pwOffSet("saving photos for offline: "+done+" of "+total);let i=0,fail=0;
  const w=async()=>{while(i<todo.length){if(navigator.onLine===false)return;const u=todo[i++];try{const r=await fetch(u,{mode:"cors"});if(r.ok){await c.put(u,r);done++}else fail++}catch(e){fail++;if(fail>12)return}if(done%20===0)pwOffSet("saving photos for offline: "+done+" of "+total);await new Promise(z=>setTimeout(z,60))}};
