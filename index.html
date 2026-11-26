@@ -1391,7 +1391,7 @@ function lyPair(A,B){
 function lyAll(L){const P=L.map(lyProf),out=[];for(let i=0;i<P.length;i++)for(let j=i+1;j<P.length;j++)out.push(lyPair(P[i],P[j]));return out.sort((x,y)=>y.s-x.s)}
 function lyHtml(r,me){
   const t=(p)=>'<button type="button" class="ab-b'+(me&&p.id===me?' me':'')+'" data-id="'+p.id+'"><img src="'+p.img+'" alt=""><span>'+esc(sname(p))+'</span><em>'+(r.first?(p===r.first?'1st':'2nd'):'mix')+'</em></button>';
-  return '<div class="ly"><div class="ly-p">'+t(r.a)+'<i class="plus">+</i>'+t(r.b)+'</div><div class="sg-f"><div class="t"><i style="width:'+Math.round(Math.min(1,r.s/0.8)*100)+'%"></i></div><span>'+r.tier+'</span></div><div class="sg-w">'+esc(r.why)+(r.first?' Spray '+esc(sname(r.first))+' first, then '+esc(sname(r.second))+'.':' Either order works.')+'</div></div>';
+  return '<div class="ly"><div class="ly-p">'+t(r.a)+'<i class="plus">+</i>'+t(r.b)+'</div><div class="sg-f"><div class="t"><i style="width:'+Math.round(Math.min(1,r.s/0.8)*100)+'%"></i></div><span>'+r.tier+'</span></div><div class="sg-w">'+esc(r.why)+(r.first?' Spray '+esc(sname(r.first))+' first, then '+esc(sname(r.second))+'.':' Either order works.')+'</div>'+(window.sprPairBtn?sprPairBtn(r.a.id,r.b.id):'')+'</div>';
 }
 
 function lyPool(){const out=[],seen={};[["mannu","Mannu's"],["nix","Nix's"],["wishlist","Wishlist"]].forEach(([k,w])=>{baseIds(k).forEach(id=>{const p=PERFUMES.find(x=>x.id===id);if(!p)return;if(seen[id]){seen[id].who=seen[id].who+" & "+w;return}const o={p,who:w,k};seen[id]=o;out.push(o)})});return out}
@@ -1516,7 +1516,7 @@ function open(p){if(window.__curId!==p.id||!document.querySelector(".sheet.on"))
   $("#sheetIn").innerHTML=
    '<button class="close" id="close" aria-label="Close">✕</button>'+
    '<div class="hd"><img src="'+p.img+'" alt="'+esc(p.name)+' bottle"><div><h2 id="sheetTitle">'+esc(p.name)+'</h2><div class="brand">'+esc(p.brand)+' · '+esc(p.gender)+(active==="wishlist"||gk(p)==="u"?gbHtml(p):'')+'</div>'+(p.rating==null?'<div class="rate"><span class="votes">No community rating yet</span></div>':'<div class="rate"><b>'+Number(p.rating).toFixed(1)+'</b><span class="stars">'+stars(p.rating)+'</span><span class="votes">('+p.votes.toLocaleString("en-IN")+')</span></div>')+'</div></div>'+
-   mvHtml(p)+wearHtml(p)+priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
+   (window.sprHtml?sprHtml(p):'')+mvHtml(p)+wearHtml(p)+priceHtml(p)+'<section><h3>Main accords</h3><div class="acc">'+acc+'</div></section>'+
    '<section><h3>Notes</h3><p class="hint2">Tap a note to see how it smells.</p><div class="notes">'+notes+'</div></section>'+
    pyrHtml(p)+
    '<section><h3>Fragrance profile</h3><div class="stats"><div class="stat"><b>'+esc(p.longevity)+'</b><span>Longevity</span></div><div class="stat"><b>'+esc(p.sillage)+'</b><span>Sillage</span></div></div></section>'+
@@ -2020,6 +2020,353 @@ window.__fitTools=fit;fit();addEventListener("resize",fit);addEventListener("loa
 #wd.cl .hint{position:absolute;left:0;right:0;bottom:calc(36px + env(safe-area-inset-bottom,0px));text-align:center;font-size:13px;letter-spacing:.06em;color:var(--brass-soft);opacity:0;transition:opacity .5s;z-index:3}
 #wd.cl .hint.on{opacity:.85}
 </style>
+<style>
+/* Spray & layer: bottle pump, mist and a scent timeline */
+.sprow{display:flex;gap:8px;margin:2px 0 0}
+.sprow button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:14px;font-weight:500;border-radius:99px;padding:10px 12px;cursor:pointer;border:1px solid var(--brass);background:none;color:var(--ink)}
+.sprow button.pri{background:linear-gradient(180deg,var(--brass-soft),var(--brass));color:#2a1b16}
+.sprow svg,#spx svg.ic{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.sprow button:active{transform:scale(.97)}
+.ly-sp{margin-top:6px;font:inherit;font-size:12px;border:1px solid var(--line);background:none;color:var(--ink);border-radius:99px;padding:5px 12px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.ly-sp svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+#spx{position:fixed;inset:0;z-index:85;background:var(--page);color:var(--ink);overflow-y:auto;overscroll-behavior:contain;opacity:0;transform:translateY(24px);transition:opacity .25s,transform .3s cubic-bezier(.2,.8,.2,1);-webkit-overflow-scrolling:touch}
+#spx.on{opacity:1;transform:none}
+.spx-in{max-width:620px;margin-inline:auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(32px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:18px}
+.spx-top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.spx-top small{display:block;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.spx-top h2{margin:2px 0 0;font:400 clamp(22px,6vw,30px)/1.1 var(--display);text-wrap:balance}
+.spx-x{flex:none;width:38px;height:38px;border-radius:50%;border:0;background:var(--chip);color:var(--ink);font-size:18px;cursor:pointer}
+
+.spx-stage{position:relative;height:300px;border-radius:20px;overflow:hidden;background:radial-gradient(120% 90% at 50% 18%,#5a3826 0%,#2e1c13 55%,#160d08 100%);box-shadow:inset 0 -30px 40px -20px rgba(0,0,0,.6);touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.spx-stage::after{content:"";position:absolute;left:8%;right:8%;bottom:26px;height:14px;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.55),rgba(0,0,0,0))}
+.spx-stage canvas{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.spx-bots{position:absolute;left:0;right:0;bottom:30px;display:flex;justify-content:center;align-items:flex-end;gap:12%;z-index:1}
+.spx-b{position:relative;cursor:pointer;background:none;border:0;padding:0;line-height:0}
+.spx-b .im{position:relative;display:block}
+.spx-b img{display:block;height:var(--bh,210px);width:auto;max-width:44vw;filter:drop-shadow(0 0 .6px rgba(255,255,255,.5)) drop-shadow(0 12px 10px rgba(0,0,0,.55));user-select:none;-webkit-user-drag:none;pointer-events:none}
+.spx-b .cap{position:absolute;left:0;top:0}
+.spx-b .bd{position:relative}
+#spx.go .spx-b b{opacity:0}.spx-b b{transition:opacity .4s;position:absolute;left:50%;top:-22px;translate:-50% 0;font:500 11px var(--body);letter-spacing:.08em;line-height:1;color:#f3e0c2;background:rgba(0,0,0,.35);border-radius:99px;padding:4px 8px;white-space:nowrap}
+.spx-b:focus-visible{outline:2px solid var(--brass-soft);outline-offset:6px;border-radius:8px}
+.spx-tap{position:absolute;left:0;right:0;top:14px;margin:0;text-align:center;z-index:3;font-size:13px;letter-spacing:.06em;color:#f3e0c2;opacity:.85;transition:opacity .4s;pointer-events:none}
+.spx-tap.off{opacity:0}
+.spx-go{display:flex;justify-content:center}
+.spx-go button,.spx-ctl .ag{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:15px;font-weight:500;border-radius:99px;padding:12px 26px;cursor:pointer;border:1px solid var(--brass);background:linear-gradient(180deg,var(--brass-soft),var(--brass));color:#2a1b16}
+.spx-go button:active,.spx-ctl button:active{transform:scale(.97)}
+.spx-go button[disabled]{opacity:.45;cursor:default}
+
+.spx-set{display:flex;flex-direction:column;gap:12px;padding:14px;background:var(--chip);border:1px solid var(--line);border-radius:16px}
+.spx-sl{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:8px;align-items:stretch}
+.spx-slot{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px;border-radius:12px;border:1px solid var(--line);background:var(--card);font:inherit;color:inherit;cursor:pointer;min-width:0}
+.spx-slot.on{border-color:var(--brass)}
+.spx-slot img{height:64px;width:auto;max-width:70px;object-fit:contain}
+.spx-slot .ph{height:64px;display:grid;place-items:center;font-size:30px;color:var(--ink-soft)}
+.spx-slot span{font-size:12px;line-height:1.2;text-align:center;overflow-wrap:anywhere}
+.spx-slot em{font-style:normal;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--brass)}
+.spx-sw{align-self:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;display:grid;place-items:center;padding:0}
+.spx-sw svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.spx-n{display:flex;align-items:center;gap:6px}
+.spx-n button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:16px;line-height:1;cursor:pointer;padding:0}
+.spx-n b{min-width:58px;text-align:center;font-weight:500;font-size:13px}
+.spx-adv{font-size:13px;line-height:1.45}
+.spx-adv p{margin:0}
+.spx-adv p+p{margin-top:6px}
+.spx-adv .warn{padding:8px 10px;border-radius:10px;background:rgba(204,51,0,.12);border:1px solid rgba(204,51,0,.35)}
+.spx-adv button{font:inherit;font-size:12px;border:1px solid var(--brass);background:none;color:var(--ink);border-radius:99px;padding:3px 10px;margin-left:4px;cursor:pointer}
+.spx-adv .spx-tier{font-weight:500;color:var(--brass)}
+
+#spxPick{border:1px solid var(--brass);border-radius:16px;background:var(--card);padding:12px 12px 4px;max-height:52vh;overflow-y:auto}
+#spxPick .ptg>b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:500;margin-bottom:6px}
+#spxPick .ptg{margin-bottom:12px}
+#spxPick .ptgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+#spxPick .pk{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px;border-radius:10px;border:1px solid transparent;background:none;font:inherit;color:inherit;cursor:pointer}
+#spxPick .pk img{height:52px;width:auto;max-width:56px;object-fit:contain}
+#spxPick .pk span{font-size:10px;line-height:1.15;text-align:center;overflow-wrap:anywhere}
+#spxPick .pk em{font-style:normal;font-size:9px;color:var(--brass);letter-spacing:.06em;text-transform:uppercase}
+#spxPick .pk.on{border-color:var(--brass);background:var(--chip)}
+#spxPick .pk.dis{opacity:.3;pointer-events:none}
+
+.spx-run{display:flex;flex-direction:column;gap:18px}
+.spx-run[hidden]{display:none}
+.spx-ph{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.spx-ph b{font:400 26px/1.1 var(--display)}
+.spx-ph span{font-variant-numeric:tabular-nums;color:var(--ink-soft);font-size:14px}
+.spx-strip{position:relative;display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--bar)}
+.spx-strip i{display:block;height:100%}
+.spx-strip i:nth-child(1){background:#f0d35a}.spx-strip i:nth-child(2){background:#e58aa0}.spx-strip i:nth-child(3){background:#9a6a3e}
+.spx-mk{position:relative;height:0}
+.spx-mk em{position:absolute;top:-13px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--card);border:2px solid var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.3);transition:left .12s linear}
+.spx-lb{display:flex;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);margin-top:-10px}
+.spx-lb span{overflow:hidden;white-space:nowrap;text-overflow:clip;min-width:0}.spx-lb span:first-child{min-width:68px}
+.spx-scr{width:100%;margin:-6px 0 0;accent-color:var(--brass)}
+.spx-ctl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.spx-ctl .pl{width:44px;height:44px;border-radius:50%;border:1px solid var(--brass);background:none;color:var(--ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.spx-ctl .pl svg{width:18px;height:18px;fill:currentColor;stroke:none}
+.spx-seg{display:flex;border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.spx-seg button{font:inherit;font-size:13px;border:0;background:none;color:var(--ink-soft);padding:9px 12px;cursor:pointer}
+.spx-seg button[aria-pressed="true"]{background:var(--chip);color:var(--ink);font-weight:500}
+.spx-ctl .ag{margin-left:auto;padding:10px 16px;font-size:14px}
+.spx-feel{margin:0;font:400 clamp(19px,5vw,23px)/1.35 var(--display);text-wrap:pretty;min-height:2.7em}
+.spx-notes{display:flex;flex-wrap:wrap;gap:8px}
+.spx-note{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 4px;border-radius:99px;background:var(--chip);border:1px solid var(--line);font-size:13px;transition:opacity .4s,transform .4s,filter .4s}
+.spx-note img,.spx-note .ni{width:26px;height:26px;border-radius:50%;object-fit:cover;background:var(--bar);display:block}
+.spx-note i{font-style:normal;font-size:10px;font-weight:600;width:16px;height:16px;border-radius:50%;display:grid;place-items:center;color:#2a1b16}
+.spx-note i.a{background:var(--brass-soft)}.spx-note i.b{background:#8fc9c3}
+.spx-note.off{opacity:.28;transform:scale(.94);filter:grayscale(.8)}
+.spx-note.peak{border-color:var(--brass)}
+.spx-acc div{transition:width .5s ease}
+.spx-proj{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.spx-proj .t{height:12px;border-radius:99px;background:var(--bar);overflow:hidden}
+.spx-proj .t i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--brass-soft),var(--brass));transition:width .4s linear}
+.spx-proj span{font-size:13px;color:var(--ink-soft)}
+.spx-done{padding:10px 12px;border-radius:12px;background:var(--chip);font-size:13px}
+.spx-done[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){#spx{transition:none}.spx-acc div,.spx-note{transition:none}}
+</style>
+<script>
+/* Spray & layer: pump the bottle, mist from its nozzle, then play how the scent opens, settles and dries down */
+(function(){
+"use strict";
+const IC={spray:'<svg class="ic" viewBox="0 0 24 24"><rect x="7" y="9" width="10" height="12" rx="2"/><path d="M9 9V6h6v3M12 6V3h4"/><path d="M19 3.5h.01M21 5.5h.01M19.5 7h.01"/></svg>',
+ layer:'<svg class="ic" viewBox="0 0 24 24"><rect x="3" y="9" width="8" height="12" rx="2"/><rect x="13" y="9" width="8" height="12" rx="2"/><path d="M5 9V6h4v3M15 9V6h4v3"/></svg>',
+ swap:'<svg viewBox="0 0 24 24"><path d="M7 7h12l-3-3M17 17H5l3 3"/></svg>',
+ play:'<svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>',pause:'<svg viewBox="0 0 24 24"><rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/></svg>'};
+window.__sprIcon=IC;
+const RM=()=>{try{return matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){return false}};
+const P=id=>PERFUMES.find(x=>x.id===id);
+const nm=p=>sname(p)||p.name;
+
+/* ---------- scent model ---------- */
+const TOPA=new Set(["Citrus","Fresh","Fresh Spicy","Aquatic","Marine","Green","Aromatic","Herbal","Ozonic","Fruity","Aldehydic","Lavender","Mineral","Salty","Anis","Tropical","Metallic"]);
+const BASEA=new Set(["Woody","Amber","Vanilla","Musky","Leather","Oud","Patchouli","Earthy","Mossy","Tobacco","Balsamic","Sweet","Animalic","Smoky","Cacao","Coffee","Caramel","Honey","Almond","Nutty","Coconut","Rum","Powdery","Soft Spicy","Cinnamon"]);
+const accTier=a=>TOPA.has(a)?"top":BASEA.has(a)?"base":"mid";
+function hours(p){const m=/(\d+(?:\.\d+)?)/.exec(String(p.longevity||""));if(m)return Math.max(2,Math.min(14,+m[1]));
+ const s=String(p.longevity||"").toLowerCase();return s.includes("eternal")?12:s.includes("long")?9:s.includes("very weak")?2:s.includes("weak")?3.5:6}
+function silW(p){const s=String(p.sillage||"").toLowerCase();return s.includes("enorm")?1:s.includes("strong")?.8:s.includes("moder")?.6:s.includes("intim")||s.includes("soft")||s.includes("weak")?.35:.6}
+const sstep=(a,b,x)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t)};
+function curves(T,t){const tau=.32+.035*T;
+ const end=t>T?Math.exp(-(t-T)/(.08*T)):1;
+ const top=(t<.02?.85+t*7.5:Math.exp(-(t-.02)/tau))*end;
+ const mid=(.3+.7*sstep(0,.45,t))*(t<.4*T?1:Math.exp(-(t-.4*T)/(.28*T)))*end;
+ const base=(.25+.75*sstep(.1,.32*T,t))*(t<.82*T?1:Math.exp(-(t-.82*T)/(.12*T)))*end;
+ return{top,mid,base}}
+function tiersOf(p){const y=PYR[p.id];if(y&&((y.top||[]).length+(y.mid||[]).length+(y.base||[]).length))return{top:y.top||[],mid:y.mid||[],base:y.base||[]};
+ const o={top:[],mid:[],base:[]};(p.notes||[]).forEach(n=>o[noteTier(n)].push(n));
+ if(!o.top.length&&o.mid.length>1)o.top.push(o.mid.shift());if(!o.base.length&&o.mid.length>1)o.base.push(o.mid.pop());return o}
+const NT_TOP=/(lemon|lime|bergamot|mandarin|tangerine|grapefruit|yuzu|kumquat|citrus|orange(?! blossom| flower)|neroli|petitgrain|aldehyde|mint|sea|marine|water|ozonic|aquozone|calone|salt|mineral|pink pepper|pepper|ginger|apple|pear|pineapple|berr|currant|cassis|cherry|plum|peach|melon|fruit|green notes|galbanum|basil|rosemary|artemisia|elemi|cardamom|anise)/i;
+const NT_BASE=/(wood|cedar|sandal|vetiver|patchouli|musk|amber|ambrox|ambrofix|ambergris|vanill|tonka|benzoin|labdanum|oud|agarwood|leather|tobacco|moss|incense|myrrh|cashmeran|guaiac|praline|caramel|cacao|chocolate|coffee|honey|styrax|birch|smok|suede|ebony|resin|balsam|tolu|olibanum|frankincense|castoreum|civet|truffle|mukhallat)/i;
+function noteTier(n){return NT_BASE.test(n)?"base":NT_TOP.test(n)?"top":"mid"}
+/* a "source" is one bottle with a weight; a mix is 1 or 2 sources */
+function mkSrc(p,sprays,which,onTop){const T=hours(p);const ti=tiersOf(p),notes=[];
+ ["top","mid","base"].forEach(tr=>ti[tr].forEach((n,i)=>notes.push({n,tr,w:1-.07*i})));
+ return{p,T,sw:silW(p),k:Math.pow(sprays,.7),which,onTop,notes,acc:p.accords.map(([a,v])=>({a,v:v/100,tr:accTier(a)}))}}
+function state(mix,t){
+ const notes={},acc={};let proj=0,pmax=0,cT={top:0,mid:0,base:0};
+ mix.forEach(s=>{const c=curves(s.T,t),boost=s.onTop&&t<.6?1.15:1;
+  s.notes.forEach(o=>{const v=c[o.tr]*o.w*s.k*(o.tr==="top"?boost:1),q=notes[o.n];if(!q)notes[o.n]={n:o.n,v,tr:o.tr,which:s.which};else{if(q.which!==s.which)q.which="ab";if(v>q.v){q.v=v;q.tr=o.tr}}});
+  s.acc.forEach(o=>{acc[o.a]=(acc[o.a]||0)+o.v*c[o.tr]*s.k});
+  const pr=s.sw*(.3+.7*Math.exp(-t/(.2*s.T)))*(t>s.T?Math.exp(-(t-s.T)/(.08*s.T)):1)*(s.T>0?(.85+.15*s.k):1);
+  proj=Math.max(proj,pr)+.25*Math.min(proj,pr);pmax+=s.k;
+  ["top","mid","base"].forEach(k=>cT[k]+=c[k]*s.k)});
+ const ph=Math.max(...mix.map(s=>s.T));
+ let phase=t>ph*1.0?"Fading out":cT.top>=cT.mid?"Opening":cT.mid>=cT.base?"Heart":"Drydown";
+ return{notes,acc,proj:Math.min(1,proj),phase}}
+function phaseBounds(mix){const T=Math.max(...mix.map(s=>s.T));let t1=null,t2=null;
+ for(let t=0;t<=T;t+=T/400){const s=state(mix,t);if(t1==null&&s.phase!=="Opening")t1=t;if(t2==null&&(s.phase==="Drydown"||s.phase==="Fading out")){t2=t;break}}
+ return{T,t1:t1==null?T*.1:t1,t2:t2==null?T*.45:t2}}
+const FEEL={"Fresh & citrus":["Bright and zesty, like cold citrus peel and a sea breeze","fresh"],
+ "Sweet & gourmand":["Warm and edible, sweet like a dessert you can wear","sweet"],
+ "Floral & powdery":["Soft and polished, a bouquet with a clean, powdery finish","floral"],
+ "Woody & earthy":["Dry and grounded, like cedar shavings and warm wood","woody"],
+ "Warm & amber":["Cosy and close: warm skin, amber and spice","warm"]};
+const PHI={Opening:"The first burst. ","Heart":"The heart has settled in. ","Drydown":"The drydown sits close to skin. ","Fading out":"Almost gone, a soft trace on skin. "};
+function feel(st){const f={};for(const k in FAM){f[k]=0;FAM[k].forEach(a=>{f[k]+=st.acc[a]||0})}
+ const r=Object.entries(f).sort((a,b)=>b[1]-a[1]);if(!r[0]||!r[0][1])return PHI[st.phase]||"";
+ let s=FEEL[r[0][0]][0];if(r[1]&&r[1][1]>.45*r[0][1])s+=", with a "+FEEL[r[1][0]][1]+" edge";return(PHI[st.phase]||"")+s+"."}
+function projLabel(v){return v>=.75?"Room-filling: noticed across a room":v>=.52?"Strong: noticed at arm’s length":v>=.32?"Moderate: someone close will notice":v>=.13?"Intimate: noticed on a hug":"Skin scent: only you can smell it"}
+function clock(t){if(t<1)return Math.round(t*60)+" min";const h=Math.floor(t),m=Math.round((t-h)*60);return h+" h"+(m?" "+(m<10?"0":"")+m+" m":"")}
+
+/* ---------- bottle geometry (nozzle and cap) ---------- */
+const GEO={};
+function geo(img){const key=img.src.length+":"+img.src.slice(-40);if(GEO[key])return GEO[key];
+ const W=90,H=Math.max(20,Math.round(W*img.naturalHeight/img.naturalWidth));let g={nx:.5,ny:.03,cap:.25};
+ try{const c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");x.drawImage(img,0,0,W,H);const d=x.getImageData(0,0,W,H).data;
+  const A=(i,j)=>d[(j*W+i)*4+3];const transp=[A(0,0),A(W-1,0),A(0,H-1),A(W-1,H-1)].some(a=>a<20);
+  const solid=(i,j)=>{const o=(j*W+i)*4;return transp?d[o+3]>60:!(d[o]>232&&d[o+1]>232&&d[o+2]>232)};
+  const rows=[];let mx=0;for(let j=0;j<H;j++){let n=0,l=W,r=-1;for(let i=0;i<W;i++)if(solid(i,j)){n++;if(i<l)l=i;r=i}rows.push({n,l,r});if(n>mx)mx=n}
+  let top=0;while(top<H&&rows[top].n<2)top++;let bot=H-1;while(bot>top&&rows[bot].n<2)bot--;
+  let sh=top;while(sh<bot&&rows[sh].n<.72*mx)sh++;
+  let l=W,r=0;for(let j=top;j<Math.min(bot,top+4);j++){l=Math.min(l,rows[j].l);r=Math.max(r,rows[j].r)}
+  const hh=Math.max(1,bot-top);g={nx:((l+r)/2)/W,nw:(r-l)/W,ny:(top+.05*hh)/H,cap:Math.max(.1,Math.min(.45,(sh-top)/H)),transp}}catch(e){}
+ return GEO[key]=g}
+
+/* ---------- mist particles ---------- */
+const SPR={};
+function sprite(col){if(SPR[col])return SPR[col];const c=document.createElement("canvas");c.width=c.height=64;const x=c.getContext("2d");
+ const g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,col);g.addColorStop(.45,col+"99");g.addColorStop(1,col+"00");x.fillStyle=g;x.fillRect(0,0,64,64);return SPR[col]=c}
+function palette(p){const lum=h=>{const m=/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(h||"");if(!m)return 0;const r=parseInt(m[1],16)/255,g=parseInt(m[2],16)/255,b=parseInt(m[3],16)/255;return(Math.max(r,g,b)+Math.min(r,g,b))/2};
+ const all=p.accords.map(a=>ACC[a[0]]||"#e8c48a"),good=all.filter(c=>lum(c)>.32),cs=(good.length?good:all).slice(0,3);cs.push("#f4ece2");return cs.map(c=>/^#[0-9a-f]{6}$/i.test(c)?c:"#e8c48a")}
+const MIST={parts:[],raf:0,cv:null,ctx:null,dpr:1,amb:[]};
+function mistLoop(){const c=MIST.cv;if(!c||!c.isConnected){MIST.raf=0;return}const x=MIST.ctx,w=c.width,h=c.height;x.clearRect(0,0,w,h);
+ const ps=MIST.parts;for(let i=ps.length-1;i>=0;i--){const q=ps[i];q.vx*=q.dr;q.vy=q.vy*q.dr-q.up;q.x+=q.vx;q.y+=q.vy;q.s+=q.gs;q.life-=1;
+  if(q.life<=0||q.x<-80||q.x>w+80||q.y<-80){ps.splice(i,1);continue}
+  const a=Math.min(1,q.life/q.fade)*q.a*(q.age<6?q.age/6:1);q.age++;x.globalAlpha=a;const s=q.s*MIST.dpr;x.drawImage(sprite(q.c),q.x-s/2,q.y-s/2,s,s)}
+ x.globalAlpha=1;MIST.raf=ps.length||MIST.ambOn?requestAnimationFrame(mistLoop):0;
+ if(MIST.ambOn&&Math.random()<MIST.ambRate)ambient()}
+function kick(){if(!MIST.raf)MIST.raf=requestAnimationFrame(mistLoop)}
+function burst(o,cols,dir,big){if(RM())return;const d=MIST.dpr,n=big?110:80,base=dir>0?-0.32:Math.PI+0.32;
+ for(let i=0;i<n;i++){const ang=base+(Math.random()-.5)*.62,sp=(2.2+Math.random()*6.2)*d;
+  MIST.parts.push({x:o.x,y:o.y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,dr:.935+Math.random()*.03,up:.012*d*Math.random(),s:3+Math.random()*7,gs:.28+Math.random()*.55,life:70+Math.random()*80,fade:50,a:.28+Math.random()*.3,c:cols[(Math.random()*cols.length)|0],age:0})}
+ for(let i=0;i<7;i++){const ang=base+(Math.random()-.5)*.5,sp=(1.2+Math.random()*1.8)*d;MIST.parts.push({x:o.x,y:o.y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,dr:.97,up:.01*d,s:20,gs:1.1+Math.random(),life:150+Math.random()*60,fade:90,a:.16,c:cols[i%cols.length],age:0})}
+ kick()}
+function ambient(){const c=MIST.cv,d=MIST.dpr;if(!c||!MIST.ambCols)return;const cols=MIST.ambCols[(Math.random()*MIST.ambCols.length)|0];
+ MIST.parts.push({x:c.width*(.2+Math.random()*.6),y:c.height*(.35+Math.random()*.4),vx:(Math.random()-.5)*.5*d,vy:-(.2+Math.random()*.4)*d,dr:.995,up:.004*d,s:16+Math.random()*20,gs:.25,life:200,fade:120,a:.07+.12*MIST.ambA,c:cols[(Math.random()*cols.length)|0],age:0})}
+
+/* ---------- overlay ---------- */
+const S={mode:"one",A:null,B:null,nA:2,nB:1,pick:null,mix:null,t:0,play:false,spd:"normal",last:0,ui:0,bounds:null,started:false};
+const SPD={slow:12,normal:5,fast:1.6};
+function el(id){return document.getElementById(id)}
+function build(){let o=el("spx");if(o)return o;o=document.createElement("div");o.id="spx";o.setAttribute("role","dialog");o.setAttribute("aria-modal","true");o.setAttribute("aria-label","Spray");
+ o.innerHTML='<div class="spx-in"><div class="spx-top"><div><small id="spxEy"></small><h2 id="spxT"></h2></div><button type="button" class="spx-x" id="spxX" aria-label="Close">✕</button></div>'+
+ '<div id="spxSet"></div><div id="spxPick" hidden></div>'+
+ '<div class="spx-stage" id="spxStage"><canvas id="spxCv"></canvas><p class="spx-tap" id="spxTap"></p><div class="spx-bots" id="spxBots"></div></div>'+
+ '<div class="spx-go" id="spxGo"></div>'+
+ '<div class="spx-run" id="spxRun" hidden>'+
+  '<div class="spx-ph"><b id="spxPh">Opening</b><span id="spxClk">0 min</span></div>'+
+  '<div><div class="spx-strip" id="spxStrip"><i></i><i></i><i></i></div><div class="spx-mk"><em id="spxMk" style="left:0"></em></div></div>'+
+  '<div class="spx-lb" id="spxLb"><span>Opening</span><span>Heart</span><span>Drydown</span></div>'+
+  '<input type="range" class="spx-scr" id="spxScr" min="0" max="1000" value="0" aria-label="Time since spraying">'+
+  '<div class="spx-ctl"><button type="button" class="pl" id="spxPl" aria-label="Pause">'+IC.pause+'</button><div class="spx-seg" role="group" aria-label="Speed"><button type="button" data-spd="slow">Slow</button><button type="button" data-spd="normal">Normal</button><button type="button" data-spd="fast">Fast</button></div><button type="button" class="ag" id="spxAg">'+IC.spray+'Spray again</button></div>'+
+  '<div class="spx-done" id="spxDone" hidden></div>'+
+  '<section><h3>It feels like…</h3><p class="spx-feel" id="spxFeel"></p></section>'+
+  '<section><h3>Notes in the air right now</h3><div class="spx-notes" id="spxNotes"></div></section>'+
+  '<section><h3>Accord profile</h3><div class="acc spx-acc" id="spxAcc"></div></section>'+
+  '<section><h3>Projection</h3><div class="spx-proj"><div class="t"><i id="spxPj"></i></div><span id="spxPjL"></span></div></section>'+
+  '<div class="src" id="spxSrc"></div></div></div>';
+ document.body.appendChild(o);
+ o.addEventListener("click",onClick);
+ el("spxScr").addEventListener("input",e=>{if(!S.mix)return;const u=+e.target.value/1000;S.t=u*u*S.bounds.T*1.08;S.last=performance.now();paint(true)});
+ document.addEventListener("keydown",e=>{if(!el("spx")||!el("spx").classList.contains("on"))return;if(e.code==="Space"&&!/INPUT|BUTTON/.test((e.target.tagName||""))){e.preventDefault();sprayNow()}if(e.key==="Escape")close()});
+ return o}
+function onClick(e){const t=e.target;
+ if(t.closest("#spxX")){close();return}
+ const b=t.closest(".spx-b");if(b||t.closest("#spxStage")){if(ready())sprayNow();else if(S.mode==="layer")openPick(!S.A?"A":"B");return}
+ if(t.closest("#spxGoB")){sprayNow();return}
+ if(t.closest("#spxPl")){S.play=!S.play;if(S.play&&S.t>=S.bounds.T*1.07)S.t=0;S.last=performance.now();setPl();if(S.play)loop();return}
+ const sp=t.closest("[data-spd]");if(sp){S.spd=sp.dataset.spd;setSpd();return}
+ if(t.closest("#spxAg")){sprayNow();return}
+ const sl=t.closest(".spx-slot");if(sl){openPick(sl.dataset.k);return}
+ if(t.closest(".spx-sw")){const a=S.A,n=S.nA;S.A=S.B;S.B=a;S.nA=S.nB;S.nB=n;refreshSet();return}
+ const st=t.closest("[data-st]");if(st){const k=st.dataset.st,d=+st.dataset.d;S[k]=Math.max(1,Math.min(3,S[k]+d));refreshSet();return}
+ const fo=t.closest("[data-fo]");if(fo){const f=fo.dataset.fo;if(S.B===f){const a=S.A,n=S.nA;S.A=S.B;S.B=a;S.nA=S.nB;S.nB=n}refreshSet();return}
+ const pk=t.closest("#spxPick .pk");if(pk){S[S.pick]=pk.dataset.id;S.pick=null;el("spxPick").hidden=true;refreshSet();return}
+}
+function ready(){return S.mode==="one"?!!S.A:!!(S.A&&S.B)}
+function open(opts){build();const o=el("spx");Object.assign(S,{mode:opts.mode||"one",A:opts.a||null,B:opts.b||null,nA:opts.mode==="layer"?2:2,nB:1,pick:null,mix:null,t:0,play:false,started:false});
+ stopLoop();MIST.parts=[];MIST.ambOn=false;o.classList.remove("go");
+ if(S.mode==="layer"&&S.A&&S.B){const r=adv();if(r&&r.first&&r.first.id===S.B){const a=S.A;S.A=S.B;S.B=a}}
+ el("spxRun").hidden=true;el("spxPick").hidden=true;
+ refreshSet();o.style.display="block";void o.offsetWidth;o.classList.add("on");o.scrollTop=0;
+ if(S.mode==="layer"&&!S.B)setTimeout(()=>openPick("B"),250)}
+function close(){const o=el("spx");if(!o)return;stopLoop();MIST.ambOn=false;MIST.parts=[];o.classList.remove("on");setTimeout(()=>{if(!o.classList.contains("on"))o.style.display="none"},280)}
+window.spxOpen=open;window.spxClose=close;window.spxIsOn=()=>{const o=el("spx");return !!o&&o.classList.contains("on")};
+
+function adv(){if(!S.A||!S.B)return null;try{return lyPair(lyProf(P(S.A)),lyProf(P(S.B)))}catch(e){return null}}
+function fam(p){const f={};let tot=0;p.accords.forEach(([a,v])=>{tot+=v;for(const k in FAM)if(FAM[k].includes(a))f[k]=(f[k]||0)+v});for(const k in f)f[k]/=tot||1;return f}
+function clash(a,b){const fa=fam(a),fb=fam(b),FR="Fresh & citrus",SW="Sweet & gourmand";
+ if((fa[FR]||0)>.42&&(fb[SW]||0)>.42)return[a,b];if((fb[FR]||0)>.42&&(fa[SW]||0)>.42)return[b,a];return null}
+function refreshSet(){
+ const a=S.A&&P(S.A),b=S.B&&P(S.B);
+ el("spxEy").textContent=S.mode==="layer"?"Layer & spray":"Spray it";
+ el("spxT").textContent=S.mode==="layer"?(a&&b?nm(a)+" + "+nm(b):a?nm(a)+" + …":"Pick two bottles"):(a?a.name:"");
+ const set=el("spxSet");
+ if(S.mode!=="layer"){set.innerHTML="";}
+ else{const slot=(k,p,n)=>'<button type="button" class="spx-slot'+(S.pick===k?' on':'')+'" data-k="'+k+'">'+(p?'<img alt="" src="'+p.img+'">':'<span class="ph">+</span>')+'<span>'+(p?esc(nm(p)):(k==="A"?"First bottle":"Second bottle"))+'</span><em>'+(k==="A"?"1st · base layer":"2nd · on top")+'</em></button>';
+  const step=(k)=>'<div class="spx-n"><button type="button" data-st="'+k+'" data-d="-1" aria-label="Fewer sprays">−</button><b>'+S[k]+' spray'+(S[k]>1?'s':'')+'</b><button type="button" data-st="'+k+'" data-d="1" aria-label="More sprays">+</button></div>';
+  let adv_='';const r=adv();
+  if(r){const c=clash(a,b);adv_='<div class="spx-adv"><p><span class="spx-tier">'+esc(r.tier)+'.</span> '+esc(r.why)+'</p>'+
+   (r.first&&r.first.id!==S.A?'<p>Tip: '+esc(nm(r.first))+' is the heavier one, so it usually goes on first.<button type="button" data-fo="'+r.first.id+'">Use that order</button></p>':r.first?'<p>Good order: the heavier one is underneath.</p>':'')+
+   (c?'<p class="warn">Heads up: '+esc(nm(c[0]))+' is mostly fresh and '+esc(nm(c[1]))+' is mostly sweet, so they can pull against each other. Try 1 spray of the fresh one, or wear them on different spots (wrist and neck).</p>':(r.s<.45?'<p class="warn">These share very little, so the blend may feel disjointed. Start with 1 spray of each.</p>':''))+'</div>'}
+  set.innerHTML='<div class="spx-set"><div class="spx-sl"><div style="display:flex;flex-direction:column;gap:8px;align-items:center;min-width:0">'+slot("A",a)+step("nA")+'</div><button type="button" class="spx-sw" aria-label="Swap order">'+IC.swap+'</button><div style="display:flex;flex-direction:column;gap:8px;align-items:center;min-width:0">'+slot("B",b)+step("nB")+'</div></div>'+adv_+'</div>'}
+ stage();
+ el("spxGo").innerHTML=S.started?'':'<button type="button" id="spxGoB"'+(ready()?'':' disabled')+'>'+IC.spray+(S.mode==="layer"?'Spray both':'Spray')+'</button>';
+ const tap=el("spxTap");tap.classList.toggle("off",S.started);tap.textContent=ready()?(S.mode==="layer"?"Tap a bottle to spray both":"Tap the bottle to spray"):"Pick the second bottle";
+ if(S.started&&ready()){S.mix=mkMix();S.bounds=phaseBounds(S.mix);buildRun();paint(true)}}
+function mkMix(){if(S.mode==="one")return[mkSrc(P(S.A),2,"a",false)];return[mkSrc(P(S.A),S.nA,"a",false),mkSrc(P(S.B),S.nB,"b",true)]}
+function stage(){const bots=el("spxBots"),ids=S.mode==="layer"?[S.A,S.B]:[S.A];const key=S.mode+"|"+ids.join("|");if(bots.__k===key&&bots.children.length)return;bots.__k=key;
+ bots.style.setProperty("--bh",S.mode==="layer"?"170px":"215px");
+ bots.innerHTML=ids.map((id,i)=>{const p=id&&P(id);if(!p)return '<div class="spx-b" style="opacity:.25;height:120px;width:60px;border:2px dashed #f3e0c2;border-radius:12px"></div>';
+  return '<button type="button" class="spx-b" data-i="'+i+'" aria-label="Spray '+esc(p.name)+'">'+(S.mode==="layer"?'<b>'+(i?'2nd':'1st')+'</b>':'')+'<span class="im"><img class="bd" alt="" src="'+p.img+'"><img class="cap" alt="" src="'+p.img+'"></span></button>'}).join("");
+ bots.querySelectorAll(".spx-b").forEach(b=>{const im=b.querySelector(".bd"),cap=b.querySelector(".cap");if(!im)return;
+  const set=()=>{const g=geo(im);b.__g=g;cap.style.height=im.offsetHeight+"px";cap.style.clipPath="inset(0 0 "+((1-g.cap)*100).toFixed(1)+"% 0)";im.style.clipPath="inset("+(g.cap*100).toFixed(1)+"% 0 0 0)"};
+  if(im.complete&&im.naturalWidth)set();else im.onload=set})}
+function canvasFit(){const c=el("spxCv"),r=c.getBoundingClientRect(),d=Math.min(2,window.devicePixelRatio||1);if(c.width!==Math.round(r.width*d)||c.height!==Math.round(r.height*d)){c.width=Math.round(r.width*d);c.height=Math.round(r.height*d)}MIST.cv=c;MIST.ctx=c.getContext("2d");MIST.dpr=d;return{r,d}}
+function pump(btn,dir,cols,delay){return new Promise(res=>setTimeout(()=>{const cap=btn.querySelector(".cap"),im=btn.querySelector(".bd"),g=btn.__g||geo(im);
+ if(!RM()){cap.animate([{transform:"translateY(0)"},{transform:"translateY("+Math.max(3,im.offsetHeight*.025)+"px)"},{transform:"translateY(0)"}],{duration:230,easing:"ease-out"});
+  btn.animate([{transform:"scale(1)"},{transform:"scale(.985,.975)"},{transform:"scale(1)"}],{duration:260,easing:"ease-out"})}
+ const {r,d}=canvasFit(),ir=im.getBoundingClientRect();
+ const ox=(ir.left-r.left+ir.width*g.nx+dir*ir.width*Math.min(.18,(g.nw||.2)/2))*d,oy=(ir.top-r.top+ir.height*g.ny+4)*d;
+ setTimeout(()=>{burst({x:ox,y:oy},cols,dir,true);res()},90)},delay))}
+async function sprayNow(){if(!ready())return;el("spxPick").hidden=true;S.pick=null;
+ const first=!S.started;S.started=true;el("spx").classList.add("go");stopLoop();S.t=0;
+ refreshSet();
+ const bs=[...el("spxBots").querySelectorAll(".spx-b")];
+ if(first){el("spxRun").hidden=false}
+ const stg=el("spxStage");if(first){const y=stg.getBoundingClientRect().top+el("spx").scrollTop-12;try{el("spx").scrollTo({top:y,behavior:RM()?"auto":"smooth"})}catch(e){}}
+ S.play=true;S.last=performance.now();setPl();MIST.ambCols=(S.mode==="layer"?[P(S.A),P(S.B)]:[P(S.A)]).map(palette);MIST.ambOn=!RM();loop();
+ let delay=0;const seq=[];
+ if(S.mode==="one"){for(let i=0;i<2;i++){seq.push([bs[0],1,palette(P(S.A)),delay]);delay+=420}}
+ else{for(let i=0;i<S.nA;i++){seq.push([bs[0],1,palette(P(S.A)),delay]);delay+=400}delay+=250;for(let i=0;i<S.nB;i++){seq.push([bs[1],-1,palette(P(S.B)),delay]);delay+=400}}
+ seq.forEach(a=>pump(...a))}
+function setPl(){const b=el("spxPl");if(!b)return;b.innerHTML=S.play?IC.pause:IC.play;b.setAttribute("aria-label",S.play?"Pause":"Play")}
+function setSpd(){document.querySelectorAll("#spx [data-spd]").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.spd===S.spd)))}
+let RAF=0;
+function loop(){if(RAF)return;const f=now=>{RAF=0;if(!S.play||!el("spx").classList.contains("on"))return;const dt=Math.min(.25,(now-S.last)/1000);S.last=now;
+ S.t+=dt/SPD[S.spd];const end=S.bounds.T*1.08;if(S.t>=end){S.t=end;S.play=false;setPl()}
+ if(now-S.ui>90){S.ui=now;paint()}RAF=requestAnimationFrame(f)};RAF=requestAnimationFrame(f)}
+function stopLoop(){if(RAF)cancelAnimationFrame(RAF);RAF=0}
+function buildRun(){const mix=S.mix,B=S.bounds;
+ const st=el("spxStrip").children,X=t=>Math.sqrt(Math.min(1,t/(B.T*1.08)));st[0].style.width=(X(B.t1)*100)+"%";st[1].style.width=((X(B.t2)-X(B.t1))*100)+"%";st[2].style.width=((1-X(B.t2))*100)+"%";
+ const lb=el("spxLb").children;lb[0].style.width=st[0].style.width;lb[1].style.width=st[1].style.width;lb[2].style.width=st[2].style.width;
+ const seen={},chips=[];mix.forEach(s=>s.notes.forEach(o=>{if(seen[o.n]){if(seen[o.n].w!==s.which)seen[o.n].w="ab";return}seen[o.n]={w:s.which};chips.push(o.n)}));
+ el("spxNotes").innerHTML=chips.map(n=>{const w=seen[n].w;return '<span class="spx-note off" data-n="'+esc(n)+'">'+noteTag(n)+esc(n)+(S.mode==="layer"?(w==="ab"?'<i class="a">1</i><i class="b">2</i>':'<i class="'+w+'">'+(w==="a"?1:2)+'</i>'):'')+'</span>'}).join("");
+ const tot={};mix.forEach(s=>s.acc.forEach(o=>tot[o.a]=(tot[o.a]||0)+o.v*s.k));const keys=Object.entries(tot).sort((a,b)=>b[1]-a[1]).slice(0,S.mode==="layer"?7:5).map(x=>x[0]);
+ el("spxAcc").innerHTML=keys.map(k=>'<div class="'+(LIGHT.includes(k)?'lt':'')+'" data-a="'+esc(k)+'" style="width:20%;background:'+(ACC[k]||"#8a6a4a")+'">'+esc(k)+'</div>').join("");
+ el("spxSrc").textContent="A simulation from "+(S.mode==="layer"?"each bottle’s":"this bottle’s")+" top, heart and base notes, accords, longevity and sillage. Real skin, weather and spray count change it, and Fragrantica doesn’t give exact timings, so treat the clock as a guide.";
+ setSpd();setPl()}
+function paint(force){if(!S.mix)return;const st=state(S.mix,S.t),T=S.bounds.T;
+ el("spxPh").textContent=st.phase;el("spxClk").textContent=clock(S.t)+" after spraying";
+ const u=Math.sqrt(Math.min(1,S.t/(T*1.08)));el("spxMk").style.left=(u*100)+"%";if(document.activeElement!==el("spxScr"))el("spxScr").value=Math.round(u*1000);
+ const fl=feel(st);if(el("spxFeel").textContent!==fl)el("spxFeel").textContent=fl;
+ const nv=Object.values(st.notes),mx=Math.max(.0001,...nv.map(x=>x.v));
+ el("spxNotes").querySelectorAll(".spx-note").forEach(c=>{const o=st.notes[c.dataset.n],v=o?o.v/mx:0,abs=o?o.v:0;c.classList.toggle("off",v<.3||abs<.08);c.classList.toggle("peak",v>.85&&abs>.15);c.style.opacity=v<.3||abs<.08?"":String(.55+.45*v)});
+ const av=el("spxAcc").children,am=Math.max(.0001,...Object.values(st.acc));
+ [...av].forEach(d=>{const v=(st.acc[d.dataset.a]||0)/am;d.style.width=Math.max(14,Math.round(v*100))+"%";d.style.opacity=String(.45+.55*v)});
+ el("spxPj").style.width=Math.round(st.proj*100)+"%";el("spxPjL").textContent=projLabel(st.proj);
+ MIST.ambA=st.proj;MIST.ambRate=.04+.3*st.proj;
+ const dn=el("spxDone");if(S.t>=T*1.07){dn.hidden=false;dn.textContent="Faded. On skin this lasts about "+clock(T)+(S.mode==="layer"?" (the longer-lasting bottle sets the length).":".")}else dn.hidden=true}
+
+/* ---------- picker ---------- */
+function openPick(k){S.pick=k;const other=S[k==="A"?"B":"A"],pool=lyPool(),Pk=el("spxPick");
+ let h="";const base=other&&P(other);
+ if(base){const me=lyProf(base);const top=pool.filter(o=>o.p.id!==other).map(o=>({o,r:lyPair(me,lyProf(o.p))})).sort((x,y)=>y.r.s-x.r.s).slice(0,4);
+  h+='<div class="ptg"><b>Good partners for '+esc(nm(base))+'</b><div class="ptgrid">'+top.map(({o,r})=>'<button type="button" class="pk'+(S[k]===o.p.id?' on':'')+'" data-id="'+o.p.id+'"><img alt="" src="'+o.p.img+'"><span>'+esc(nm(o.p))+'</span><em>'+esc(r.tier.replace(" match",""))+'</em></button>').join("")+'</div></div>'}
+ const ws=[...new Set(pool.map(o=>o.who))];
+ h+=ws.map(w=>'<div class="ptg"><b>'+esc(w)+'</b><div class="ptgrid">'+pool.filter(o=>o.who===w).map(o=>'<button type="button" class="pk'+(S[k]===o.p.id?' on':'')+(other===o.p.id?' dis':'')+'" data-id="'+o.p.id+'"><img alt="" src="'+o.p.img+'"><span>'+esc(nm(o.p))+'</span></button>').join("")+'</div></div>').join("");
+ Pk.innerHTML='<div class="spx-top" style="margin-bottom:10px"><div><small>Choose the '+(k==="A"?"first (base layer)":"second (on top)")+' bottle</small></div></div>'+h;Pk.hidden=false;Pk.scrollTop=0;
+ document.querySelectorAll("#spx .spx-slot").forEach(s=>s.classList.toggle("on",s.dataset.k===k));
+ try{Pk.scrollIntoView({block:"nearest",behavior:RM()?"auto":"smooth"})}catch(e){}}
+
+/* ---------- entry points ---------- */
+window.sprHtml=function(p){return '<div class="sprow"><button type="button" class="pri" data-spray="'+p.id+'">'+IC.spray+'Spray it</button><button type="button" data-layer="'+p.id+'">'+IC.layer+'Layer with…</button></div>'};
+window.sprPairBtn=function(a,b){return '<button type="button" class="ly-sp" data-lysp="'+a+'|'+b+'">'+IC.spray.replace('class="ic"','')+'Spray this pair</button>'};
+document.addEventListener("click",e=>{const t=e.target;if(!t.closest)return;
+ const s=t.closest("[data-spray]");if(s){open({mode:"one",a:s.dataset.spray});return}
+ const l=t.closest("[data-layer]");if(l){open({mode:"layer",a:l.dataset.layer});return}
+ const lp=t.closest("[data-lysp]");if(lp){const [a,b]=lp.dataset.lysp.split("|");open({mode:"layer",a,b});return}});
+})();
+</script>
 <script>
 /* Android back button: closes whatever is open, and on the main page asks before leaving (doors close, then exit) */
 (function(){
@@ -2034,6 +2381,7 @@ function top(){
  if(e=$("shov"))L.push({z:1000,c:function(){e.remove()}});
  if(e=$("mvq"))L.push({z:900,c:function(){var b=e.querySelector('[data-a="no"]');if(b)b.click();else e.remove()}});
  if(menusOpen())L.push({z:800,c:function(){document.body.click()}});
+ if(window.spxIsOn&&spxIsOn())L.push({z:85,c:function(){spxClose()}});
  if(on($("nsheet")))L.push({z:zi($("nsheet")),c:function(){try{closeNote()}catch(x){}}});
  if(on($("dfd")))L.push({z:zi($("dfd")),c:function(){var b=$("dfpx");if(b)b.click()}});
  if(on($("sheet")))L.push({z:zi($("sheet")),c:function(){try{shut()}catch(x){}}});
